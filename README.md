@@ -1,8 +1,10 @@
-# Ogden 850 Kids
+# Ogden Basic
 
-一款面向中文少儿英语学习者的原生 Android 单词 App，基于 Kotlin + Jetpack Compose 构建。它围绕 Ogden Basic English 的 850 个基础词展开，把词库、发音、闯关和复习都放在离线可用的移动端体验里。
+一款面向中文英语学习者的原生 Android 单词 App，基于 Kotlin + Jetpack Compose 构建。它围绕 Ogden Basic English 的 850 个基础词展开，把词库、发音、闯关和复习都放在离线可用的移动端体验里。
 
 > 本项目是一次二次创作。我在 X 上看到 [Ogden's Basic English](https://ogden.munch.love/) 的作品后很受触动，并在征得原网站作者同意的情况下，将其内容与气质重新设计为 Android 学习应用。原作地址：[https://ogden.munch.love/](https://ogden.munch.love/)
+
+欢迎大家下载、使用并反馈。作者 X 账号：[@Skivein](https://x.com/Skivein)
 
 ## Screenshots
 
@@ -64,3 +66,7 @@ app/build/outputs/apk/debug/app-debug.apk
 - App 首版以离线学习为主，不接入账号、云同步或排行榜。
 - 发音优先使用内置音频；例句或缺失音频场景可回退到系统 TTS / 在线服务。
 - 一点颜体字体来自 [wordshub/free-font](https://github.com/wordshub/free-font)，用于首页底部短句。
+
+## License
+
+本项目以 [MIT License](LICENSE) 开源。

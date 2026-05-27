@@ -812,7 +812,7 @@ fun ChallengeScreen(
         item {
             HeroCard(
                 title = "Ogden's Basic English",
-                subtitle = "850 词少儿闯关 · 中英双语 · 离线可学",
+                subtitle = "850 词闯关 · 中英双语 · 离线可学",
                 action = "继续之前",
                 onAction = onContinue
             )
@@ -1415,8 +1415,8 @@ fun SoftwareScreen(
                     .border(1.dp, Line, RoundedCornerShape(18.dp))
             ) {
                 Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("Ogden 850 Kids", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
-                    AppText("少儿英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft)
+                    Text("Ogden Basic", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
+                    AppText("英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft)
                     AppText("当前版本：1.0", color = InkFaint, fontSize = 13.sp)
                 }
             }
@@ -1581,7 +1581,7 @@ fun LegalInfoScreen(
 fun privacySections() = listOf(
     LegalSection(
         "基本说明",
-        "Ogden 850 Kids 是一款面向少儿英语单词学习的应用。本应用尊重并保护用户隐私，不会收集、上传、出售或共享任何用户个人信息。"
+        "Ogden Basic 是一款面向英语单词学习的应用。本应用尊重并保护用户隐私，不会收集、上传、出售或共享任何用户个人信息。"
     ),
     LegalSection(
         "可能使用的权限",
@@ -1592,8 +1592,8 @@ fun privacySections() = listOf(
         "本应用不会收集姓名、手机号、邮箱、账号、定位等个人身份信息；不会读取通讯录、短信、相册、摄像头、麦克风等敏感权限；不会追踪用户用于广告或商业分析；不会向第三方共享学习记录。"
     ),
     LegalSection(
-        "儿童隐私",
-        "本应用适合少儿英语学习使用，不要求儿童提供个人信息，也不会主动收集儿童身份、位置、联系方式或其他敏感数据。家长可将其作为本地学习工具使用。"
+        "适用范围",
+        "本应用适合希望学习 Ogden Basic English 850 词的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
     ),
     LegalSection(
         "本地数据与删除",
@@ -1608,7 +1608,7 @@ fun privacySections() = listOf(
 fun aboutSections() = listOf(
     LegalSection(
         "应用来源",
-        "本应用基于 Ogden Basic English 850 词学习内容进行二次创作，面向中文少儿英语学习场景重新设计为 Android App。"
+        "本应用基于 Ogden Basic English 850 词学习内容进行二次创作，面向中文英语学习场景重新设计为 Android App。"
     ),
     LegalSection(
         "原作说明",
