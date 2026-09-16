@@ -47,7 +47,7 @@
 
 ## Build
 
-用 Android Studio 打开本目录，等待 Gradle 同步后运行 `app`。
+使用 JDK 17。用 Android Studio 打开本目录，等待 Gradle 同步后运行 `app`。
 
 命令行构建：
 

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.icu.text.Transliterator
-import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import androidx.activity.ComponentActivity
@@ -83,7 +82,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -113,7 +111,6 @@ private val Line = Color(0xFFE7E2D4)
 private val Success = Color(0xFF166534)
 private val Error = Color(0xFFB91C1C)
 private val LocalChineseMode = compositionLocalOf { ChineseMode.Hans }
-private val YidianYanti = FontFamily(Font(R.font.yidian_yanti))
 
 enum class Category(
     val code: String,
@@ -183,36 +180,34 @@ sealed class Screen {
     object Main : Screen()
     data class Detail(val word: OgdenWord) : Screen()
     data class Levels(val category: Category) : Screen()
-    data class Practice(val category: Category, val level: Int, val reviewOnly: Boolean = false) : Screen()
+    data class Practice(val category: Category, val level: Int) : Screen()
     data class WordCollection(val title: String, val kind: String) : Screen()
     object Settings : Screen()
     object Privacy : Screen()
     object About : Screen()
 }
 
-class OgdenRepository(private val context: Context) {
-    fun loadWords(): List<OgdenWord> {
-        val wordsJson = context.assets.open("ogden_words.json").bufferedReader().use { it.readText() }.trimStart('\uFEFF')
-        val ipaJson = context.assets.open("ogden_ipa.json").bufferedReader().use { it.readText() }.trimStart('\uFEFF')
-        val words = JSONArray(wordsJson)
-        val ipa = JSONObject(ipaJson)
-        return List(words.length()) { index ->
-            val item = words.getJSONObject(index)
-            val word = item.getString("w")
-            val ipaItem = ipa.optJSONObject(word)
-            val synonyms = item.getJSONArray("s")
-            OgdenWord(
-                word = word,
-                category = Category.from(item.getString("c")),
-                zh = item.getString("zh"),
-                englishDefinition = item.getString("en"),
-                example = item.getString("ex"),
-                exampleZh = item.getString("exz"),
-                synonyms = List(synonyms.length()) { synonyms.getString(it) },
-                ipaUk = ipaItem?.optString("uk").orEmpty(),
-                ipaUs = ipaItem?.optString("us").orEmpty()
-            )
-        }
+fun loadWords(context: Context): List<OgdenWord> {
+    val wordsJson = context.assets.open("ogden_words.json").bufferedReader().use { it.readText() }.trimStart('\uFEFF')
+    val ipaJson = context.assets.open("ogden_ipa.json").bufferedReader().use { it.readText() }.trimStart('\uFEFF')
+    val words = JSONArray(wordsJson)
+    val ipa = JSONObject(ipaJson)
+    return List(words.length()) { index ->
+        val item = words.getJSONObject(index)
+        val word = item.getString("w")
+        val ipaItem = ipa.optJSONObject(word)
+        val synonyms = item.getJSONArray("s")
+        OgdenWord(
+            word = word,
+            category = Category.from(item.getString("c")),
+            zh = item.getString("zh"),
+            englishDefinition = item.getString("en"),
+            example = item.getString("ex"),
+            exampleZh = item.getString("exz"),
+            synonyms = List(synonyms.length()) { synonyms.getString(it) },
+            ipaUk = ipaItem?.optString("uk").orEmpty(),
+            ipaUs = ipaItem?.optString("us").orEmpty()
+        )
     }
 }
 
@@ -316,13 +311,12 @@ class ProgressStore(context: Context) {
 @Composable
 fun OgdenKidsApp() {
     val context = LocalContext.current
-    val words = remember { OgdenRepository(context).loadWords() }
+    val words = remember { loadWords(context) }
     val progressStore = remember { ProgressStore(context) }
     var screen by remember { mutableStateOf<Screen>(Screen.Main) }
     var selectedTab by remember { mutableStateOf(Tab.Home) }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
     var chineseMode by remember { mutableStateOf(progressStore.savedChineseMode()) }
-    var version by remember { mutableStateOf(0) }
     val speak = rememberSpeaker(accent)
 
     MaterialTheme(
@@ -400,7 +394,6 @@ fun OgdenKidsApp() {
                     onSpeak = speak,
                     onFavorite = {
                         progressStore.toggleFavorite(current.word.word)
-                        version++
                         progressStore.progress(current.word.word)
                     }
                 )
@@ -412,28 +405,21 @@ fun OgdenKidsApp() {
                     onStart = { level -> screen = Screen.Practice(current.category, level) }
                 )
                 is Screen.Practice -> {
-                    LaunchedEffect(current.category, current.level, current.reviewOnly) {
-                        if (!current.reviewOnly) progressStore.saveLastLevel(current.category, current.level)
+                    LaunchedEffect(current.category, current.level) {
+                        progressStore.saveLastLevel(current.category, current.level)
                     }
                     PracticeScreen(
                         allWords = words,
-                        store = progressStore,
-                        version = version,
                         category = current.category,
                         level = current.level,
-                        reviewOnly = current.reviewOnly,
                         zh = chineseMode,
                         onSpeak = speak,
-                        onBack = {
-                            version++
-                            screen = Screen.Main
-                        },
+                        onBack = { screen = Screen.Main },
                         onComplete = {
-                            if (!current.reviewOnly) progressStore.markLevelComplete(current.category, current.level)
+                            progressStore.markLevelComplete(current.category, current.level)
                         },
                         onRecord = { word, correct ->
                             progressStore.record(word.word, correct)
-                            version++
                         }
                     )
                 }
@@ -719,7 +705,7 @@ fun ProverbHomeScreen(padding: PaddingValues) {
             color = InkSoft,
             fontSize = 13.sp,
             lineHeight = 20.sp,
-            fontFamily = YidianYanti,
+            fontFamily = FontFamily.Cursive,
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Center,
             maxLines = 1,
@@ -1175,6 +1161,7 @@ fun WordListCard(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WordDetailScreen(
     word: OgdenWord,
@@ -1242,8 +1229,10 @@ fun WordDetailScreen(
             }
             item {
                 SectionTitle("近义词", "点击可听发音")
-                FlowRowCompat(word.synonyms) { syn ->
-                    AssistChip(onClick = { onSpeak(syn) }, label = { Text(syn) })
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    word.synonyms.forEach { syn ->
+                        AssistChip(onClick = { onSpeak(syn) }, label = { Text(syn) })
+                    }
                 }
             }
             item {
@@ -1627,21 +1616,16 @@ fun aboutSections() = listOf(
 @Composable
 fun PracticeScreen(
     allWords: List<OgdenWord>,
-    store: ProgressStore,
-    version: Int,
     category: Category,
     level: Int,
-    reviewOnly: Boolean,
     zh: ChineseMode,
     onSpeak: (String) -> Unit,
     onBack: () -> Unit,
     onComplete: () -> Unit,
     onRecord: (OgdenWord, Boolean) -> Unit
 ) {
-    val source = remember(version, category, level, reviewOnly) {
-        val reviewWords = store.mistakeWords(allWords)
-        if (reviewOnly && reviewWords.isNotEmpty()) reviewWords.take(10)
-        else allWords.filter { it.category == category }.drop((level - 1) * 10).take(10)
+    val source = remember(allWords, category, level) {
+        allWords.filter { it.category == category }.drop((level - 1) * 10).take(10)
     }
     var index by remember(source) { mutableStateOf(0) }
     var selected by remember(source) { mutableStateOf<String?>(null) }
@@ -1660,7 +1644,7 @@ fun PracticeScreen(
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             Column(Modifier.weight(1f)) {
-                AppText(if (reviewOnly) "错词复习" else "${category.zh} · 第 $level 关", fontWeight = FontWeight.Bold)
+                AppText("${category.zh} · 第 $level 关", fontWeight = FontWeight.Bold)
                 AppText("${index.coerceAtMost(source.size)} / ${source.size} · 答对 $correctCount", color = InkFaint, fontSize = 12.sp)
             }
         }
@@ -1823,12 +1807,6 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
     }
 }
 
-fun nextLevel(words: List<OgdenWord>, category: Category, store: ProgressStore): Int {
-    val categoryWords = words.filter { it.category == category }
-    val firstUnmastered = categoryWords.indexOfFirst { store.progress(it.word).mastery < 3 }
-    return if (firstUnmastered < 0) 1 else firstUnmastered / 10 + 1
-}
-
 @Composable
 fun SectionTitle(title: String, subtitle: String) {
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -1894,14 +1872,6 @@ fun InfoBlock(title: String, en: String, zh: String, tint: Color, onSpeak: () ->
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun FlowRowCompat(items: List<String>, chip: @Composable (String) -> Unit) {
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        items.forEach { chip(it) }
-    }
-}
-
 @Composable
 fun CompactWordRow(word: OgdenWord, progress: WordProgress, zh: ChineseMode, onOpen: (OgdenWord) -> Unit) {
     Row(
@@ -1943,42 +1913,9 @@ fun EmptyCard(text: String) {
 
 fun convertZh(text: String, mode: ChineseMode): String {
     if (mode == ChineseMode.Hans) return text
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        runCatching { return ChineseTransliterator.hansToHant.transliterate(text) }
-    }
-    val map = mapOf(
-        '来' to '來', '为' to '為', '后' to '後', '发' to '發', '个' to '個', '这' to '這',
-        '那' to '那', '们' to '們', '说' to '說', '见' to '見', '书' to '書', '车' to '車',
-        '门' to '門', '开' to '開', '关' to '關', '学' to '學', '习' to '習', '读' to '讀',
-        '词' to '詞', '义' to '義', '类' to '類', '时' to '時', '间' to '間', '过' to '過',
-        '边' to '邊', '还' to '還', '进' to '進', '远' to '遠', '气' to '氣', '声' to '聲',
-        '头' to '頭', '轻' to '輕', '对' to '對', '错' to '錯', '简' to '簡', '体' to '體',
-        '长' to '長', '鱼' to '魚', '鸟' to '鳥', '马' to '馬', '贝' to '貝', '叶' to '葉',
-        '风' to '風', '云' to '雲', '电' to '電', '画' to '畫', '圆' to '圓',
-        '复' to '複', '习' to '習', '软' to '軟', '隐' to '隱', '私' to '私', '页' to '頁',
-        '显' to '顯', '示' to '示', '数' to '數', '据' to '據', '与' to '與', '双' to '雙',
-        '语' to '語', '离' to '離', '线' to '線', '儿' to '兒', '闯' to '闖', '关' to '關',
-        '续' to '續', '之' to '之', '前' to '前', '应' to '應', '用' to '用', '说' to '說',
-        '明' to '明', '权' to '權', '限' to '限', '获' to '獲', '取' to '取', '基' to '基',
-        '础' to '礎', '户' to '戶', '信' to '信', '息' to '息', '操' to '操', '作' to '作',
-        '选' to '選', '择' to '擇', '锁' to '鎖', '定' to '定', '进' to '進', '入' to '入',
-        '错' to '錯', '题' to '題', '记' to '記', '录' to '錄', '夹' to '夾', '收' to '收',
-        '藏' to '藏', '软' to '軟', '件' to '件', '设' to '設', '置' to '置', '发' to '發',
-        '音' to '音', '隐' to '隱', '关' to '關', '于' to '於', '者' to '者', '总' to '總',
-        '暂' to '暫', '没' to '沒', '颗' to '顆', '随' to '隨', '机' to '機', '战' to '戰',
-        '场' to '場', '景' to '景', '儿' to '兒', '爱' to '愛', '护' to '護', '卖' to '賣',
-        '传' to '傳', '务' to '務', '习' to '習', '历' to '歷', '创' to '創', '链' to '鏈',
-        '接' to '接', '调' to '調', '整' to '整', '验' to '驗', '证' to '證', '览' to '覽',
-        '览' to '覽', '览' to '覽', '后' to '後', '会' to '會', '变' to '變', '声' to '聲',
-        '桥' to '橋', '门' to '門', '种' to '種', '练' to '練', '实' to '實', '际' to '際',
-        '备' to '備', '尝' to '嘗', '试' to '試', '觉' to '覺', '拥' to '擁', '护' to '護'
-    )
-    return buildString(text.length) {
-        text.forEach { append(map[it] ?: it) }
-    }
+    return runCatching { ChineseTransliterator.hansToHant.transliterate(text) }.getOrDefault(text)
 }
 
-@androidx.annotation.RequiresApi(Build.VERSION_CODES.N)
 private object ChineseTransliterator {
     val hansToHant: Transliterator = Transliterator.getInstance("Simplified-Traditional")
 }
