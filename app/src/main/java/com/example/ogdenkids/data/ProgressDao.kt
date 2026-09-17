@@ -31,6 +31,18 @@ interface ProgressDao {
     @Query("DELETE FROM level_progress")
     suspend fun clearLevelProgress()
 
+    @Query("SELECT * FROM daily_activity")
+    suspend fun allDailyActivity(): List<DailyActivityEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveDailyActivity(item: DailyActivityEntity)
+
+    @Query("DELETE FROM daily_activity")
+    suspend fun clearDailyActivity()
+
+    @Query("DELETE FROM daily_activity WHERE day < :day")
+    suspend fun pruneDailyActivity(day: Long)
+
     // 复习排序：没掌握的词里，先给从未答过（lastAnsweredAt = 0）与最久没答的
     // 目前还没有界面调用，是本次改用数据库的直接理由；真正的间隔重复算法留待后续
     @Query(

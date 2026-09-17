@@ -12,10 +12,12 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -98,6 +100,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
@@ -105,9 +109,12 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import com.example.ogdenkids.data.DailyActivityEntity
 import com.example.ogdenkids.data.LevelProgressEntity
 import com.example.ogdenkids.data.ProgressDatabase
 import com.example.ogdenkids.data.WordProgressEntity
@@ -122,6 +129,7 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URLEncoder
+import java.util.Calendar
 import java.util.Locale
 import kotlin.math.ceil
 import kotlin.random.Random
@@ -214,7 +222,11 @@ enum class Category(
     GeneralThings("gt", "General Things", "通用词", 400, Color(0xFF166534), Color(0xFFDCFCE7)),
     Picturable("pt", "Picturable", "图示词", 200, Color(0xFFA16207), Color(0xFFFEF9C3)),
     Qualities("qg", "Qualities", "性质词", 100, Color(0xFF1E40AF), Color(0xFFDBEAFE)),
-    Opposites("qo", "Opposites", "反义对", 50, Color(0xFF7C3AED), Color(0xFFEDE9FE));
+    Opposites("qo", "Opposites", "反义对", 50, Color(0xFF7C3AED), Color(0xFFEDE9FE)),
+    Function("fn", "Function", "功能词", 61, Color(0xFF0E7490), Color(0xFFCFFAFE)),
+    Verbs("vb", "Verbs", "动词", 74, Color(0xFF0F766E), Color(0xFFCCFBF1)),
+    Nouns("na", "Nouns", "名词形容词", 73, Color(0xFFBE185D), Color(0xFFFCE7F3)),
+    Topics("th", "Topics", "主题词", 145, Color(0xFF4338CA), Color(0xFFE0E7FF));
 
     companion object {
         fun from(code: String) = values().first { it.code == code }
@@ -267,6 +279,7 @@ sealed class Screen {
     data class Levels(val category: Category) : Screen()
     data class Practice(val category: Category, val level: Int) : Screen()
     data class WordCollection(val title: String, val kind: String) : Screen()
+    object Stats : Screen()
     object Settings : Screen()
     object Privacy : Screen()
     object About : Screen()
@@ -311,6 +324,8 @@ class ProgressStore(context: Context) {
     private val levels = mutableStateMapOf<String, Boolean>()
     // lastAnsweredAt 界面不显示，只在整行覆盖写时要带上，放普通 map 不参与重组
     private val answeredAt = mutableMapOf<String, Long>()
+    // 逐日统计：epochDay -> 答题数/答对数，快照在内存、逐条落库
+    private val daily = mutableStateMapOf<Long, DailyActivityEntity>()
     private var streak by mutableStateOf(prefs.getInt("streak", 0))
     // 首帧数据库还没读完，界面先等这个标志，避免统计闪一次 0
     var ready by mutableStateOf(false)
@@ -318,15 +333,18 @@ class ProgressStore(context: Context) {
 
     init {
         scope.launch {
-            val (words, completed) = withContext(Dispatchers.IO) {
+            val (words, completed, dailyRows) = withContext(Dispatchers.IO) {
                 importLegacyPrefsIfNeeded()
-                dao.allWordProgress() to dao.allLevelProgress()
+                // 日图表最多保留一年，更早的按天清掉
+                dao.pruneDailyActivity(localEpochDay(System.currentTimeMillis()) - 365)
+                Triple(dao.allWordProgress(), dao.allLevelProgress(), dao.allDailyActivity())
             }
             words.forEach {
                 entries[it.word] = it.toWordProgress()
                 answeredAt[it.word] = it.lastAnsweredAt
             }
             completed.forEach { levels[levelKey(it.category, it.level)] = true }
+            dailyRows.forEach { daily[it.day] = it }
             ready = true
         }
     }
@@ -356,6 +374,7 @@ class ProgressStore(context: Context) {
         entries[word] = next
         answeredAt[word] = System.currentTimeMillis()
         persist(word, next)
+        bumpDailyActivity(correct)
         if (correct) bumpDailyStreak()
     }
 
@@ -379,6 +398,15 @@ class ProgressStore(context: Context) {
     fun favoriteWords(words: List<OgdenWord>) = words.filter { progress(it.word).favorite }
 
     fun dailyStreak(): Int = streak
+
+    // 最近 N 天（含今天）的逐日统计，缺的补零，倒序旧->新
+    fun dailySeries(days: Int): List<DailyActivityEntity> {
+        val today = localEpochDay(System.currentTimeMillis())
+        return (days - 1 downTo 0).map { off ->
+            val d = today - off
+            daily[d] ?: DailyActivityEntity(day = d)
+        }
+    }
 
     fun lastCategory(): Category = runCatching {
         Category.from(prefs.getString("lastCategory", Category.Operations.code) ?: Category.Operations.code)
@@ -418,11 +446,13 @@ class ProgressStore(context: Context) {
         entries.clear()
         levels.clear()
         answeredAt.clear()
+        daily.clear()
         streak = 0
         // 先清库再清偏好：反过来若中途进程被杀，导入标志还在而库里旧行会复活
         scope.launch(Dispatchers.IO) {
             dao.clearWordProgress()
             dao.clearLevelProgress()
+            dao.clearDailyActivity()
             val editor = prefs.edit()
             resettableProgressKeys(prefs.all.keys).forEach { editor.remove(it) }
             editor.commit()
@@ -431,8 +461,16 @@ class ProgressStore(context: Context) {
 
     private fun levelKey(categoryCode: String, level: Int) = "$categoryCode.$level"
 
+    private fun bumpDailyActivity(correct: Boolean) {
+        val today = localEpochDay(System.currentTimeMillis())
+        val cur = daily[today] ?: DailyActivityEntity(day = today)
+        val next = cur.copy(answered = cur.answered + 1, correct = cur.correct + if (correct) 1 else 0)
+        daily[today] = next
+        scope.launch(Dispatchers.IO) { dao.saveDailyActivity(next) }
+    }
+
     private fun bumpDailyStreak() {
-        val today = System.currentTimeMillis() / 86_400_000L
+        val today = localEpochDay(System.currentTimeMillis())
         val next = nextStreak(prefs.getLong("lastStudyDay", 0L), today, streak)
         streak = next
         prefs.edit().putLong("lastStudyDay", today).putInt("streak", next).apply()
@@ -473,6 +511,16 @@ fun nextStreak(lastDay: Long, today: Long, streak: Int): Int = when {
     lastDay == today -> streak
     lastDay == today - 1 -> streak + 1
     else -> 1
+}
+
+// 本地时区的「纪元日」：以当天 0 点为界，日图表按天分桶时避免 UTC 凌晨 8 点切天
+private fun localEpochDay(millis: Long): Long {
+    val now = Calendar.getInstance().apply { timeInMillis = millis }
+    val start = Calendar.getInstance().apply {
+        clear()
+        set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
+    }
+    return start.timeInMillis / 86_400_000L
 }
 
 @Composable
@@ -557,7 +605,8 @@ fun OgdenKidsApp() {
                                 },
                                 onCategory = { category -> screen = Screen.Levels(category) },
                                 onOpenLibrary = { selectedTab = Tab.Library },
-                                onOpenSettings = { screen = Screen.Settings }
+                                onOpenSettings = { screen = Screen.Settings },
+                                onOpenStats = { screen = Screen.Stats }
                             )
                             Tab.Library -> LibraryScreen(
                                 words = words,
@@ -619,6 +668,10 @@ fun OgdenKidsApp() {
                     store = progressStore,
                     onBack = { screen = Screen.Main },
                     onOpen = { word, siblings -> screen = Screen.Detail(word, siblings) }
+                )
+                Screen.Stats -> StatsScreen(
+                    store = progressStore,
+                    onBack = { screen = Screen.Main }
                 )
                 Screen.Settings -> SettingsScreen(
                     accent = accent,
@@ -924,11 +977,12 @@ fun ChallengeScreen(
     onContinue: () -> Unit,
     onCategory: (Category) -> Unit,
     onOpenLibrary: () -> Unit,
-    onOpenSettings: () -> Unit
+    onOpenSettings: () -> Unit,
+    onOpenStats: () -> Unit
 ) {
     // 谚语从原首页移到闯关页顶部，只取一句，避免把学习内容挤到折叠线以下
     val proverb = remember { proverbs().shuffled().first() }
-    // 统计只在进度状态变化时重算，不随每次重组遍历 850 词
+    // 统计只在进度状态变化时重算，不随每次重组遍历 1203 词
     val mastered by remember(words, store) { derivedStateOf { store.masteredCount(words) } }
     val mistakes by remember(words, store) { derivedStateOf { store.mistakeWords(words).size } }
     val favorites by remember(words, store) { derivedStateOf { store.favoriteWords(words).size } }
@@ -977,7 +1031,7 @@ fun ChallengeScreen(
         item {
             HeroCard(
                 title = "今日闯关",
-                subtitle = "850 词闯关 · 中英双语 · 离线可学",
+                subtitle = "1203 词闯关 · 中英双语 · 离线可学",
                 action = "继续之前",
                 onAction = onContinue
             )
@@ -989,6 +1043,25 @@ fun ChallengeScreen(
                 favorites = favorites,
                 streak = store.dailyStreak()
             )
+        }
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = PaperElevated),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(0.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, Line, RoundedCornerShape(16.dp))
+                    .clickable(onClick = onOpenStats)
+            ) {
+                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text("学习图表", fontWeight = FontWeight.Bold, fontSize = 18.sp, fontFamily = FontFamily.Serif)
+                        AppText("最近 30 天答题 · 答对情况", color = InkFaint, fontSize = 13.sp)
+                    }
+                    AppText("查看 →", color = InkSoft, fontSize = 13.sp)
+                }
+            }
         }
         item {
             SectionTitle("分类闯关", "每 10 个词一关，先短跑，再复习")
@@ -1015,7 +1088,7 @@ fun ChallengeScreen(
         }
         item {
             Text(
-                "从850个词开始，做一个有情有义的人……",
+                "从1203个词开始，做一个有情有义的人……",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp),
@@ -1081,6 +1154,91 @@ fun StatCard(label: String, value: String, tint: Color, modifier: Modifier = Mod
             // 大字号下四列很窄，允许换行而不是裁掉数字
             Text(value, color = tint, fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center)
             AppText(label, color = InkFaint, fontSize = 12.sp, textAlign = TextAlign.Center)
+        }
+    }
+}
+
+private fun epochDayLabel(day: Long): String {
+    val c = Calendar.getInstance().apply { timeInMillis = day * 86_400_000L }
+    return "${c.get(Calendar.MONTH) + 1}/${c.get(Calendar.DAY_OF_MONTH)}"
+}
+
+@Composable
+fun StatsScreen(store: ProgressStore, onBack: () -> Unit) {
+    val series = store.dailySeries(30)
+    val totalAnswered = series.sumOf { it.answered }
+    val totalCorrect = series.sumOf { it.correct }
+    Scaffold(containerColor = Paper, topBar = {
+        SecondaryTopBar(onBack) {
+            AppText("学习图表", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+        }
+    }) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(18.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            item {
+                SectionTitle("最近 30 天", "每天答题数与答对数，历史最多保留一年")
+            }
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                    StatCard("30天答题", totalAnswered.toString(), Category.Function.tint, Modifier.weight(1f))
+                    StatCard("30天答对", totalCorrect.toString(), Success, Modifier.weight(1f))
+                    StatCard("连续天数", "${store.dailyStreak()}天", Category.Picturable.tint, Modifier.weight(1f))
+                }
+            }
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = PaperElevated),
+                    shape = RoundedCornerShape(18.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, Line, RoundedCornerShape(18.dp))
+                ) {
+                    Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        if (totalAnswered == 0) {
+                            AppText("还没有学习记录，先去闯一关吧。", color = InkFaint, fontSize = 14.sp)
+                        } else {
+                            DayBarChart(series)
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                Box(Modifier.size(10.dp).clip(CircleShape).background(Success))
+                                AppText("答对", color = InkFaint, fontSize = 12.sp)
+                                Spacer(Modifier.width(8.dp))
+                                Box(Modifier.size(10.dp).clip(CircleShape).background(Category.Function.tint))
+                                AppText("未答对", color = InkFaint, fontSize = 12.sp)
+                                Spacer(Modifier.weight(1f))
+                                AppText(
+                                    "${epochDayLabel(series.first().day)} – ${epochDayLabel(series.last().day)}",
+                                    color = InkFaint,
+                                    fontSize = 12.sp
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DayBarChart(series: List<DailyActivityEntity>, modifier: Modifier = Modifier) {
+    val total = Category.Function.tint
+    val good = Success
+    val max = (series.maxOfOrNull { it.answered } ?: 0).coerceAtLeast(1)
+    Canvas(modifier = modifier.fillMaxWidth().height(180.dp)) {
+        val slot = size.width / series.size
+        val bw = slot * 0.6f
+        series.forEachIndexed { i, d ->
+            if (d.answered <= 0) return@forEachIndexed
+            val x = slot * i + (slot - bw) / 2f
+            val totalH = size.height * d.answered / max
+            val goodH = size.height * d.correct / max
+            drawRect(total, topLeft = Offset(x, size.height - totalH), size = Size(bw, totalH))
+            drawRect(good, topLeft = Offset(x, size.height - goodH), size = Size(bw, goodH))
         }
     }
 }
@@ -1246,7 +1404,7 @@ fun LibraryScreen(
 ) {
     var query by remember { mutableStateOf("") }
     var category by remember { mutableStateOf<Category?>(null) }
-    // 输入框即时响应，过滤延迟 250ms，避免逐字符遍历 850 词
+    // 输入框即时响应，过滤延迟 250ms，避免逐字符遍历 1203 词
     var debouncedQuery by remember { mutableStateOf("") }
     LaunchedEffect(query) {
         delay(250)
@@ -1264,7 +1422,7 @@ fun LibraryScreen(
             .fillMaxSize()
             .padding(padding)
     ) {
-        // 搜索与筛选常驻在列表之上，不随 850 行滚走
+        // 搜索与筛选常驻在列表之上，不随 1203 行滚走
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -1289,7 +1447,7 @@ fun LibraryScreen(
                 shape = RoundedCornerShape(16.dp)
             )
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(selected = category == null, onClick = { category = null }, label = { Text("All · 850") })
+                FilterChip(selected = category == null, onClick = { category = null }, label = { Text("All · ${words.size}") })
                 Category.values().forEach {
                     FilterChip(
                         selected = category == it,
@@ -1594,6 +1752,9 @@ fun WordCollectionScreen(
 
 data class LegalSection(val heading: String, val body: String)
 
+// 家长锁：重置学习进度需输入此密码
+private const val RESET_PASSWORD = "1234"
+
 @Composable
 fun SettingsScreen(
     accent: Accent,
@@ -1603,8 +1764,10 @@ fun SettingsScreen(
     onPrivacy: () -> Unit,
     onAbout: () -> Unit
 ) {
-    var confirming by remember { mutableStateOf(false) }
+    var resetPrompt by remember { mutableStateOf(false) }
     var resetDone by remember { mutableStateOf(false) }
+    var pin by remember { mutableStateOf("") }
+    var pinError by remember { mutableStateOf(false) }
     Scaffold(containerColor = Paper, topBar = {
         SecondaryTopBar(onBack) {
             AppText("设置与关于软件", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
@@ -1670,7 +1833,11 @@ fun SettingsScreen(
                             lineHeight = 20.sp
                         )
                         OutlinedButton(
-                            onClick = { confirming = true },
+                            onClick = {
+                                resetPrompt = true
+                                pin = ""
+                                pinError = false
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .heightIn(min = 48.dp),
@@ -1710,25 +1877,41 @@ fun SettingsScreen(
             }
         }
     }
-    if (confirming) {
+    if (resetPrompt) {
         AlertDialog(
-            onDismissRequest = { confirming = false },
+            onDismissRequest = { resetPrompt = false },
             containerColor = PaperElevated,
             shape = RoundedCornerShape(18.dp),
-            title = { AppText("重置学习进度？", fontWeight = FontWeight.Bold, fontSize = 20.sp) },
+            title = { AppText("输入家长密码", fontWeight = FontWeight.Bold, fontSize = 20.sp) },
             text = {
-                AppText(
-                    "将清空掌握星星、错词本、收藏、关卡解锁和连续天数，操作无法撤销。英式 / 美式发音设置会保留。",
-                    color = InkSoft,
-                    lineHeight = 22.sp
-                )
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    AppText("重置会清空全部学习记录，请输入 4 位数字密码。", color = InkSoft, lineHeight = 22.sp)
+                    OutlinedTextField(
+                        value = pin,
+                        onValueChange = {
+                            pin = it.filter { c -> c.isDigit() }.take(4)
+                            pinError = false
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        isError = pinError,
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        placeholder = { AppText("4 位数字密码") }
+                    )
+                    if (pinError) AppText("密码错误，请重试。", color = Error, fontSize = 13.sp)
+                }
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        onReset()
-                        resetDone = true
-                        confirming = false
+                        if (pin == RESET_PASSWORD) {
+                            onReset()
+                            resetDone = true
+                            resetPrompt = false
+                        } else {
+                            pinError = true
+                        }
                     },
                     modifier = Modifier.heightIn(min = 48.dp),
                     shape = RoundedCornerShape(14.dp),
@@ -1739,7 +1922,7 @@ fun SettingsScreen(
             },
             dismissButton = {
                 TextButton(
-                    onClick = { confirming = false },
+                    onClick = { resetPrompt = false },
                     modifier = Modifier.heightIn(min = 48.dp)
                 ) {
                     AppText("取消", color = InkSoft)

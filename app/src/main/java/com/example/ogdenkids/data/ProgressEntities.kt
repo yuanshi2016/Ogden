@@ -27,6 +27,14 @@ data class LevelProgressEntity(
     val completedAt: Long = 0L
 )
 
+// 每日学习统计：day 是本地时区的纪元日（0 点为界），供日图表使用
+@Entity(tableName = "daily_activity")
+data class DailyActivityEntity(
+    @PrimaryKey val day: Long,
+    val answered: Int = 0,
+    val correct: Int = 0
+)
+
 // 旧 SharedPreferences -> Room 的映射抽成纯函数，便于单测；只认识旧版写过的键
 fun legacyWordProgress(prefs: Map<String, Any?>): List<WordProgressEntity> {
     val favorites = legacySet(prefs["favorites"])

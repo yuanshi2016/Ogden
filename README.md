@@ -30,13 +30,17 @@
 
 ## Word Data
 
-词库总数为 850：
+词库总数为 1203：Ogden Basic English 850 核心词，外加 353 个日常补充词（见 `docs/daily-vocabulary.md`）。
 
 - Operations: 100
 - General Things: 400
 - Picturable: 200
 - Qualities: 100
 - Opposites: 50
+- Function（功能词）: 61
+- Verbs（动词）: 74
+- Nouns（名词形容词）: 73
+- Topics（主题词）: 145
 
 主要数据文件：
 
@@ -44,6 +48,12 @@
 - `app/src/main/assets/ogden_ipa.json`
 - `app/src/main/assets/audio/us`
 - `app/src/main/assets/audio/uk`
+
+补充词的生成工具：
+
+- `scripts/new_words.json`：353 个补充词内容（中文、释义、例句、近义词）
+- `scripts/merge_new_words.py`：合并进 `ogden_words.json`
+- `scripts/word_audio_manifest.json` / `scripts/generate_word_audio.py`：调用本地 Qwen TTS WebUI 生成 US/UK 发音
 
 ## Build
 

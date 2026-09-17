@@ -11048,5 +11048,4594 @@
                   "mistaken",
                   "false"
               ]
+    },
+    {
+        "w":  "already",
+        "c":  "fn",
+        "zh":  "已经",
+        "en":  "before now or before a certain time",
+        "ex":  "I already finished my homework.",
+        "exz":  "我已经完成了作业。",
+        "s":  [
+                  "previously",
+                  "before",
+                  "formerly"
+              ]
+    },
+    {
+        "w":  "also",
+        "c":  "fn",
+        "zh":  "也,还",
+        "en":  "in addition, too",
+        "ex":  "She also likes to read books.",
+        "exz":  "她也喜欢读书。",
+        "s":  [
+                  "too",
+                  "likewise",
+                  "besides"
+              ]
+    },
+    {
+        "w":  "always",
+        "c":  "fn",
+        "zh":  "总是,一直",
+        "en":  "at all times, every time",
+        "ex":  "He always helps his friends.",
+        "exz":  "他总是帮助他的朋友。",
+        "s":  [
+                  "forever",
+                  "constantly",
+                  "continually"
+              ]
+    },
+    {
+        "w":  "am",
+        "c":  "fn",
+        "zh":  "是(我)",
+        "en":  "a form of the verb be for I",
+        "ex":  "I am very happy today.",
+        "exz":  "我今天很开心。",
+        "s":  [
+                  "be",
+                  "exist",
+                  "remain"
+              ]
+    },
+    {
+        "w":  "an",
+        "c":  "fn",
+        "zh":  "一个",
+        "en":  "one, used before a vowel sound",
+        "ex":  "She ate an apple this morning.",
+        "exz":  "她今天早上吃了一个苹果。",
+        "s":  [
+                  "one",
+                  "a",
+                  "single"
+              ]
+    },
+    {
+        "w":  "are",
+        "c":  "fn",
+        "zh":  "是(你们,他们)",
+        "en":  "a form of the verb be for plural",
+        "ex":  "We are good friends now.",
+        "exz":  "我们现在是好朋友。",
+        "s":  [
+                  "be",
+                  "exist",
+                  "remain"
+              ]
+    },
+    {
+        "w":  "can",
+        "c":  "fn",
+        "zh":  "能,可以",
+        "en":  "be able to do something",
+        "ex":  "I can swim very fast.",
+        "exz":  "我能游得很快。",
+        "s":  [
+                  "able",
+                  "may",
+                  "could"
+              ]
+    },
+    {
+        "w":  "could",
+        "c":  "fn",
+        "zh":  "能,可以",
+        "en":  "was able to, or a polite request",
+        "ex":  "She could read when she was four.",
+        "exz":  "她四岁时就能读书了。",
+        "s":  [
+                  "can",
+                  "might",
+                  "would"
+              ]
+    },
+    {
+        "w":  "during",
+        "c":  "fn",
+        "zh":  "在...期间",
+        "en":  "through the time of something",
+        "ex":  "We sleep during the night.",
+        "exz":  "我们在夜里睡觉。",
+        "s":  [
+                  "throughout",
+                  "within",
+                  "amid"
+              ]
+    },
+    {
+        "w":  "her",
+        "c":  "fn",
+        "zh":  "她的,她",
+        "en":  "belonging to or referring to a female",
+        "ex":  "I gave her a gift.",
+        "exz":  "我给了她一份礼物。",
+        "s":  [
+                  "hers",
+                  "she",
+                  "herself"
+              ]
+    },
+    {
+        "w":  "him",
+        "c":  "fn",
+        "zh":  "他",
+        "en":  "referring to a male person as object",
+        "ex":  "Please give him the ball.",
+        "exz":  "请把球给他。",
+        "s":  [
+                  "he",
+                  "his",
+                  "himself"
+              ]
+    },
+    {
+        "w":  "his",
+        "c":  "fn",
+        "zh":  "他的",
+        "en":  "belonging to a male person",
+        "ex":  "This is his red hat.",
+        "exz":  "这是他的红帽子。",
+        "s":  [
+                  "he",
+                  "him",
+                  "himself"
+              ]
+    },
+    {
+        "w":  "into",
+        "c":  "fn",
+        "zh":  "进入,到里面",
+        "en":  "to the inside of something",
+        "ex":  "She walked into the room.",
+        "exz":  "她走进了房间。",
+        "s":  [
+                  "inside",
+                  "within",
+                  "toward"
+              ]
+    },
+    {
+        "w":  "is",
+        "c":  "fn",
+        "zh":  "是",
+        "en":  "a form of the verb be",
+        "ex":  "The sky is blue today.",
+        "exz":  "今天天空是蓝色的。",
+        "s":  [
+                  "be",
+                  "exist",
+                  "remain"
+              ]
+    },
+    {
+        "w":  "it",
+        "c":  "fn",
+        "zh":  "它",
+        "en":  "a thing already mentioned",
+        "ex":  "It is a big dog.",
+        "exz":  "它是一只大狗。",
+        "s":  [
+                  "this",
+                  "that",
+                  "something"
+              ]
+    },
+    {
+        "w":  "its",
+        "c":  "fn",
+        "zh":  "它的",
+        "en":  "belonging to a thing",
+        "ex":  "The cat licked its paw.",
+        "exz":  "猫舔了舔它的爪子。",
+        "s":  [
+                  "it",
+                  "this",
+                  "that"
+              ]
+    },
+    {
+        "w":  "me",
+        "c":  "fn",
+        "zh":  "我",
+        "en":  "the person speaking as object",
+        "ex":  "Please help me with this.",
+        "exz":  "请帮我做这个。",
+        "s":  [
+                  "myself",
+                  "i",
+                  "mine"
+              ]
+    },
+    {
+        "w":  "might",
+        "c":  "fn",
+        "zh":  "可能,也许",
+        "en":  "used to say something is possible",
+        "ex":  "It might rain this afternoon.",
+        "exz":  "今天下午可能会下雨。",
+        "s":  [
+                  "may",
+                  "could",
+                  "possibly"
+              ]
+    },
+    {
+        "w":  "must",
+        "c":  "fn",
+        "zh":  "必须,一定",
+        "en":  "have to do something",
+        "ex":  "You must finish your homework.",
+        "exz":  "你必须完成你的作业。",
+        "s":  [
+                  "should",
+                  "need",
+                  "ought"
+              ]
+    },
+    {
+        "w":  "my",
+        "c":  "fn",
+        "zh":  "我的",
+        "en":  "belonging to the speaker",
+        "ex":  "This is my new book.",
+        "exz":  "这是我的新书。",
+        "s":  [
+                  "mine",
+                  "our",
+                  "own"
+              ]
+    },
+    {
+        "w":  "never",
+        "c":  "fn",
+        "zh":  "从不,永不",
+        "en":  "not at any time",
+        "ex":  "I never eat cold pizza.",
+        "exz":  "我从不吃冷披萨。",
+        "s":  [
+                  "rarely",
+                  "seldom",
+                  "hardly"
+              ]
+    },
+    {
+        "w":  "often",
+        "c":  "fn",
+        "zh":  "经常,常常",
+        "en":  "many times, frequently",
+        "ex":  "We often play in the park.",
+        "exz":  "我们经常在公园里玩。",
+        "s":  [
+                  "frequently",
+                  "usually",
+                  "repeatedly"
+              ]
+    },
+    {
+        "w":  "our",
+        "c":  "fn",
+        "zh":  "我们的",
+        "en":  "belonging to us",
+        "ex":  "This is our happy home.",
+        "exz":  "这是我们快乐的家。",
+        "s":  [
+                  "ours",
+                  "my",
+                  "their"
+              ]
+    },
+    {
+        "w":  "really",
+        "c":  "fn",
+        "zh":  "真的,确实",
+        "en":  "truly or actually",
+        "ex":  "I really like this song.",
+        "exz":  "我真的很喜欢这首歌。",
+        "s":  [
+                  "truly",
+                  "actually",
+                  "very"
+              ]
+    },
+    {
+        "w":  "she",
+        "c":  "fn",
+        "zh":  "她",
+        "en":  "a female person already mentioned",
+        "ex":  "She is my best friend.",
+        "exz":  "她是我最好的朋友。",
+        "s":  [
+                  "her",
+                  "hers",
+                  "herself"
+              ]
+    },
+    {
+        "w":  "should",
+        "c":  "fn",
+        "zh":  "应该",
+        "en":  "used to say what is right to do",
+        "ex":  "You should go to bed.",
+        "exz":  "你应该去睡觉了。",
+        "s":  [
+                  "must",
+                  "ought",
+                  "shall"
+              ]
+    },
+    {
+        "w":  "since",
+        "c":  "fn",
+        "zh":  "自从,因为",
+        "en":  "from a past time until now",
+        "ex":  "I have lived here since Monday.",
+        "exz":  "我从星期一起就住在这里。",
+        "s":  [
+                  "because",
+                  "after",
+                  "from"
+              ]
+    },
+    {
+        "w":  "sometimes",
+        "c":  "fn",
+        "zh":  "有时,有时候",
+        "en":  "at some times, not always",
+        "ex":  "Sometimes I walk to school.",
+        "exz":  "有时我走路去上学。",
+        "s":  [
+                  "occasionally",
+                  "rarely",
+                  "periodically"
+              ]
+    },
+    {
+        "w":  "their",
+        "c":  "fn",
+        "zh":  "他们的",
+        "en":  "belonging to them",
+        "ex":  "The children lost their ball.",
+        "exz":  "孩子们弄丢了他们的球。",
+        "s":  [
+                  "theirs",
+                  "them",
+                  "ours"
+              ]
+    },
+    {
+        "w":  "them",
+        "c":  "fn",
+        "zh":  "他们",
+        "en":  "those people or things as object",
+        "ex":  "I gave them some cake.",
+        "exz":  "我给了他们一些蛋糕。",
+        "s":  [
+                  "they",
+                  "their",
+                  "those"
+              ]
+    },
+    {
+        "w":  "they",
+        "c":  "fn",
+        "zh":  "他们,她们",
+        "en":  "those people or things",
+        "ex":  "They are playing outside now.",
+        "exz":  "他们现在正在外面玩。",
+        "s":  [
+                  "them",
+                  "those",
+                  "these"
+              ]
+    },
+    {
+        "w":  "until",
+        "c":  "fn",
+        "zh":  "直到",
+        "en":  "up to a certain time",
+        "ex":  "Wait here until I return.",
+        "exz":  "在这里等到我回来。",
+        "s":  [
+                  "till",
+                  "before",
+                  "unless"
+              ]
+    },
+    {
+        "w":  "us",
+        "c":  "fn",
+        "zh":  "我们",
+        "en":  "the speaker and others as object",
+        "ex":  "Please come with us.",
+        "exz":  "请和我们一起来。",
+        "s":  [
+                  "we",
+                  "ours",
+                  "ourselves"
+              ]
+    },
+    {
+        "w":  "usually",
+        "c":  "fn",
+        "zh":  "通常,平常",
+        "en":  "most of the time",
+        "ex":  "I usually wake up early.",
+        "exz":  "我通常起得很早。",
+        "s":  [
+                  "normally",
+                  "generally",
+                  "often"
+              ]
+    },
+    {
+        "w":  "was",
+        "c":  "fn",
+        "zh":  "是(过去)",
+        "en":  "a past form of the verb be",
+        "ex":  "He was at home yesterday.",
+        "exz":  "他昨天在家。",
+        "s":  [
+                  "were",
+                  "been",
+                  "being"
+              ]
+    },
+    {
+        "w":  "we",
+        "c":  "fn",
+        "zh":  "我们",
+        "en":  "the speaker and other people",
+        "ex":  "We like to play together.",
+        "exz":  "我们喜欢一起玩。",
+        "s":  [
+                  "us",
+                  "ours",
+                  "ourselves"
+              ]
+    },
+    {
+        "w":  "were",
+        "c":  "fn",
+        "zh":  "是(过去复数)",
+        "en":  "a past form of the verb be",
+        "ex":  "They were very happy then.",
+        "exz":  "那时他们非常开心。",
+        "s":  [
+                  "was",
+                  "been",
+                  "being"
+              ]
+    },
+    {
+        "w":  "without",
+        "c":  "fn",
+        "zh":  "没有,不带",
+        "en":  "not having something",
+        "ex":  "I drink tea without sugar.",
+        "exz":  "我喝茶不加糖。",
+        "s":  [
+                  "lacking",
+                  "except",
+                  "minus"
+              ]
+    },
+    {
+        "w":  "would",
+        "c":  "fn",
+        "zh":  "会,将要",
+        "en":  "used for polite requests or the past",
+        "ex":  "I would like some water.",
+        "exz":  "我想要一些水。",
+        "s":  [
+                  "could",
+                  "should",
+                  "might"
+              ]
+    },
+    {
+        "w":  "your",
+        "c":  "fn",
+        "zh":  "你的,你们的",
+        "en":  "belonging to you",
+        "ex":  "Is this your blue pen?",
+        "exz":  "这是你的蓝色钢笔吗？",
+        "s":  [
+                  "yours",
+                  "my",
+                  "their"
+              ]
+    },
+    {
+        "w":  "yours",
+        "c":  "fn",
+        "zh":  "你的东西",
+        "en":  "belonging to you",
+        "ex":  "This book is yours now.",
+        "exz":  "这本书现在是你的了。",
+        "s":  [
+                  "your",
+                  "mine",
+                  "theirs"
+              ]
+    },
+    {
+        "w":  "agree",
+        "c":  "vb",
+        "zh":  "同意,赞成",
+        "en":  "to have the same opinion",
+        "ex":  "I agree with your idea.",
+        "exz":  "我同意你的想法。",
+        "s":  [
+                  "accept",
+                  "approve",
+                  "consent"
+              ]
+    },
+    {
+        "w":  "apologize",
+        "c":  "vb",
+        "zh":  "道歉",
+        "en":  "to say sorry for something",
+        "ex":  "I apologize for being late.",
+        "exz":  "我为迟到道歉。",
+        "s":  [
+                  "repent",
+                  "regret",
+                  "confess"
+              ]
+    },
+    {
+        "w":  "arrive",
+        "c":  "vb",
+        "zh":  "到达,抵达",
+        "en":  "to reach a place",
+        "ex":  "We arrive at school early.",
+        "exz":  "我们很早到达学校。",
+        "s":  [
+                  "reach",
+                  "come",
+                  "appear"
+              ]
+    },
+    {
+        "w":  "ask",
+        "c":  "vb",
+        "zh":  "问,询问",
+        "en":  "to say a question",
+        "ex":  "May I ask a question?",
+        "exz":  "我可以问个问题吗？",
+        "s":  [
+                  "question",
+                  "inquire",
+                  "request"
+              ]
+    },
+    {
+        "w":  "borrow",
+        "c":  "vb",
+        "zh":  "借入,借用",
+        "en":  "to take something and return it",
+        "ex":  "Can I borrow your pen?",
+        "exz":  "我可以借你的钢笔吗？",
+        "s":  [
+                  "take",
+                  "use",
+                  "obtain"
+              ]
+    },
+    {
+        "w":  "bother",
+        "c":  "vb",
+        "zh":  "打扰,麻烦",
+        "en":  "to annoy or trouble someone",
+        "ex":  "Don't bother your sister now.",
+        "exz":  "现在别打扰你姐姐。",
+        "s":  [
+                  "annoy",
+                  "trouble",
+                  "disturb"
+              ]
+    },
+    {
+        "w":  "break",
+        "c":  "vb",
+        "zh":  "打破,弄坏",
+        "en":  "to make something come apart",
+        "ex":  "Don't break the glass cup.",
+        "exz":  "别打碎玻璃杯。",
+        "s":  [
+                  "smash",
+                  "crack",
+                  "shatter"
+              ]
+    },
+    {
+        "w":  "bring",
+        "c":  "vb",
+        "zh":  "带来,拿来",
+        "en":  "to carry something to a place",
+        "ex":  "Please bring me some water.",
+        "exz":  "请给我带些水来。",
+        "s":  [
+                  "carry",
+                  "take",
+                  "fetch"
+              ]
+    },
+    {
+        "w":  "build",
+        "c":  "vb",
+        "zh":  "建造,建立",
+        "en":  "to make something by putting parts together",
+        "ex":  "They build a sand castle.",
+        "exz":  "他们建造一座沙堡。",
+        "s":  [
+                  "make",
+                  "construct",
+                  "create"
+              ]
+    },
+    {
+        "w":  "buy",
+        "c":  "vb",
+        "zh":  "买,购买",
+        "en":  "to get something by paying money",
+        "ex":  "I want to buy a toy.",
+        "exz":  "我想买一个玩具。",
+        "s":  [
+                  "purchase",
+                  "get",
+                  "acquire"
+              ]
+    },
+    {
+        "w":  "call",
+        "c":  "vb",
+        "zh":  "叫,打电话",
+        "en":  "to say a name or phone someone",
+        "ex":  "Please call me after school.",
+        "exz":  "放学后请给我打电话。",
+        "s":  [
+                  "name",
+                  "phone",
+                  "shout"
+              ]
+    },
+    {
+        "w":  "carry",
+        "c":  "vb",
+        "zh":  "携带,搬运",
+        "en":  "to hold and move something",
+        "ex":  "I can carry this heavy bag.",
+        "exz":  "我能搬动这个重袋子。",
+        "s":  [
+                  "hold",
+                  "bring",
+                  "transport"
+              ]
+    },
+    {
+        "w":  "catch",
+        "c":  "vb",
+        "zh":  "抓住,接住",
+        "en":  "to take hold of something moving",
+        "ex":  "Catch the ball with both hands.",
+        "exz":  "用双手接住球。",
+        "s":  [
+                  "grab",
+                  "seize",
+                  "capture"
+              ]
+    },
+    {
+        "w":  "choose",
+        "c":  "vb",
+        "zh":  "选择,挑选",
+        "en":  "to pick one thing over another",
+        "ex":  "You can choose any color.",
+        "exz":  "你可以选择任何颜色。",
+        "s":  [
+                  "pick",
+                  "select",
+                  "prefer"
+              ]
+    },
+    {
+        "w":  "climb",
+        "c":  "vb",
+        "zh":  "爬,攀登",
+        "en":  "to go up something",
+        "ex":  "We climb the tall tree.",
+        "exz":  "我们爬上那棵高树。",
+        "s":  [
+                  "rise",
+                  "scale",
+                  "ascend"
+              ]
+    },
+    {
+        "w":  "close",
+        "c":  "vb",
+        "zh":  "关闭,靠近",
+        "en":  "to shut something, or near",
+        "ex":  "Please close the door quietly.",
+        "exz":  "请轻轻地关上门。",
+        "s":  [
+                  "shut",
+                  "near",
+                  "seal"
+              ]
+    },
+    {
+        "w":  "continue",
+        "c":  "vb",
+        "zh":  "继续,持续",
+        "en":  "to keep doing something",
+        "ex":  "Please continue your good work.",
+        "exz":  "请继续你的好工作。",
+        "s":  [
+                  "keep",
+                  "proceed",
+                  "persist"
+              ]
+    },
+    {
+        "w":  "cost",
+        "c":  "vb",
+        "zh":  "花费,价钱",
+        "en":  "the amount of money needed",
+        "ex":  "How much does this cost?",
+        "exz":  "这个多少钱？",
+        "s":  [
+                  "price",
+                  "charge",
+                  "value"
+              ]
+    },
+    {
+        "w":  "decide",
+        "c":  "vb",
+        "zh":  "决定",
+        "en":  "to choose after thinking",
+        "ex":  "We must decide very soon.",
+        "exz":  "我们必须很快决定。",
+        "s":  [
+                  "choose",
+                  "determine",
+                  "resolve"
+              ]
+    },
+    {
+        "w":  "drive",
+        "c":  "vb",
+        "zh":  "驾驶,开车",
+        "en":  "to make a car move",
+        "ex":  "My father can drive a car.",
+        "exz":  "我爸爸会开车。",
+        "s":  [
+                  "steer",
+                  "operate",
+                  "ride"
+              ]
+    },
+    {
+        "w":  "eat",
+        "c":  "vb",
+        "zh":  "吃",
+        "en":  "to put food in your mouth",
+        "ex":  "We eat rice every day.",
+        "exz":  "我们每天吃米饭。",
+        "s":  [
+                  "consume",
+                  "devour",
+                  "dine"
+              ]
+    },
+    {
+        "w":  "enjoy",
+        "c":  "vb",
+        "zh":  "享受,喜欢",
+        "en":  "to like doing something",
+        "ex":  "I enjoy playing with my dog.",
+        "exz":  "我喜欢和我的狗玩。",
+        "s":  [
+                  "like",
+                  "love",
+                  "appreciate"
+              ]
+    },
+    {
+        "w":  "explain",
+        "c":  "vb",
+        "zh":  "解释,说明",
+        "en":  "to make something clear",
+        "ex":  "Please explain the game to me.",
+        "exz":  "请给我解释这个游戏。",
+        "s":  [
+                  "describe",
+                  "clarify",
+                  "tell"
+              ]
+    },
+    {
+        "w":  "feel",
+        "c":  "vb",
+        "zh":  "感觉,觉得",
+        "en":  "to have a feeling or touch",
+        "ex":  "I feel happy when I sing.",
+        "exz":  "我唱歌时感到开心。",
+        "s":  [
+                  "sense",
+                  "touch",
+                  "think"
+              ]
+    },
+    {
+        "w":  "find",
+        "c":  "vb",
+        "zh":  "找到,发现",
+        "en":  "to discover something you look for",
+        "ex":  "I cannot find my shoes.",
+        "exz":  "我找不到我的鞋子。",
+        "s":  [
+                  "discover",
+                  "locate",
+                  "see"
+              ]
+    },
+    {
+        "w":  "finish",
+        "c":  "vb",
+        "zh":  "完成,结束",
+        "en":  "to complete something",
+        "ex":  "Please finish your dinner first.",
+        "exz":  "请先吃完你的晚饭。",
+        "s":  [
+                  "complete",
+                  "end",
+                  "stop"
+              ]
+    },
+    {
+        "w":  "follow",
+        "c":  "vb",
+        "zh":  "跟随,跟着",
+        "en":  "to go after someone",
+        "ex":  "Please follow me to the park.",
+        "exz":  "请跟我去公园。",
+        "s":  [
+                  "pursue",
+                  "track",
+                  "obey"
+              ]
+    },
+    {
+        "w":  "forget",
+        "c":  "vb",
+        "zh":  "忘记",
+        "en":  "to not remember something",
+        "ex":  "Do not forget your homework.",
+        "exz":  "别忘了你的作业。",
+        "s":  [
+                  "overlook",
+                  "ignore",
+                  "omit"
+              ]
+    },
+    {
+        "w":  "happen",
+        "c":  "vb",
+        "zh":  "发生",
+        "en":  "to take place",
+        "ex":  "What will happen after the rain?",
+        "exz":  "雨后会发生什么？",
+        "s":  [
+                  "occur",
+                  "arise",
+                  "become"
+              ]
+    },
+    {
+        "w":  "hear",
+        "c":  "vb",
+        "zh":  "听见,听到",
+        "en":  "to notice a sound",
+        "ex":  "I can hear the birds sing.",
+        "exz":  "我能听见鸟叫。",
+        "s":  [
+                  "listen",
+                  "perceive",
+                  "catch"
+              ]
+    },
+    {
+        "w":  "hurry",
+        "c":  "vb",
+        "zh":  "赶快,匆忙",
+        "en":  "to move or act quickly",
+        "ex":  "Please hurry or we'll be late.",
+        "exz":  "请快点，否则我们要迟到了。",
+        "s":  [
+                  "rush",
+                  "dash",
+                  "speed"
+              ]
+    },
+    {
+        "w":  "introduce",
+        "c":  "vb",
+        "zh":  "介绍,引进",
+        "en":  "to tell people who someone is",
+        "ex":  "Let me introduce my new friend.",
+        "exz":  "让我介绍一下我的新朋友。",
+        "s":  [
+                  "present",
+                  "meet",
+                  "show"
+              ]
+    },
+    {
+        "w":  "invite",
+        "c":  "vb",
+        "zh":  "邀请",
+        "en":  "to ask someone to come",
+        "ex":  "I invite my friends to play.",
+        "exz":  "我邀请朋友们来玩。",
+        "s":  [
+                  "ask",
+                  "welcome",
+                  "request"
+              ]
+    },
+    {
+        "w":  "know",
+        "c":  "vb",
+        "zh":  "知道,了解",
+        "en":  "to have information in your mind",
+        "ex":  "I know the answer now.",
+        "exz":  "我现在知道答案了。",
+        "s":  [
+                  "understand",
+                  "recognize",
+                  "realize"
+              ]
+    },
+    {
+        "w":  "learn",
+        "c":  "vb",
+        "zh":  "学习,学会",
+        "en":  "to get new knowledge or skill",
+        "ex":  "We learn English at school.",
+        "exz":  "我们在学校学英语。",
+        "s":  [
+                  "study",
+                  "master",
+                  "acquire"
+              ]
+    },
+    {
+        "w":  "leave",
+        "c":  "vb",
+        "zh":  "离开,留下",
+        "en":  "to go away from a place",
+        "ex":  "We leave home at eight.",
+        "exz":  "我们八点离开家。",
+        "s":  [
+                  "depart",
+                  "exit",
+                  "quit"
+              ]
+    },
+    {
+        "w":  "lend",
+        "c":  "vb",
+        "zh":  "借出,借给",
+        "en":  "to give something for a while",
+        "ex":  "Can you lend me a pencil?",
+        "exz":  "你能借我一支铅笔吗？",
+        "s":  [
+                  "loan",
+                  "give",
+                  "advance"
+              ]
+    },
+    {
+        "w":  "listen",
+        "c":  "vb",
+        "zh":  "听,倾听",
+        "en":  "to pay attention to sound",
+        "ex":  "Please listen to the teacher.",
+        "exz":  "请听老师讲。",
+        "s":  [
+                  "hear",
+                  "attend",
+                  "heed"
+              ]
+    },
+    {
+        "w":  "live",
+        "c":  "vb",
+        "zh":  "居住,生活",
+        "en":  "to have your home somewhere",
+        "ex":  "I live in a small town.",
+        "exz":  "我住在一个小镇上。",
+        "s":  [
+                  "reside",
+                  "dwell",
+                  "stay"
+              ]
+    },
+    {
+        "w":  "lose",
+        "c":  "vb",
+        "zh":  "丢失,失去",
+        "en":  "to no longer have something",
+        "ex":  "Do not lose your keys.",
+        "exz":  "别弄丢你的钥匙。",
+        "s":  [
+                  "misplace",
+                  "drop",
+                  "forfeit"
+              ]
+    },
+    {
+        "w":  "mean",
+        "c":  "vb",
+        "zh":  "意思是,意味着",
+        "en":  "to have a certain meaning",
+        "ex":  "What does this word mean?",
+        "exz":  "这个词是什么意思？",
+        "s":  [
+                  "signify",
+                  "imply",
+                  "denote"
+              ]
+    },
+    {
+        "w":  "meet",
+        "c":  "vb",
+        "zh":  "遇见,见面",
+        "en":  "to come together with someone",
+        "ex":  "Let us meet after lunch.",
+        "exz":  "我们午饭后见面吧。",
+        "s":  [
+                  "encounter",
+                  "see",
+                  "join"
+              ]
+    },
+    {
+        "w":  "pay",
+        "c":  "vb",
+        "zh":  "支付,付款",
+        "en":  "to give money for something",
+        "ex":  "I will pay for the tickets.",
+        "exz":  "我会付票钱。",
+        "s":  [
+                  "spend",
+                  "settle",
+                  "compensate"
+              ]
+    },
+    {
+        "w":  "plan",
+        "c":  "vb",
+        "zh":  "计划,打算",
+        "en":  "to decide what to do",
+        "ex":  "We plan a trip to the beach.",
+        "exz":  "我们计划去海滩旅行。",
+        "s":  [
+                  "arrange",
+                  "design",
+                  "intend"
+              ]
+    },
+    {
+        "w":  "prefer",
+        "c":  "vb",
+        "zh":  "更喜欢,宁愿",
+        "en":  "to like one thing more",
+        "ex":  "I prefer apples to oranges.",
+        "exz":  "比起橙子我更喜欢苹果。",
+        "s":  [
+                  "favor",
+                  "choose",
+                  "like"
+              ]
+    },
+    {
+        "w":  "promise",
+        "c":  "vb",
+        "zh":  "承诺,保证",
+        "en":  "to say you will surely do something",
+        "ex":  "I promise to help you.",
+        "exz":  "我保证会帮助你。",
+        "s":  [
+                  "pledge",
+                  "vow",
+                  "swear"
+              ]
+    },
+    {
+        "w":  "read",
+        "c":  "vb",
+        "zh":  "读,阅读",
+        "en":  "to look at words and understand",
+        "ex":  "I read a book every night.",
+        "exz":  "我每晚读一本书。",
+        "s":  [
+                  "study",
+                  "scan",
+                  "peruse"
+              ]
+    },
+    {
+        "w":  "remember",
+        "c":  "vb",
+        "zh":  "记得,记住",
+        "en":  "to keep something in your mind",
+        "ex":  "I remember your birthday party.",
+        "exz":  "我记得你的生日聚会。",
+        "s":  [
+                  "recall",
+                  "recollect",
+                  "memorize"
+              ]
+    },
+    {
+        "w":  "repair",
+        "c":  "vb",
+        "zh":  "修理,修补",
+        "en":  "fix something that is broken",
+        "ex":  "I can repair your old bike.",
+        "exz":  "我能修理你的旧自行车。",
+        "s":  [
+                  "fix",
+                  "mend",
+                  "patch"
+              ]
+    },
+    {
+        "w":  "return",
+        "c":  "vb",
+        "zh":  "返回,归还",
+        "en":  "come back or give back",
+        "ex":  "Please return the book tomorrow.",
+        "exz":  "请明天归还这本书。",
+        "s":  [
+                  "revert",
+                  "restore",
+                  "yield"
+              ]
+    },
+    {
+        "w":  "ride",
+        "c":  "vb",
+        "zh":  "骑,乘坐",
+        "en":  "sit on and control a vehicle",
+        "ex":  "I ride my bike to school.",
+        "exz":  "我骑自行车去学校。",
+        "s":  [
+                  "travel",
+                  "journey",
+                  "cruise"
+              ]
+    },
+    {
+        "w":  "save",
+        "c":  "vb",
+        "zh":  "拯救,节省",
+        "en":  "keep safe or keep money",
+        "ex":  "I save money in my piggy bank.",
+        "exz":  "我把钱存进存钱罐里。",
+        "s":  [
+                  "keep",
+                  "rescue",
+                  "store"
+              ]
+    },
+    {
+        "w":  "sell",
+        "c":  "vb",
+        "zh":  "卖,出售",
+        "en":  "give something for money",
+        "ex":  "They sell fruit at the market.",
+        "exz":  "他们在市场卖水果。",
+        "s":  [
+                  "vend",
+                  "trade",
+                  "deal"
+              ]
+    },
+    {
+        "w":  "show",
+        "c":  "vb",
+        "zh":  "展示,表演",
+        "en":  "let someone see something",
+        "ex":  "Show me your new toy.",
+        "exz":  "给我看看你的新玩具。",
+        "s":  [
+                  "display",
+                  "present",
+                  "reveal"
+              ]
+    },
+    {
+        "w":  "sit",
+        "c":  "vb",
+        "zh":  "坐",
+        "en":  "rest on your bottom",
+        "ex":  "Please sit on this chair.",
+        "exz":  "请坐在这把椅子上。",
+        "s":  [
+                  "rest",
+                  "perch",
+                  "settle"
+              ]
+    },
+    {
+        "w":  "speak",
+        "c":  "vb",
+        "zh":  "说,讲话",
+        "en":  "say words with your voice",
+        "ex":  "I speak English at school.",
+        "exz":  "我在学校说英语。",
+        "s":  [
+                  "talk",
+                  "say",
+                  "utter"
+              ]
+    },
+    {
+        "w":  "spend",
+        "c":  "vb",
+        "zh":  "花费,度过",
+        "en":  "use money or time",
+        "ex":  "I spend ten dollars on books.",
+        "exz":  "我花十美元买书。",
+        "s":  [
+                  "use",
+                  "pay",
+                  "expend"
+              ]
+    },
+    {
+        "w":  "stand",
+        "c":  "vb",
+        "zh":  "站,站立",
+        "en":  "be on your feet",
+        "ex":  "Please stand behind the line.",
+        "exz":  "请站在线后面。",
+        "s":  [
+                  "rise",
+                  "remain",
+                  "stay"
+              ]
+    },
+    {
+        "w":  "study",
+        "c":  "vb",
+        "zh":  "学习,研究",
+        "en":  "learn about something",
+        "ex":  "I study math every evening.",
+        "exz":  "我每天晚上学习数学。",
+        "s":  [
+                  "learn",
+                  "read",
+                  "review"
+              ]
+    },
+    {
+        "w":  "teach",
+        "c":  "vb",
+        "zh":  "教,教授",
+        "en":  "help someone learn",
+        "ex":  "My mom will teach me cooking.",
+        "exz":  "我妈妈会教我做饭。",
+        "s":  [
+                  "educate",
+                  "instruct",
+                  "train"
+              ]
+    },
+    {
+        "w":  "tell",
+        "c":  "vb",
+        "zh":  "告诉,讲述",
+        "en":  "say something to someone",
+        "ex":  "Tell me a funny story.",
+        "exz":  "给我讲个有趣的故事。",
+        "s":  [
+                  "say",
+                  "inform",
+                  "relate"
+              ]
+    },
+    {
+        "w":  "thank",
+        "c":  "vb",
+        "zh":  "感谢,谢谢",
+        "en":  "say you are grateful",
+        "ex":  "I thank my teacher for helping.",
+        "exz":  "我感谢老师帮助我。",
+        "s":  [
+                  "appreciate",
+                  "bless",
+                  "praise"
+              ]
+    },
+    {
+        "w":  "think",
+        "c":  "vb",
+        "zh":  "想,认为",
+        "en":  "use your mind",
+        "ex":  "I think this book is fun.",
+        "exz":  "我觉得这本书很有趣。",
+        "s":  [
+                  "believe",
+                  "suppose",
+                  "consider"
+              ]
+    },
+    {
+        "w":  "throw",
+        "c":  "vb",
+        "zh":  "扔,投",
+        "en":  "send something through the air",
+        "ex":  "Throw the ball to me.",
+        "exz":  "把球扔给我。",
+        "s":  [
+                  "toss",
+                  "cast",
+                  "fling"
+              ]
+    },
+    {
+        "w":  "try",
+        "c":  "vb",
+        "zh":  "尝试,努力",
+        "en":  "make an effort to do",
+        "ex":  "Please try this new game.",
+        "exz":  "请试试这个新游戏。",
+        "s":  [
+                  "attempt",
+                  "endeavor",
+                  "test"
+              ]
+    },
+    {
+        "w":  "understand",
+        "c":  "vb",
+        "zh":  "理解,明白",
+        "en":  "know what something means",
+        "ex":  "I understand your question now.",
+        "exz":  "我现在明白你的问题了。",
+        "s":  [
+                  "comprehend",
+                  "grasp",
+                  "know"
+              ]
+    },
+    {
+        "w":  "visit",
+        "c":  "vb",
+        "zh":  "拜访,参观",
+        "en":  "go to see someone",
+        "ex":  "We visit grandma every Sunday.",
+        "exz":  "我们每个星期天去看奶奶。",
+        "s":  [
+                  "see",
+                  "call",
+                  "tour"
+              ]
+    },
+    {
+        "w":  "wait",
+        "c":  "vb",
+        "zh":  "等待",
+        "en":  "stay until something happens",
+        "ex":  "Please wait for the bus here.",
+        "exz":  "请在这里等公交车。",
+        "s":  [
+                  "stay",
+                  "linger",
+                  "pause"
+              ]
+    },
+    {
+        "w":  "wake",
+        "c":  "vb",
+        "zh":  "醒来,唤醒",
+        "en":  "stop sleeping",
+        "ex":  "I wake up at seven.",
+        "exz":  "我七点醒来。",
+        "s":  [
+                  "arise",
+                  "rouse",
+                  "awaken"
+              ]
+    },
+    {
+        "w":  "want",
+        "c":  "vb",
+        "zh":  "想要",
+        "en":  "wish to have something",
+        "ex":  "I want a cold drink.",
+        "exz":  "我想要一杯冷饮。",
+        "s":  [
+                  "wish",
+                  "desire",
+                  "need"
+              ]
+    },
+    {
+        "w":  "wear",
+        "c":  "vb",
+        "zh":  "穿,戴",
+        "en":  "have clothes on your body",
+        "ex":  "I wear a red hat.",
+        "exz":  "我戴一顶红帽子。",
+        "s":  [
+                  "dress",
+                  "don",
+                  "clothe"
+              ]
+    },
+    {
+        "w":  "win",
+        "c":  "vb",
+        "zh":  "赢,获胜",
+        "en":  "be first in a game",
+        "ex":  "I hope we win the game.",
+        "exz":  "我希望我们赢得比赛。",
+        "s":  [
+                  "triumph",
+                  "succeed",
+                  "beat"
+              ]
+    },
+    {
+        "w":  "worry",
+        "c":  "vb",
+        "zh":  "担心,忧虑",
+        "en":  "feel nervous about something",
+        "ex":  "Do not worry about the test.",
+        "exz":  "别担心考试。",
+        "s":  [
+                  "fret",
+                  "fear",
+                  "stress"
+              ]
+    },
+    {
+        "w":  "write",
+        "c":  "vb",
+        "zh":  "写,书写",
+        "en":  "make words with a pen",
+        "ex":  "I write a letter to grandma.",
+        "exz":  "我给奶奶写一封信。",
+        "s":  [
+                  "record",
+                  "pen",
+                  "compose"
+              ]
+    },
+    {
+        "w":  "afternoon",
+        "c":  "na",
+        "zh":  "下午",
+        "en":  "the time after noon",
+        "ex":  "We play outside in the afternoon.",
+        "exz":  "我们下午在外面玩。",
+        "s":  [
+                  "daytime",
+                  "midday",
+                  "evening"
+              ]
+    },
+    {
+        "w":  "airport",
+        "c":  "na",
+        "zh":  "机场",
+        "en":  "place where planes land",
+        "ex":  "The airport is very busy today.",
+        "exz":  "机场今天很忙。",
+        "s":  [
+                  "terminal",
+                  "aerodrome",
+                  "airfield"
+              ]
+    },
+    {
+        "w":  "app",
+        "c":  "na",
+        "zh":  "应用程序",
+        "en":  "a program on a phone",
+        "ex":  "This app helps me learn words.",
+        "exz":  "这个应用帮我学单词。",
+        "s":  [
+                  "program",
+                  "software",
+                  "tool"
+              ]
+    },
+    {
+        "w":  "bank",
+        "c":  "na",
+        "zh":  "银行",
+        "en":  "place that keeps money",
+        "ex":  "I put money in the bank.",
+        "exz":  "我把钱存进银行。",
+        "s":  [
+                  "treasury",
+                  "depository",
+                  "vault"
+              ]
+    },
+    {
+        "w":  "bathroom",
+        "c":  "na",
+        "zh":  "浴室,洗手间",
+        "en":  "room for washing",
+        "ex":  "The bathroom is next to my bedroom.",
+        "exz":  "浴室在我卧室旁边。",
+        "s":  [
+                  "toilet",
+                  "washroom",
+                  "restroom"
+              ]
+    },
+    {
+        "w":  "bedroom",
+        "c":  "na",
+        "zh":  "卧室",
+        "en":  "room where you sleep",
+        "ex":  "My bedroom has a big window.",
+        "exz":  "我的卧室有一扇大窗户。",
+        "s":  [
+                  "chamber",
+                  "room",
+                  "quarters"
+              ]
+    },
+    {
+        "w":  "big",
+        "c":  "na",
+        "zh":  "大的",
+        "en":  "large in size",
+        "ex":  "That dog is very big.",
+        "exz":  "那只狗很大。",
+        "s":  [
+                  "large",
+                  "huge",
+                  "giant"
+              ]
+    },
+    {
+        "w":  "bill",
+        "c":  "na",
+        "zh":  "账单",
+        "en":  "paper showing money you owe",
+        "ex":  "Dad pays the bill at dinner.",
+        "exz":  "爸爸在晚餐时付账单。",
+        "s":  [
+                  "invoice",
+                  "check",
+                  "tab"
+              ]
+    },
+    {
+        "w":  "birthday",
+        "c":  "na",
+        "zh":  "生日",
+        "en":  "the day you were born",
+        "ex":  "My birthday is in June.",
+        "exz":  "我的生日在六月。",
+        "s":  [
+                  "anniversary",
+                  "celebration",
+                  "party"
+              ]
+    },
+    {
+        "w":  "boring",
+        "c":  "na",
+        "zh":  "无聊的",
+        "en":  "not interesting at all",
+        "ex":  "This movie is very boring.",
+        "exz":  "这部电影很无聊。",
+        "s":  [
+                  "dull",
+                  "tedious",
+                  "tiresome"
+              ]
+    },
+    {
+        "w":  "breakfast",
+        "c":  "na",
+        "zh":  "早餐",
+        "en":  "first meal of the day",
+        "ex":  "I eat breakfast at seven.",
+        "exz":  "我七点吃早餐。",
+        "s":  [
+                  "meal",
+                  "morning",
+                  "brunch"
+              ]
+    },
+    {
+        "w":  "bus",
+        "c":  "na",
+        "zh":  "公共汽车",
+        "en":  "large vehicle for many people",
+        "ex":  "I take the bus to school.",
+        "exz":  "我坐公交车去学校。",
+        "s":  [
+                  "coach",
+                  "vehicle",
+                  "transit"
+              ]
+    },
+    {
+        "w":  "busy",
+        "c":  "na",
+        "zh":  "忙碌的",
+        "en":  "having a lot to do",
+        "ex":  "Mom is busy in the kitchen.",
+        "exz":  "妈妈在厨房里忙着。",
+        "s":  [
+                  "occupied",
+                  "engaged",
+                  "active"
+              ]
+    },
+    {
+        "w":  "bye",
+        "c":  "na",
+        "zh":  "再见",
+        "en":  "word said when leaving",
+        "ex":  "Bye, see you tomorrow.",
+        "exz":  "再见，明天见。",
+        "s":  [
+                  "farewell",
+                  "goodbye",
+                  "adieu"
+              ]
+    },
+    {
+        "w":  "cafe",
+        "c":  "na",
+        "zh":  "咖啡馆",
+        "en":  "place to drink coffee",
+        "ex":  "We meet at the cafe.",
+        "exz":  "我们在咖啡馆见面。",
+        "s":  [
+                  "coffeehouse",
+                  "bistro",
+                  "diner"
+              ]
+    },
+    {
+        "w":  "careful",
+        "c":  "na",
+        "zh":  "小心的",
+        "en":  "paying attention to avoid harm",
+        "ex":  "Be careful with the hot soup.",
+        "exz":  "小心那热汤。",
+        "s":  [
+                  "cautious",
+                  "watchful",
+                  "alert"
+              ]
+    },
+    {
+        "w":  "cash",
+        "c":  "na",
+        "zh":  "现金",
+        "en":  "money in coins or notes",
+        "ex":  "I pay with cash today.",
+        "exz":  "我今天用现金付款。",
+        "s":  [
+                  "money",
+                  "currency",
+                  "coin"
+              ]
+    },
+    {
+        "w":  "coffee",
+        "c":  "na",
+        "zh":  "咖啡",
+        "en":  "hot brown drink",
+        "ex":  "Dad drinks coffee every morning.",
+        "exz":  "爸爸每天早上喝咖啡。",
+        "s":  [
+                  "espresso",
+                  "brew",
+                  "java"
+              ]
+    },
+    {
+        "w":  "computer",
+        "c":  "na",
+        "zh":  "电脑",
+        "en":  "machine for work and games",
+        "ex":  "I use the computer for homework.",
+        "exz":  "我用电脑做作业。",
+        "s":  [
+                  "laptop",
+                  "machine",
+                  "pc"
+              ]
+    },
+    {
+        "w":  "crowded",
+        "c":  "na",
+        "zh":  "拥挤的",
+        "en":  "full of many people",
+        "ex":  "The mall is crowded today.",
+        "exz":  "商场今天很拥挤。",
+        "s":  [
+                  "packed",
+                  "jammed",
+                  "thronged"
+              ]
+    },
+    {
+        "w":  "dangerous",
+        "c":  "na",
+        "zh":  "危险的",
+        "en":  "likely to hurt you",
+        "ex":  "That road is very dangerous.",
+        "exz":  "那条路很危险。",
+        "s":  [
+                  "risky",
+                  "hazardous",
+                  "unsafe"
+              ]
+    },
+    {
+        "w":  "delicious",
+        "c":  "na",
+        "zh":  "美味的",
+        "en":  "tasting very good",
+        "ex":  "This cake is so delicious.",
+        "exz":  "这个蛋糕太好吃了。",
+        "s":  [
+                  "tasty",
+                  "yummy",
+                  "scrumptious"
+              ]
+    },
+    {
+        "w":  "dinner",
+        "c":  "na",
+        "zh":  "晚餐",
+        "en":  "main meal in the evening",
+        "ex":  "We eat dinner at six.",
+        "exz":  "我们六点吃晚饭。",
+        "s":  [
+                  "supper",
+                  "meal",
+                  "banquet"
+              ]
+    },
+    {
+        "w":  "easy",
+        "c":  "na",
+        "zh":  "容易的",
+        "en":  "not hard to do",
+        "ex":  "This homework is very easy.",
+        "exz":  "这个作业很简单。",
+        "s":  [
+                  "simple",
+                  "effortless",
+                  "plain"
+              ]
+    },
+    {
+        "w":  "email",
+        "c":  "na",
+        "zh":  "电子邮件",
+        "en":  "message sent by computer",
+        "ex":  "I send an email to Tom.",
+        "exz":  "我给汤姆发一封电子邮件。",
+        "s":  [
+                  "message",
+                  "mail",
+                  "note"
+              ]
+    },
+    {
+        "w":  "evening",
+        "c":  "na",
+        "zh":  "傍晚,晚上",
+        "en":  "time at the end of day",
+        "ex":  "We watch TV in the evening.",
+        "exz":  "我们晚上看电视。",
+        "s":  [
+                  "dusk",
+                  "nightfall",
+                  "twilight"
+              ]
+    },
+    {
+        "w":  "expensive",
+        "c":  "na",
+        "zh":  "昂贵的",
+        "en":  "costing a lot of money",
+        "ex":  "This watch is too expensive.",
+        "exz":  "这块手表太贵了。",
+        "s":  [
+                  "costly",
+                  "pricey",
+                  "dear"
+              ]
+    },
+    {
+        "w":  "famous",
+        "c":  "na",
+        "zh":  "著名的",
+        "en":  "known by many people",
+        "ex":  "She is a famous singer.",
+        "exz":  "她是一位著名的歌手。",
+        "s":  [
+                  "renowned",
+                  "celebrated",
+                  "noted"
+              ]
+    },
+    {
+        "w":  "fast",
+        "c":  "na",
+        "zh":  "快的",
+        "en":  "moving very quickly",
+        "ex":  "The car is very fast.",
+        "exz":  "这辆车很快。",
+        "s":  [
+                  "quick",
+                  "rapid",
+                  "swift"
+              ]
+    },
+    {
+        "w":  "fine",
+        "c":  "na",
+        "zh":  "好的,晴朗的",
+        "en":  "good or okay",
+        "ex":  "I feel fine today.",
+        "exz":  "我今天感觉很好。",
+        "s":  [
+                  "good",
+                  "well",
+                  "okay"
+              ]
+    },
+    {
+        "w":  "goodbye",
+        "c":  "na",
+        "zh":  "再见",
+        "en":  "word said when leaving",
+        "ex":  "I wave goodbye to my friend.",
+        "exz":  "我向朋友挥手告别。",
+        "s":  [
+                  "farewell",
+                  "bye",
+                  "adieu"
+              ]
+    },
+    {
+        "w":  "hello",
+        "c":  "na",
+        "zh":  "你好",
+        "en":  "word to greet someone",
+        "ex":  "Hello, my name is Ann.",
+        "exz":  "你好，我叫安。",
+        "s":  [
+                  "hi",
+                  "greeting",
+                  "welcome"
+              ]
+    },
+    {
+        "w":  "hi",
+        "c":  "na",
+        "zh":  "嗨,你好",
+        "en":  "friendly way to say hello",
+        "ex":  "Hi, how are you?",
+        "exz":  "嗨，你好吗？",
+        "s":  [
+                  "hello",
+                  "hey",
+                  "greetings"
+              ]
+    },
+    {
+        "w":  "holiday",
+        "c":  "na",
+        "zh":  "假日,假期",
+        "en":  "day you do not work",
+        "ex":  "We go to the beach on holiday.",
+        "exz":  "假期我们去海滩。",
+        "s":  [
+                  "vacation",
+                  "break",
+                  "festival"
+              ]
+    },
+    {
+        "w":  "hot",
+        "c":  "na",
+        "zh":  "热的",
+        "en":  "having high temperature",
+        "ex":  "The soup is very hot.",
+        "exz":  "这汤很烫。",
+        "s":  [
+                  "warm",
+                  "boiling",
+                  "heated"
+              ]
+    },
+    {
+        "w":  "hotel",
+        "c":  "na",
+        "zh":  "旅馆,酒店",
+        "en":  "place to sleep when traveling",
+        "ex":  "We stay at a nice hotel.",
+        "exz":  "我们住在一家不错的旅馆。",
+        "s":  [
+                  "inn",
+                  "motel",
+                  "lodge"
+              ]
+    },
+    {
+        "w":  "hungry",
+        "c":  "na",
+        "zh":  "饥饿的",
+        "en":  "wanting to eat food",
+        "ex":  "I am hungry after school.",
+        "exz":  "我放学后饿了。",
+        "s":  [
+                  "starving",
+                  "famished",
+                  "peckish"
+              ]
+    },
+    {
+        "w":  "interesting",
+        "c":  "na",
+        "zh":  "有趣的",
+        "en":  "holding your attention",
+        "ex":  "This story is very interesting.",
+        "exz":  "这个故事很有趣。",
+        "s":  [
+                  "engaging",
+                  "fascinating",
+                  "intriguing"
+              ]
+    },
+    {
+        "w":  "internet",
+        "c":  "na",
+        "zh":  "互联网",
+        "en":  "worldwide computer network",
+        "ex":  "I use the internet to study.",
+        "exz":  "我用互联网学习。",
+        "s":  [
+                  "web",
+                  "network",
+                  "cyberspace"
+              ]
+    },
+    {
+        "w":  "juice",
+        "c":  "na",
+        "zh":  "果汁",
+        "en":  "drink made from fruit",
+        "ex":  "I drink orange juice for breakfast.",
+        "exz":  "我早餐喝橙汁。",
+        "s":  [
+                  "drink",
+                  "beverage",
+                  "nectar"
+              ]
+    },
+    {
+        "w":  "kitchen",
+        "c":  "na",
+        "zh":  "厨房",
+        "en":  "room where you cook",
+        "ex":  "Mom cooks in the kitchen.",
+        "exz":  "妈妈在厨房做饭。",
+        "s":  [
+                  "galley",
+                  "cookhouse",
+                  "pantry"
+              ]
+    },
+    {
+        "w":  "lucky",
+        "c":  "na",
+        "zh":  "幸运的",
+        "en":  "having good things happen",
+        "ex":  "You are lucky to win.",
+        "exz":  "你很幸运能赢。",
+        "s":  [
+                  "fortunate",
+                  "blessed",
+                  "charmed"
+              ]
+    },
+    {
+        "w":  "lunch",
+        "c":  "na",
+        "zh":  "午餐",
+        "en":  "meal in the middle of day",
+        "ex":  "We eat lunch at noon.",
+        "exz":  "我们中午吃午饭。",
+        "s":  [
+                  "meal",
+                  "brunch",
+                  "repast"
+              ]
+    },
+    {
+        "w":  "mall",
+        "c":  "na",
+        "zh":  "购物中心",
+        "en":  "large building with many shops",
+        "ex":  "We shop at the mall.",
+        "exz":  "我们在购物中心购物。",
+        "s":  [
+                  "plaza",
+                  "market",
+                  "center"
+              ]
+    },
+    {
+        "w":  "menu",
+        "c":  "na",
+        "zh":  "菜单",
+        "en":  "list of food in a restaurant",
+        "ex":  "Please read the menu first.",
+        "exz":  "请先看菜单。",
+        "s":  [
+                  "list",
+                  "card",
+                  "catalog"
+              ]
+    },
+    {
+        "w":  "movie",
+        "c":  "na",
+        "zh":  "电影",
+        "en":  "story shown on a screen",
+        "ex":  "We watch a movie tonight.",
+        "exz":  "我们今晚看电影。",
+        "s":  [
+                  "film",
+                  "picture",
+                  "cinema"
+              ]
+    },
+    {
+        "w":  "noisy",
+        "c":  "na",
+        "zh":  "吵闹的",
+        "en":  "making a lot of sound",
+        "ex":  "The classroom is too noisy.",
+        "exz":  "教室太吵了。",
+        "s":  [
+                  "loud",
+                  "rowdy",
+                  "boisterous"
+              ]
+    },
+    {
+        "w":  "noodle",
+        "c":  "na",
+        "zh":  "面条",
+        "en":  "long thin food made of flour",
+        "ex":  "I eat noodle soup for lunch.",
+        "exz":  "我午餐吃面条汤。",
+        "s":  [
+                  "pasta",
+                  "vermicelli",
+                  "macaroni"
+              ]
+    },
+    {
+        "w":  "okay",
+        "c":  "na",
+        "zh":  "好的,可以",
+        "en":  "all right or fine",
+        "ex":  "Are you okay after the fall?",
+        "exz":  "你摔倒后还好吗？",
+        "s":  [
+                  "fine",
+                  "alright",
+                  "acceptable"
+              ]
+    },
+    {
+        "w":  "party",
+        "c":  "na",
+        "zh":  "聚会,派对",
+        "en":  "happy gathering of friends",
+        "ex":  "We have a party on Saturday.",
+        "exz":  "我们星期六有个聚会。",
+        "s":  [
+                  "celebration",
+                  "gathering",
+                  "festivity"
+              ]
+    },
+    {
+        "w":  "pharmacy",
+        "c":  "na",
+        "zh":  "药房",
+        "en":  "shop that sells medicine",
+        "ex":  "I buy medicine at the pharmacy.",
+        "exz":  "我在药房买药。",
+        "s":  [
+                  "drugstore",
+                  "apothecary",
+                  "chemist"
+              ]
+    },
+    {
+        "w":  "phone",
+        "c":  "na",
+        "zh":  "电话,手机",
+        "en":  "device for calling people",
+        "ex":  "My phone is on the table.",
+        "exz":  "我的手机在桌子上。",
+        "s":  [
+                  "telephone",
+                  "mobile",
+                  "cell"
+              ]
+    },
+    {
+        "w":  "photo",
+        "c":  "na",
+        "zh":  "照片",
+        "en":  "picture taken with a camera",
+        "ex":  "I take a photo of us.",
+        "exz":  "我给我们拍张照片。",
+        "s":  [
+                  "picture",
+                  "image",
+                  "snapshot"
+              ]
+    },
+    {
+        "w":  "polite",
+        "c":  "na",
+        "zh":  "有礼貌的",
+        "en":  "showing good manners",
+        "ex":  "The waiter is very polite.",
+        "exz":  "这位服务员很有礼貌。",
+        "s":  [
+                  "courteous",
+                  "respectful",
+                  "civil"
+              ]
+    },
+    {
+        "w":  "popular",
+        "c":  "na",
+        "zh":  "受欢迎的",
+        "en":  "liked by many people",
+        "ex":  "This song is very popular.",
+        "exz":  "这首歌很受欢迎。",
+        "s":  [
+                  "favored",
+                  "liked",
+                  "beloved"
+              ]
+    },
+    {
+        "w":  "restaurant",
+        "c":  "na",
+        "zh":  "餐馆,餐厅",
+        "en":  "place where you eat out",
+        "ex":  "We eat at a Chinese restaurant.",
+        "exz":  "我们在一家中餐馆吃饭。",
+        "s":  [
+                  "eatery",
+                  "diner",
+                  "bistro"
+              ]
+    },
+    {
+        "w":  "rude",
+        "c":  "na",
+        "zh":  "粗鲁的",
+        "en":  "not polite to others",
+        "ex":  "It is rude to shout.",
+        "exz":  "大喊大叫是不礼貌的。",
+        "s":  [
+                  "impolite",
+                  "discourteous",
+                  "crude"
+              ]
+    },
+    {
+        "w":  "shop",
+        "c":  "na",
+        "zh":  "商店",
+        "en":  "place where you buy things",
+        "ex":  "The shop opens at nine.",
+        "exz":  "商店九点开门。",
+        "s":  [
+                  "store",
+                  "boutique",
+                  "market"
+              ]
+    },
+    {
+        "w":  "sick",
+        "c":  "na",
+        "zh":  "生病的",
+        "en":  "not feeling well",
+        "ex":  "I feel sick this morning.",
+        "exz":  "我今天早上觉得不舒服。",
+        "s":  [
+                  "ill",
+                  "unwell",
+                  "ailing"
+              ]
+    },
+    {
+        "w":  "sorry",
+        "c":  "na",
+        "zh":  "抱歉的",
+        "en":  "feeling bad about something",
+        "ex":  "I am sorry for being late.",
+        "exz":  "我很抱歉迟到了。",
+        "s":  [
+                  "apologetic",
+                  "regretful",
+                  "remorseful"
+              ]
+    },
+    {
+        "w":  "subway",
+        "c":  "na",
+        "zh":  "地铁",
+        "en":  "train that runs underground",
+        "ex":  "I take the subway to work.",
+        "exz":  "我坐地铁去上班。",
+        "s":  [
+                  "metro",
+                  "underground",
+                  "tube"
+              ]
+    },
+    {
+        "w":  "supermarket",
+        "c":  "na",
+        "zh":  "超市",
+        "en":  "large shop for food",
+        "ex":  "We buy food at the supermarket.",
+        "exz":  "我们在超市买食物。",
+        "s":  [
+                  "market",
+                  "grocery",
+                  "store"
+              ]
+    },
+    {
+        "w":  "tea",
+        "c":  "na",
+        "zh":  "茶",
+        "en":  "hot drink made from leaves",
+        "ex":  "Grandma drinks tea every afternoon.",
+        "exz":  "奶奶每天下午喝茶。",
+        "s":  [
+                  "brew",
+                  "chai",
+                  "infusion"
+              ]
+    },
+    {
+        "w":  "thanks",
+        "c":  "na",
+        "zh":  "谢谢,感谢",
+        "en":  "words said to show you are grateful",
+        "ex":  "Thanks for the nice gift.",
+        "exz":  "谢谢这份好礼物。",
+        "s":  [
+                  "gratitude",
+                  "appreciation",
+                  "praise"
+              ]
+    },
+    {
+        "w":  "thirsty",
+        "c":  "na",
+        "zh":  "口渴的",
+        "en":  "needing or wanting to drink",
+        "ex":  "I am very thirsty now.",
+        "exz":  "我现在很口渴。",
+        "s":  [
+                  "parched",
+                  "dry",
+                  "dehydrated"
+              ]
+    },
+    {
+        "w":  "toilet",
+        "c":  "na",
+        "zh":  "厕所,马桶",
+        "en":  "a bowl or room used to get rid of body waste",
+        "ex":  "The toilet is down the hall.",
+        "exz":  "厕所在走廊尽头。",
+        "s":  [
+                  "bathroom",
+                  "lavatory",
+                  "restroom"
+              ]
+    },
+    {
+        "w":  "tonight",
+        "c":  "na",
+        "zh":  "今晚,今夜",
+        "en":  "the night of today",
+        "ex":  "We will watch a movie tonight.",
+        "exz":  "我们今晚要看电影。",
+        "s":  [
+                  "night",
+                  "evening",
+                  "now"
+              ]
+    },
+    {
+        "w":  "ugly",
+        "c":  "na",
+        "zh":  "丑的,难看的",
+        "en":  "not nice to look at",
+        "ex":  "That dog is really ugly.",
+        "exz":  "那只狗真丑。",
+        "s":  [
+                  "homely",
+                  "plain",
+                  "unattractive"
+              ]
+    },
+    {
+        "w":  "vegetable",
+        "c":  "na",
+        "zh":  "蔬菜",
+        "en":  "a plant or part of a plant used as food",
+        "ex":  "I eat a green vegetable daily.",
+        "exz":  "我每天吃一种绿色蔬菜。",
+        "s":  [
+                  "plant",
+                  "produce",
+                  "greens"
+              ]
+    },
+    {
+        "w":  "video",
+        "c":  "na",
+        "zh":  "视频,录像",
+        "en":  "a recording of moving pictures and sound",
+        "ex":  "We watched a funny video together.",
+        "exz":  "我们一起看了一个有趣的视频。",
+        "s":  [
+                  "clip",
+                  "film",
+                  "recording"
+              ]
+    },
+    {
+        "w":  "website",
+        "c":  "na",
+        "zh":  "网站",
+        "en":  "a place on the internet with pages",
+        "ex":  "This website has many games.",
+        "exz":  "这个网站有很多游戏。",
+        "s":  [
+                  "site",
+                  "page",
+                  "portal"
+              ]
+    },
+    {
+        "w":  "weekend",
+        "c":  "na",
+        "zh":  "周末",
+        "en":  "Saturday and Sunday, the days for rest",
+        "ex":  "We play football this weekend.",
+        "exz":  "我们这个周末踢足球。",
+        "s":  [
+                  "holiday",
+                  "break",
+                  "rest"
+              ]
+    },
+    {
+        "w":  "welcome",
+        "c":  "na",
+        "zh":  "欢迎",
+        "en":  "greeting someone who arrives",
+        "ex":  "Welcome to our small house.",
+        "exz":  "欢迎来到我们的小房子。",
+        "s":  [
+                  "greet",
+                  "receive",
+                  "hail"
+              ]
+    },
+    {
+        "w":  "more",
+        "c":  "fn",
+        "zh":  "更多,更加",
+        "en":  "a larger amount or number",
+        "ex":  "I want more rice please.",
+        "exz":  "我想要更多的米饭。",
+        "s":  [
+                  "extra",
+                  "additional",
+                  "further"
+              ]
+    },
+    {
+        "w":  "most",
+        "c":  "fn",
+        "zh":  "最多,大多数",
+        "en":  "the largest amount or number",
+        "ex":  "Most kids like sweet apples.",
+        "exz":  "大多数孩子喜欢甜苹果。",
+        "s":  [
+                  "majority",
+                  "utmost",
+                  "greatest"
+              ]
+    },
+    {
+        "w":  "next",
+        "c":  "fn",
+        "zh":  "下一个,接下来",
+        "en":  "coming right after this one",
+        "ex":  "See you next Monday morning.",
+        "exz":  "下周一早上见。",
+        "s":  [
+                  "following",
+                  "succeeding",
+                  "subsequent"
+              ]
+    },
+    {
+        "w":  "too",
+        "c":  "fn",
+        "zh":  "也,太",
+        "en":  "also, or more than is wanted",
+        "ex":  "I want to come too.",
+        "exz":  "我也想来。",
+        "s":  [
+                  "also",
+                  "excessively",
+                  "likewise"
+              ]
+    },
+    {
+        "w":  "yet",
+        "c":  "fn",
+        "zh":  "还,但是",
+        "en":  "up to now, or but",
+        "ex":  "She has not come yet.",
+        "exz":  "她还没有来。",
+        "s":  [
+                  "still",
+                  "however",
+                  "nonetheless"
+              ]
+    },
+    {
+        "w":  "just",
+        "c":  "fn",
+        "zh":  "刚刚,只是",
+        "en":  "only, or a very short time ago",
+        "ex":  "I just ate an apple.",
+        "exz":  "我刚吃了一个苹果。",
+        "s":  [
+                  "only",
+                  "merely",
+                  "exactly"
+              ]
+    },
+    {
+        "w":  "soon",
+        "c":  "fn",
+        "zh":  "不久,很快",
+        "en":  "in a short time from now",
+        "ex":  "The bus will come soon.",
+        "exz":  "公交车很快就会来。",
+        "s":  [
+                  "shortly",
+                  "quickly",
+                  "presently"
+              ]
+    },
+    {
+        "w":  "ago",
+        "c":  "fn",
+        "zh":  "以前,之前",
+        "en":  "before now, in the past",
+        "ex":  "We moved here two years ago.",
+        "exz":  "我们两年前搬到这里。",
+        "s":  [
+                  "before",
+                  "earlier",
+                  "previously"
+              ]
+    },
+    {
+        "w":  "which",
+        "c":  "fn",
+        "zh":  "哪一个,哪些",
+        "en":  "used to ask about a choice",
+        "ex":  "Which book do you want?",
+        "exz":  "你想要哪本书？",
+        "s":  [
+                  "what",
+                  "whichever",
+                  "that"
+              ]
+    },
+    {
+        "w":  "each",
+        "c":  "fn",
+        "zh":  "每个,各自",
+        "en":  "every one of two or more",
+        "ex":  "Each child gets a cake.",
+        "exz":  "每个孩子得到一块蛋糕。",
+        "s":  [
+                  "every",
+                  "apiece",
+                  "individually"
+              ]
+    },
+    {
+        "w":  "few",
+        "c":  "fn",
+        "zh":  "很少,几个",
+        "en":  "a small number of things",
+        "ex":  "Only a few people came.",
+        "exz":  "只有几个人来了。",
+        "s":  [
+                  "several",
+                  "some",
+                  "scant"
+              ]
+    },
+    {
+        "w":  "both",
+        "c":  "fn",
+        "zh":  "两者都",
+        "en":  "the two together",
+        "ex":  "Both girls like to sing.",
+        "exz":  "两个女孩都喜欢唱歌。",
+        "s":  [
+                  "two",
+                  "pair",
+                  "either"
+              ]
+    },
+    {
+        "w":  "another",
+        "c":  "fn",
+        "zh":  "另一个,再一个",
+        "en":  "one more, or a different one",
+        "ex":  "Please give me another cup.",
+        "exz":  "请再给我一个杯子。",
+        "s":  [
+                  "additional",
+                  "different",
+                  "further"
+              ]
+    },
+    {
+        "w":  "something",
+        "c":  "fn",
+        "zh":  "某事,某物",
+        "en":  "a thing that is not named",
+        "ex":  "I have something in my bag.",
+        "exz":  "我包里有个东西。",
+        "s":  [
+                  "anything",
+                  "thing",
+                  "object"
+              ]
+    },
+    {
+        "w":  "anything",
+        "c":  "fn",
+        "zh":  "任何事物",
+        "en":  "a thing of any kind",
+        "ex":  "Do you want anything to drink?",
+        "exz":  "你想喝点什么吗？",
+        "s":  [
+                  "something",
+                  "whatever",
+                  "thing"
+              ]
+    },
+    {
+        "w":  "nothing",
+        "c":  "fn",
+        "zh":  "没有什么",
+        "en":  "not a single thing",
+        "ex":  "There is nothing in the box.",
+        "exz":  "盒子里什么都没有。",
+        "s":  [
+                  "none",
+                  "zero",
+                  "emptiness"
+              ]
+    },
+    {
+        "w":  "everything",
+        "c":  "fn",
+        "zh":  "一切,每件事",
+        "en":  "all things or all of something",
+        "ex":  "Everything looks clean and new.",
+        "exz":  "一切看起来干净又新。",
+        "s":  [
+                  "all",
+                  "whole",
+                  "totality"
+              ]
+    },
+    {
+        "w":  "someone",
+        "c":  "fn",
+        "zh":  "某人,有人",
+        "en":  "a person who is not named",
+        "ex":  "Someone is at the door.",
+        "exz":  "有人在门口。",
+        "s":  [
+                  "somebody",
+                  "anyone",
+                  "person"
+              ]
+    },
+    {
+        "w":  "everyone",
+        "c":  "fn",
+        "zh":  "每个人,大家",
+        "en":  "all the people",
+        "ex":  "Everyone likes the new teacher.",
+        "exz":  "每个人都喜欢新老师。",
+        "s":  [
+                  "everybody",
+                  "all",
+                  "people"
+              ]
+    },
+    {
+        "w":  "nobody",
+        "c":  "fn",
+        "zh":  "没有人",
+        "en":  "not a single person",
+        "ex":  "Nobody is in the room.",
+        "exz":  "房间里没有人。",
+        "s":  [
+                  "none",
+                  "zero",
+                  "nothing"
+              ]
+    },
+    {
+        "w":  "one",
+        "c":  "th",
+        "zh":  "一,一个",
+        "en":  "the number 1",
+        "ex":  "I have one red ball.",
+        "exz":  "我有一个红球。",
+        "s":  [
+                  "single",
+                  "unit",
+                  "sole"
+              ]
+    },
+    {
+        "w":  "two",
+        "c":  "th",
+        "zh":  "二,两个",
+        "en":  "the number 2",
+        "ex":  "I have two small cats.",
+        "exz":  "我有两只小猫。",
+        "s":  [
+                  "pair",
+                  "couple",
+                  "duo"
+              ]
+    },
+    {
+        "w":  "three",
+        "c":  "th",
+        "zh":  "三",
+        "en":  "the number 3",
+        "ex":  "She has three nice books.",
+        "exz":  "她有三本好书。",
+        "s":  [
+                  "triple",
+                  "trio",
+                  "trinity"
+              ]
+    },
+    {
+        "w":  "four",
+        "c":  "th",
+        "zh":  "四",
+        "en":  "the number 4",
+        "ex":  "The table has four legs.",
+        "exz":  "这张桌子有四条腿。",
+        "s":  [
+                  "quartet",
+                  "foursome",
+                  "quadruple"
+              ]
+    },
+    {
+        "w":  "five",
+        "c":  "th",
+        "zh":  "五",
+        "en":  "the number 5",
+        "ex":  "I see five birds flying.",
+        "exz":  "我看到五只鸟在飞。",
+        "s":  [
+                  "quintet",
+                  "fivesome",
+                  "pentad"
+              ]
+    },
+    {
+        "w":  "six",
+        "c":  "th",
+        "zh":  "六",
+        "en":  "the number 6",
+        "ex":  "There are six eggs here.",
+        "exz":  "这里有六个鸡蛋。",
+        "s":  [
+                  "sextet",
+                  "hexad",
+                  "sestet"
+              ]
+    },
+    {
+        "w":  "seven",
+        "c":  "th",
+        "zh":  "七",
+        "en":  "the number 7",
+        "ex":  "We have seven red pens.",
+        "exz":  "我们有七支红笔。",
+        "s":  [
+                  "septet",
+                  "heptad",
+                  "week"
+              ]
+    },
+    {
+        "w":  "eight",
+        "c":  "th",
+        "zh":  "八",
+        "en":  "the number 8",
+        "ex":  "The spider has eight legs.",
+        "exz":  "蜘蛛有八条腿。",
+        "s":  [
+                  "octet",
+                  "ogdoad",
+                  "eightsome"
+              ]
+    },
+    {
+        "w":  "nine",
+        "c":  "th",
+        "zh":  "九",
+        "en":  "the number 9",
+        "ex":  "Nine kids are in class.",
+        "exz":  "九个孩子在教室里。",
+        "s":  [
+                  "nonet",
+                  "ennead",
+                  "ninesome"
+              ]
+    },
+    {
+        "w":  "ten",
+        "c":  "th",
+        "zh":  "十",
+        "en":  "the number 10",
+        "ex":  "I have ten fingers.",
+        "exz":  "我有十根手指。",
+        "s":  [
+                  "decade",
+                  "tenner",
+                  "decad"
+              ]
+    },
+    {
+        "w":  "hundred",
+        "c":  "th",
+        "zh":  "一百",
+        "en":  "the number 100",
+        "ex":  "The book has a hundred pages.",
+        "exz":  "这本书有一百页。",
+        "s":  [
+                  "century",
+                  "centum",
+                  "centenary"
+              ]
+    },
+    {
+        "w":  "thousand",
+        "c":  "th",
+        "zh":  "一千",
+        "en":  "the number 1000",
+        "ex":  "A thousand stars are shining.",
+        "exz":  "一千颗星星在闪耀。",
+        "s":  [
+                  "grand",
+                  "myriad",
+                  "kilo"
+              ]
+    },
+    {
+        "w":  "Monday",
+        "c":  "th",
+        "zh":  "星期一",
+        "en":  "the first working day of the week",
+        "ex":  "We go to school on Monday.",
+        "exz":  "我们星期一去上学。",
+        "s":  [
+                  "mon",
+                  "weekday",
+                  "workday"
+              ]
+    },
+    {
+        "w":  "Tuesday",
+        "c":  "th",
+        "zh":  "星期二",
+        "en":  "the day after Monday",
+        "ex":  "We have music on Tuesday.",
+        "exz":  "我们星期二有音乐课。",
+        "s":  [
+                  "tue",
+                  "weekday",
+                  "workday"
+              ]
+    },
+    {
+        "w":  "Wednesday",
+        "c":  "th",
+        "zh":  "星期三",
+        "en":  "the day in the middle of the week",
+        "ex":  "It rains a lot on Wednesday.",
+        "exz":  "星期三经常下很多雨。",
+        "s":  [
+                  "wed",
+                  "weekday",
+                  "midweek"
+              ]
+    },
+    {
+        "w":  "Thursday",
+        "c":  "th",
+        "zh":  "星期四",
+        "en":  "the day after Wednesday",
+        "ex":  "We play games on Thursday.",
+        "exz":  "我们星期四玩游戏。",
+        "s":  [
+                  "thu",
+                  "weekday",
+                  "workday"
+              ]
+    },
+    {
+        "w":  "Friday",
+        "c":  "th",
+        "zh":  "星期五",
+        "en":  "the last working day of the week",
+        "ex":  "The test is on Friday.",
+        "exz":  "考试在星期五。",
+        "s":  [
+                  "fri",
+                  "weekday",
+                  "workday"
+              ]
+    },
+    {
+        "w":  "Saturday",
+        "c":  "th",
+        "zh":  "星期六",
+        "en":  "the day after Friday",
+        "ex":  "We rest at home on Saturday.",
+        "exz":  "我们星期六在家休息。",
+        "s":  [
+                  "sat",
+                  "weekend",
+                  "holiday"
+              ]
+    },
+    {
+        "w":  "Sunday",
+        "c":  "th",
+        "zh":  "星期日",
+        "en":  "the day after Saturday",
+        "ex":  "We visit grandma on Sunday.",
+        "exz":  "我们星期天去看奶奶。",
+        "s":  [
+                  "sun",
+                  "weekend",
+                  "holiday"
+              ]
+    },
+    {
+        "w":  "January",
+        "c":  "th",
+        "zh":  "一月",
+        "en":  "the first month of the year",
+        "ex":  "It is cold in January.",
+        "exz":  "一月很冷。",
+        "s":  [
+                  "jan",
+                  "winter",
+                  "month"
+              ]
+    },
+    {
+        "w":  "February",
+        "c":  "th",
+        "zh":  "二月",
+        "en":  "the second month of the year",
+        "ex":  "My birthday is in February.",
+        "exz":  "我的生日在二月。",
+        "s":  [
+                  "feb",
+                  "winter",
+                  "month"
+              ]
+    },
+    {
+        "w":  "March",
+        "c":  "th",
+        "zh":  "三月",
+        "en":  "the third month of the year",
+        "ex":  "The flowers bloom in March.",
+        "exz":  "花在三月开放。",
+        "s":  [
+                  "mar",
+                  "spring",
+                  "month"
+              ]
+    },
+    {
+        "w":  "April",
+        "c":  "th",
+        "zh":  "四月",
+        "en":  "the fourth month of the year",
+        "ex":  "It rains a lot in April.",
+        "exz":  "四月经常下雨。",
+        "s":  [
+                  "apr",
+                  "spring",
+                  "month"
+              ]
+    },
+    {
+        "w":  "June",
+        "c":  "th",
+        "zh":  "六月",
+        "en":  "the sixth month of the year",
+        "ex":  "School ends in June.",
+        "exz":  "学校六月结束。",
+        "s":  [
+                  "jun",
+                  "summer",
+                  "month"
+              ]
+    },
+    {
+        "w":  "July",
+        "c":  "th",
+        "zh":  "七月",
+        "en":  "the seventh month of the year",
+        "ex":  "We swim in July.",
+        "exz":  "我们七月去游泳。",
+        "s":  [
+                  "jul",
+                  "summer",
+                  "month"
+              ]
+    },
+    {
+        "w":  "August",
+        "c":  "th",
+        "zh":  "八月",
+        "en":  "the eighth month of the year",
+        "ex":  "It is hot in August.",
+        "exz":  "八月很热。",
+        "s":  [
+                  "aug",
+                  "summer",
+                  "month"
+              ]
+    },
+    {
+        "w":  "September",
+        "c":  "th",
+        "zh":  "九月",
+        "en":  "the ninth month of the year",
+        "ex":  "School starts in September.",
+        "exz":  "学校九月开学。",
+        "s":  [
+                  "sep",
+                  "autumn",
+                  "month"
+              ]
+    },
+    {
+        "w":  "October",
+        "c":  "th",
+        "zh":  "十月",
+        "en":  "the tenth month of the year",
+        "ex":  "The leaves fall in October.",
+        "exz":  "树叶在十月落下。",
+        "s":  [
+                  "oct",
+                  "autumn",
+                  "month"
+              ]
+    },
+    {
+        "w":  "November",
+        "c":  "th",
+        "zh":  "十一月",
+        "en":  "the eleventh month of the year",
+        "ex":  "It gets cold in November.",
+        "exz":  "十一月天气变冷。",
+        "s":  [
+                  "nov",
+                  "autumn",
+                  "month"
+              ]
+    },
+    {
+        "w":  "December",
+        "c":  "th",
+        "zh":  "十二月",
+        "en":  "the twelfth month of the year",
+        "ex":  "We see snow in December.",
+        "exz":  "十二月我们会看到雪。",
+        "s":  [
+                  "dec",
+                  "winter",
+                  "month"
+              ]
+    },
+    {
+        "w":  "today",
+        "c":  "th",
+        "zh":  "今天",
+        "en":  "this present day",
+        "ex":  "Today is a sunny day.",
+        "exz":  "今天是个晴天。",
+        "s":  [
+                  "now",
+                  "nowadays",
+                  "presently"
+              ]
+    },
+    {
+        "w":  "city",
+        "c":  "th",
+        "zh":  "城市",
+        "en":  "a large town with many people",
+        "ex":  "This city is very big.",
+        "exz":  "这个城市很大。",
+        "s":  [
+                  "town",
+                  "metropolis",
+                  "municipality"
+              ]
+    },
+    {
+        "w":  "car",
+        "c":  "th",
+        "zh":  "汽车,小汽车",
+        "en":  "a road vehicle with four wheels",
+        "ex":  "My father drives a red car.",
+        "exz":  "我爸爸开一辆红色的车。",
+        "s":  [
+                  "auto",
+                  "vehicle",
+                  "automobile"
+              ]
+    },
+    {
+        "w":  "bike",
+        "c":  "th",
+        "zh":  "自行车",
+        "en":  "a two-wheeled vehicle you ride",
+        "ex":  "I ride my bike to school.",
+        "exz":  "我骑自行车去学校。",
+        "s":  [
+                  "bicycle",
+                  "cycle",
+                  "pushbike"
+              ]
+    },
+    {
+        "w":  "taxi",
+        "c":  "th",
+        "zh":  "出租车",
+        "en":  "a car you pay to ride in",
+        "ex":  "We took a taxi home.",
+        "exz":  "我们坐出租车回家。",
+        "s":  [
+                  "cab",
+                  "taxicab",
+                  "hack"
+              ]
+    },
+    {
+        "w":  "doctor",
+        "c":  "th",
+        "zh":  "医生",
+        "en":  "a person who helps sick people",
+        "ex":  "The doctor helped my sick sister.",
+        "exz":  "医生帮助了我生病的妹妹。",
+        "s":  [
+                  "physician",
+                  "medic",
+                  "surgeon"
+              ]
+    },
+    {
+        "w":  "medicine",
+        "c":  "th",
+        "zh":  "药,医学",
+        "en":  "something you take to get well",
+        "ex":  "Take this medicine after dinner.",
+        "exz":  "晚饭后吃这个药。",
+        "s":  [
+                  "drug",
+                  "remedy",
+                  "cure"
+              ]
+    },
+    {
+        "w":  "pet",
+        "c":  "th",
+        "zh":  "宠物",
+        "en":  "an animal kept at home",
+        "ex":  "My pet cat is very soft.",
+        "exz":  "我的宠物猫很柔软。",
+        "s":  [
+                  "animal",
+                  "favorite",
+                  "companion"
+              ]
+    },
+    {
+        "w":  "chair",
+        "c":  "th",
+        "zh":  "椅子",
+        "en":  "a seat with a back for one person",
+        "ex":  "Please sit on this chair.",
+        "exz":  "请坐在这把椅子上。",
+        "s":  [
+                  "seat",
+                  "stool",
+                  "bench"
+              ]
+    },
+    {
+        "w":  "desk",
+        "c":  "th",
+        "zh":  "书桌,桌子",
+        "en":  "a table for writing or working",
+        "ex":  "My books are on the desk.",
+        "exz":  "我的书在书桌上。",
+        "s":  [
+                  "table",
+                  "bureau",
+                  "worktable"
+              ]
+    },
+    {
+        "w":  "sofa",
+        "c":  "th",
+        "zh":  "沙发",
+        "en":  "a long soft seat for two or more",
+        "ex":  "We sit on the sofa.",
+        "exz":  "我们坐在沙发上。",
+        "s":  [
+                  "couch",
+                  "settee",
+                  "divan"
+              ]
+    },
+    {
+        "w":  "fridge",
+        "c":  "th",
+        "zh":  "冰箱",
+        "en":  "a cold box that keeps food fresh",
+        "ex":  "Milk is in the fridge.",
+        "exz":  "牛奶在冰箱里。",
+        "s":  [
+                  "refrigerator",
+                  "freezer",
+                  "cooler"
+              ]
+    },
+    {
+        "w":  "wallet",
+        "c":  "th",
+        "zh":  "钱包",
+        "en":  "a small case for money and cards",
+        "ex":  "My wallet is in my pocket.",
+        "exz":  "我的钱包在我口袋里。",
+        "s":  [
+                  "purse",
+                  "billfold",
+                  "pocketbook"
+              ]
+    },
+    {
+        "w":  "sing",
+        "c":  "th",
+        "zh":  "唱歌",
+        "en":  "to make music with your voice",
+        "ex":  "We sing a happy song.",
+        "exz":  "我们唱一首快乐的歌。",
+        "s":  [
+                  "chant",
+                  "hum",
+                  "carol"
+              ]
+    },
+    {
+        "w":  "dance",
+        "c":  "th",
+        "zh":  "跳舞",
+        "en":  "to move your body to music",
+        "ex":  "They dance at the party.",
+        "exz":  "他们在聚会上跳舞。",
+        "s":  [
+                  "prance",
+                  "sway",
+                  "bop"
+              ]
+    },
+    {
+        "w":  "draw",
+        "c":  "th",
+        "zh":  "画,绘画",
+        "en":  "to make a picture with a pen",
+        "ex":  "I draw a big sun.",
+        "exz":  "我画了一个大太阳。",
+        "s":  [
+                  "sketch",
+                  "paint",
+                  "trace"
+              ]
+    },
+    {
+        "w":  "stay",
+        "c":  "th",
+        "zh":  "停留,待",
+        "en":  "to remain in a place",
+        "ex":  "Please stay here with me.",
+        "exz":  "请和我待在这里。",
+        "s":  [
+                  "remain",
+                  "wait",
+                  "linger"
+              ]
+    },
+    {
+        "w":  "game",
+        "c":  "th",
+        "zh":  "游戏,比赛",
+        "en":  "an activity played for fun",
+        "ex":  "This game is really fun.",
+        "exz":  "这个游戏真有趣。",
+        "s":  [
+                  "play",
+                  "match",
+                  "sport"
+              ]
+    },
+    {
+        "w":  "maybe",
+        "c":  "th",
+        "zh":  "也许,可能",
+        "en":  "perhaps, not sure",
+        "ex":  "Maybe it will rain today.",
+        "exz":  "也许今天会下雨。",
+        "s":  [
+                  "perhaps",
+                  "possibly",
+                  "probably"
+              ]
+    },
+    {
+        "w":  "sure",
+        "c":  "th",
+        "zh":  "确信的,当然",
+        "en":  "having no doubt about something",
+        "ex":  "I am sure about it.",
+        "exz":  "我对此很确定。",
+        "s":  [
+                  "certain",
+                  "positive",
+                  "confident"
+              ]
+    },
+    {
+        "w":  "nice",
+        "c":  "th",
+        "zh":  "好的,友好的",
+        "en":  "good or pleasing to you",
+        "ex":  "She is a nice girl.",
+        "exz":  "她是个好女孩。",
+        "s":  [
+                  "kind",
+                  "pleasant",
+                  "lovely"
+              ]
+    },
+    {
+        "w":  "fun",
+        "c":  "th",
+        "zh":  "有趣的,乐趣",
+        "en":  "enjoyable and making you happy",
+        "ex":  "We had fun at school.",
+        "exz":  "我们在学校玩得很开心。",
+        "s":  [
+                  "enjoyment",
+                  "pleasure",
+                  "amusement"
+              ]
+    },
+    {
+        "w":  "TV",
+        "c":  "th",
+        "zh":  "电视",
+        "en":  "a machine that shows programs",
+        "ex":  "We watch TV after dinner.",
+        "exz":  "我们晚饭后看电视。",
+        "s":  [
+                  "television",
+                  "telly",
+                  "screen"
+              ]
+    },
+    {
+        "w":  "grandmother",
+        "c":  "th",
+        "zh":  "奶奶,外婆",
+        "en":  "the mother of your parent",
+        "ex":  "My grandmother makes sweet cakes.",
+        "exz":  "我奶奶做甜蛋糕。",
+        "s":  [
+                  "granny",
+                  "grandma",
+                  "nana"
+              ]
+    },
+    {
+        "w":  "grandfather",
+        "c":  "th",
+        "zh":  "爷爷,外公",
+        "en":  "the father of your parent",
+        "ex":  "My grandfather tells funny stories.",
+        "exz":  "我爷爷讲有趣的故事。",
+        "s":  [
+                  "grandpa",
+                  "granddad",
+                  "gramps"
+              ]
+    },
+    {
+        "w":  "uncle",
+        "c":  "th",
+        "zh":  "叔叔,舅舅",
+        "en":  "the brother of your parent",
+        "ex":  "My uncle lives in the city.",
+        "exz":  "我叔叔住在城里。",
+        "s":  [
+                  "relative",
+                  "kinsman",
+                  "relation"
+              ]
+    },
+    {
+        "w":  "aunt",
+        "c":  "th",
+        "zh":  "姑姑,阿姨",
+        "en":  "the sister of your parent",
+        "ex":  "My aunt has a baby.",
+        "exz":  "我姑姑有一个宝宝。",
+        "s":  [
+                  "relative",
+                  "kinswoman",
+                  "relation"
+              ]
+    },
+    {
+        "w":  "scared",
+        "c":  "th",
+        "zh":  "害怕的",
+        "en":  "feeling afraid",
+        "ex":  "I am scared of big dogs.",
+        "exz":  "我害怕大狗。",
+        "s":  [
+                  "afraid",
+                  "frightened",
+                  "terrified"
+              ]
+    },
+    {
+        "w":  "excited",
+        "c":  "th",
+        "zh":  "兴奋的,激动的",
+        "en":  "feeling very happy about something",
+        "ex":  "The kids are excited today.",
+        "exz":  "孩子们今天很兴奋。",
+        "s":  [
+                  "thrilled",
+                  "eager",
+                  "happy"
+              ]
+    },
+    {
+        "w":  "chicken",
+        "c":  "th",
+        "zh":  "鸡,鸡肉",
+        "en":  "a bird kept for eggs and meat",
+        "ex":  "The chicken is on the farm.",
+        "exz":  "鸡在农场里。",
+        "s":  [
+                  "hen",
+                  "rooster",
+                  "poultry"
+              ]
+    },
+    {
+        "w":  "pizza",
+        "c":  "th",
+        "zh":  "比萨饼",
+        "en":  "a flat bread with cheese on top",
+        "ex":  "I want pizza for dinner.",
+        "exz":  "我晚餐想吃比萨饼。",
+        "s":  [
+                  "pie",
+                  "dish",
+                  "meal"
+              ]
+    },
+    {
+        "w":  "banana",
+        "c":  "th",
+        "zh":  "香蕉",
+        "en":  "a long yellow fruit",
+        "ex":  "The banana is yellow and sweet.",
+        "exz":  "香蕉又黄又甜。",
+        "s":  [
+                  "fruit",
+                  "plantain",
+                  "produce"
+              ]
+    },
+    {
+        "w":  "teacher",
+        "c":  "th",
+        "zh":  "老师,教师",
+        "en":  "a person who teaches students",
+        "ex":  "My teacher reads a book.",
+        "exz":  "我的老师读一本书。",
+        "s":  [
+                  "instructor",
+                  "tutor",
+                  "educator"
+              ]
+    },
+    {
+        "w":  "classroom",
+        "c":  "th",
+        "zh":  "教室",
+        "en":  "a room where students learn",
+        "ex":  "We study in the classroom.",
+        "exz":  "我们在教室里学习。",
+        "s":  [
+                  "room",
+                  "schoolroom",
+                  "hall"
+              ]
+    },
+    {
+        "w":  "homework",
+        "c":  "th",
+        "zh":  "家庭作业",
+        "en":  "school work done at home",
+        "ex":  "I do my homework after school.",
+        "exz":  "我放学后做家庭作业。",
+        "s":  [
+                  "assignment",
+                  "task",
+                  "study"
+              ]
+    },
+    {
+        "w":  "playground",
+        "c":  "th",
+        "zh":  "操场,游乐场",
+        "en":  "a place where children play",
+        "ex":  "Children play on the playground.",
+        "exz":  "孩子们在操场上玩。",
+        "s":  [
+                  "park",
+                  "yard",
+                  "field"
+              ]
+    },
+    {
+        "w":  "classmate",
+        "c":  "th",
+        "zh":  "同班同学",
+        "en":  "a student in your class",
+        "ex":  "My classmate sits near me.",
+        "exz":  "我的同班同学坐在我旁边。",
+        "s":  [
+                  "friend",
+                  "peer",
+                  "schoolmate"
+              ]
+    },
+    {
+        "w":  "toy",
+        "c":  "th",
+        "zh":  "玩具",
+        "en":  "a thing children play with",
+        "ex":  "This toy is very fun.",
+        "exz":  "这个玩具很好玩。",
+        "s":  [
+                  "plaything",
+                  "doll",
+                  "game"
+              ]
+    },
+    {
+        "w":  "doll",
+        "c":  "th",
+        "zh":  "洋娃娃,玩偶",
+        "en":  "a small model of a person",
+        "ex":  "She holds a pretty doll.",
+        "exz":  "她抱着一个漂亮的洋娃娃。",
+        "s":  [
+                  "figure",
+                  "toy",
+                  "puppet"
+              ]
+    },
+    {
+        "w":  "robot",
+        "c":  "th",
+        "zh":  "机器人",
+        "en":  "a machine that can do work",
+        "ex":  "The robot can walk and talk.",
+        "exz":  "这个机器人会走路和说话。",
+        "s":  [
+                  "machine",
+                  "android",
+                  "automaton"
+              ]
+    },
+    {
+        "w":  "dinosaur",
+        "c":  "th",
+        "zh":  "恐龙",
+        "en":  "a very big animal long ago",
+        "ex":  "The dinosaur was very big.",
+        "exz":  "恐龙非常大。",
+        "s":  [
+                  "reptile",
+                  "beast",
+                  "monster"
+              ]
+    },
+    {
+        "w":  "cartoon",
+        "c":  "th",
+        "zh":  "卡通,动画片",
+        "en":  "a funny drawing or show",
+        "ex":  "We watch a cartoon together.",
+        "exz":  "我们一起看卡通。",
+        "s":  [
+                  "animation",
+                  "comic",
+                  "show"
+              ]
+    },
+    {
+        "w":  "zoo",
+        "c":  "th",
+        "zh":  "动物园",
+        "en":  "a place with many animals",
+        "ex":  "We see lions at the zoo.",
+        "exz":  "我们在动物园看到狮子。",
+        "s":  [
+                  "park",
+                  "garden",
+                  "menagerie"
+              ]
+    },
+    {
+        "w":  "lion",
+        "c":  "th",
+        "zh":  "狮子",
+        "en":  "a big strong wild cat",
+        "ex":  "The lion runs very fast.",
+        "exz":  "狮子跑得很快。",
+        "s":  [
+                  "cat",
+                  "beast",
+                  "king"
+              ]
+    },
+    {
+        "w":  "tiger",
+        "c":  "th",
+        "zh":  "老虎",
+        "en":  "a big orange cat with stripes",
+        "ex":  "The tiger has orange fur.",
+        "exz":  "老虎有橙色的毛。",
+        "s":  [
+                  "cat",
+                  "beast",
+                  "predator"
+              ]
+    },
+    {
+        "w":  "elephant",
+        "c":  "th",
+        "zh":  "大象",
+        "en":  "a huge animal with a long nose",
+        "ex":  "The elephant has big ears.",
+        "exz":  "大象有大耳朵。",
+        "s":  [
+                  "animal",
+                  "beast",
+                  "giant"
+              ]
+    },
+    {
+        "w":  "bear",
+        "c":  "th",
+        "zh":  "熊",
+        "en":  "a big furry wild animal",
+        "ex":  "The bear sleeps in winter.",
+        "exz":  "熊在冬天睡觉。",
+        "s":  [
+                  "animal",
+                  "beast",
+                  "creature"
+              ]
+    },
+    {
+        "w":  "rabbit",
+        "c":  "th",
+        "zh":  "兔子",
+        "en":  "a small animal with long ears",
+        "ex":  "The rabbit eats a carrot.",
+        "exz":  "兔子吃胡萝卜。",
+        "s":  [
+                  "bunny",
+                  "hare",
+                  "animal"
+              ]
+    },
+    {
+        "w":  "panda",
+        "c":  "th",
+        "zh":  "熊猫",
+        "en":  "a black and white bear",
+        "ex":  "The panda eats bamboo.",
+        "exz":  "熊猫吃竹子。",
+        "s":  [
+                  "bear",
+                  "animal",
+                  "creature"
+              ]
+    },
+    {
+        "w":  "candy",
+        "c":  "th",
+        "zh":  "糖果",
+        "en":  "a sweet food children love",
+        "ex":  "She eats a sweet candy.",
+        "exz":  "她吃一颗甜甜的糖果。",
+        "s":  [
+                  "sweet",
+                  "sugar",
+                  "treat"
+              ]
+    },
+    {
+        "w":  "cookie",
+        "c":  "th",
+        "zh":  "饼干,曲奇",
+        "en":  "a small sweet flat cake",
+        "ex":  "I bake a cookie for you.",
+        "exz":  "我为你烤一块饼干。",
+        "s":  [
+                  "biscuit",
+                  "cracker",
+                  "snack"
+              ]
+    },
+    {
+        "w":  "chocolate",
+        "c":  "th",
+        "zh":  "巧克力",
+        "en":  "a sweet brown food",
+        "ex":  "I like chocolate very much.",
+        "exz":  "我非常喜欢巧克力。",
+        "s":  [
+                  "candy",
+                  "sweet",
+                  "cocoa"
+              ]
+    },
+    {
+        "w":  "hamburger",
+        "c":  "th",
+        "zh":  "汉堡包",
+        "en":  "meat in a round bread",
+        "ex":  "He eats a big hamburger.",
+        "exz":  "他吃一个大的汉堡包。",
+        "s":  [
+                  "burger",
+                  "sandwich",
+                  "food"
+              ]
+    },
+    {
+        "w":  "cool",
+        "c":  "th",
+        "zh":  "凉爽的,酷的",
+        "en":  "a little cold or very nice",
+        "ex":  "The water feels cool today.",
+        "exz":  "今天水感觉很凉爽。",
+        "s":  [
+                  "chilly",
+                  "cold",
+                  "great"
+              ]
+    },
+    {
+        "w":  "hide",
+        "c":  "th",
+        "zh":  "躲藏,隐藏",
+        "en":  "go where no one can see",
+        "ex":  "Let us hide behind the tree.",
+        "exz":  "让我们躲在树后面。",
+        "s":  [
+                  "conceal",
+                  "cover",
+                  "shelter"
+              ]
+    },
+    {
+        "w":  "job",
+        "c":  "th",
+        "zh":  "工作,职业",
+        "en":  "work a person does for money",
+        "ex":  "My father has a good job.",
+        "exz":  "我爸爸有一份好工作。",
+        "s":  [
+                  "work",
+                  "task",
+                  "career"
+              ]
+    },
+    {
+        "w":  "boss",
+        "c":  "th",
+        "zh":  "老板,上司",
+        "en":  "a person who leads workers",
+        "ex":  "The boss is very kind.",
+        "exz":  "老板非常和善。",
+        "s":  [
+                  "leader",
+                  "chief",
+                  "manager"
+              ]
+    },
+    {
+        "w":  "colleague",
+        "c":  "th",
+        "zh":  "同事",
+        "en":  "a person you work with",
+        "ex":  "My colleague helps me today.",
+        "exz":  "我的同事今天帮助我。",
+        "s":  [
+                  "coworker",
+                  "partner",
+                  "associate"
+              ]
+    },
+    {
+        "w":  "salary",
+        "c":  "th",
+        "zh":  "薪水,工资",
+        "en":  "money paid for your work",
+        "ex":  "He gets his salary today.",
+        "exz":  "他今天拿到薪水。",
+        "s":  [
+                  "pay",
+                  "wage",
+                  "income"
+              ]
+    },
+    {
+        "w":  "address",
+        "c":  "th",
+        "zh":  "地址",
+        "en":  "where a person lives",
+        "ex":  "Write your address on paper.",
+        "exz":  "把你的地址写在纸上。",
+        "s":  [
+                  "location",
+                  "place",
+                  "home"
+              ]
+    },
+    {
+        "w":  "rent",
+        "c":  "th",
+        "zh":  "租金,租",
+        "en":  "money paid to live somewhere",
+        "ex":  "We pay rent every month.",
+        "exz":  "我们每月付租金。",
+        "s":  [
+                  "lease",
+                  "hire",
+                  "payment"
+              ]
+    },
+    {
+        "w":  "corner",
+        "c":  "th",
+        "zh":  "角落,拐角",
+        "en":  "the place where lines meet",
+        "ex":  "The cat sits in the corner.",
+        "exz":  "猫坐在角落里。",
+        "s":  [
+                  "angle",
+                  "bend",
+                  "edge"
+              ]
+    },
+    {
+        "w":  "password",
+        "c":  "th",
+        "zh":  "密码",
+        "en":  "a secret word to enter",
+        "ex":  "Please type your secret password.",
+        "exz":  "请输入你的密码。",
+        "s":  [
+                  "code",
+                  "key",
+                  "word"
+              ]
+    },
+    {
+        "w":  "download",
+        "c":  "th",
+        "zh":  "下载",
+        "en":  "copy a file from the internet",
+        "ex":  "I download a new game.",
+        "exz":  "我下载一个新游戏。",
+        "s":  [
+                  "save",
+                  "copy",
+                  "transfer"
+              ]
+    },
+    {
+        "w":  "online",
+        "c":  "th",
+        "zh":  "在线的,联网的",
+        "en":  "connected to the internet",
+        "ex":  "My sister is online now.",
+        "exz":  "我姐姐现在在线。",
+        "s":  [
+                  "connected",
+                  "networked",
+                  "digital"
+              ]
+    },
+    {
+        "w":  "message",
+        "c":  "th",
+        "zh":  "消息,信息",
+        "en":  "words sent to someone",
+        "ex":  "I send a short message.",
+        "exz":  "我发一条短消息。",
+        "s":  [
+                  "note",
+                  "letter",
+                  "text"
+              ]
+    },
+    {
+        "w":  "chat",
+        "c":  "th",
+        "zh":  "聊天,闲谈",
+        "en":  "talk in a friendly way",
+        "ex":  "We chat after dinner.",
+        "exz":  "我们晚饭后聊天。",
+        "s":  [
+                  "talk",
+                  "speak",
+                  "converse"
+              ]
+    },
+    {
+        "w":  "cancel",
+        "c":  "th",
+        "zh":  "取消",
+        "en":  "say something will not happen",
+        "ex":  "Please cancel the old plan.",
+        "exz":  "请取消旧的计划。",
+        "s":  [
+                  "stop",
+                  "drop",
+                  "undo"
+              ]
+    },
+    {
+        "w":  "exercise",
+        "c":  "th",
+        "zh":  "锻炼,练习",
+        "en":  "move your body to stay fit",
+        "ex":  "I exercise every morning.",
+        "exz":  "我每天早上锻炼。",
+        "s":  [
+                  "train",
+                  "workout",
+                  "practice"
+              ]
+    },
+    {
+        "w":  "nurse",
+        "c":  "th",
+        "zh":  "护士",
+        "en":  "a person who helps sick people",
+        "ex":  "The nurse is very kind.",
+        "exz":  "这位护士非常和善。",
+        "s":  [
+                  "caregiver",
+                  "attendant",
+                  "medic"
+              ]
+    },
+    {
+        "w":  "luggage",
+        "c":  "th",
+        "zh":  "行李",
+        "en":  "bags you take when traveling",
+        "ex":  "Our luggage is very heavy.",
+        "exz":  "我们的行李很重。",
+        "s":  [
+                  "bags",
+                  "baggage",
+                  "cases"
+              ]
+    },
+    {
+        "w":  "appointment",
+        "c":  "th",
+        "zh":  "预约,约会",
+        "en":  "a planned time to meet",
+        "ex":  "I have a doctor appointment.",
+        "exz":  "我有一个医生预约。",
+        "s":  [
+                  "meeting",
+                  "date",
+                  "arrangement"
+              ]
+    },
+    {
+        "w":  "beer",
+        "c":  "th",
+        "zh":  "啤酒",
+        "en":  "a drink made from grain",
+        "ex":  "My father drinks cold beer.",
+        "exz":  "我爸爸喝冰啤酒。",
+        "s":  [
+                  "drink",
+                  "ale",
+                  "lager"
+              ]
+    },
+    {
+        "w":  "share",
+        "c":  "th",
+        "zh":  "分享,共享",
+        "en":  "give some to others",
+        "ex":  "Please share your toys.",
+        "exz":  "请分享你的玩具。",
+        "s":  [
+                  "divide",
+                  "give",
+                  "split"
+              ]
+    },
+    {
+        "w":  "hug",
+        "c":  "th",
+        "zh":  "拥抱",
+        "en":  "hold someone with your arms",
+        "ex":  "I hug my mother.",
+        "exz":  "我拥抱我的妈妈。",
+        "s":  [
+                  "embrace",
+                  "hold",
+                  "cuddle"
+              ]
+    },
+    {
+        "w":  "hit",
+        "c":  "th",
+        "zh":  "打,击",
+        "en":  "touch someone hard",
+        "ex":  "Do not hit your friend.",
+        "exz":  "不要打你的朋友。",
+        "s":  [
+                  "strike",
+                  "punch",
+                  "knock"
+              ]
+    },
+    {
+        "w":  "hold",
+        "c":  "th",
+        "zh":  "拿着,握住",
+        "en":  "keep something in your hand",
+        "ex":  "Please hold my hand.",
+        "exz":  "请握住我的手。",
+        "s":  [
+                  "grasp",
+                  "grip",
+                  "keep"
+              ]
+    },
+    {
+        "w":  "count",
+        "c":  "th",
+        "zh":  "数,计算",
+        "en":  "say numbers one by one",
+        "ex":  "I can count to ten.",
+        "exz":  "我能数到十。",
+        "s":  [
+                  "number",
+                  "calculate",
+                  "tally"
+              ]
+    },
+    {
+        "w":  "dream",
+        "c":  "th",
+        "zh":  "梦,梦想",
+        "en":  "pictures in your mind while sleeping",
+        "ex":  "I dream of a big house.",
+        "exz":  "我梦想有一座大房子。",
+        "s":  [
+                  "vision",
+                  "wish",
+                  "hope"
+              ]
+    },
+    {
+        "w":  "celebrate",
+        "c":  "th",
+        "zh":  "庆祝",
+        "en":  "do something special for a happy event",
+        "ex":  "We celebrate her birthday today.",
+        "exz":  "我们今天庆祝她的生日。",
+        "s":  [
+                  "party",
+                  "honor",
+                  "mark"
+              ]
+    },
+    {
+        "w":  "pick",
+        "c":  "th",
+        "zh":  "挑选,拾起",
+        "en":  "choose or take with your hand",
+        "ex":  "I pick a red apple.",
+        "exz":  "我挑一个红苹果。",
+        "s":  [
+                  "choose",
+                  "select",
+                  "gather"
+              ]
+    },
+    {
+        "w":  "funny",
+        "c":  "th",
+        "zh":  "有趣的,滑稽的",
+        "en":  "making you laugh",
+        "ex":  "The clown is very funny.",
+        "exz":  "这个小丑非常滑稽。",
+        "s":  [
+                  "amusing",
+                  "comical",
+                  "humorous"
+              ]
+    },
+    {
+        "w":  "cute",
+        "c":  "th",
+        "zh":  "可爱的",
+        "en":  "small and pretty",
+        "ex":  "The baby is very cute.",
+        "exz":  "这个宝宝非常可爱。",
+        "s":  [
+                  "pretty",
+                  "lovely",
+                  "sweet"
+              ]
+    },
+    {
+        "w":  "shy",
+        "c":  "th",
+        "zh":  "害羞的",
+        "en":  "afraid to talk to people",
+        "ex":  "The shy boy says nothing.",
+        "exz":  "这个害羞的男孩什么也不说。",
+        "s":  [
+                  "timid",
+                  "bashful",
+                  "quiet"
+              ]
+    },
+    {
+        "w":  "brave",
+        "c":  "th",
+        "zh":  "勇敢的",
+        "en":  "not afraid of danger",
+        "ex":  "The brave girl helps us.",
+        "exz":  "这个勇敢的女孩帮助我们。",
+        "s":  [
+                  "bold",
+                  "fearless",
+                  "strong"
+              ]
+    },
+    {
+        "w":  "proud",
+        "c":  "th",
+        "zh":  "自豪的,骄傲的",
+        "en":  "feeling happy about something good",
+        "ex":  "I am proud of you.",
+        "exz":  "我为你感到自豪。",
+        "s":  [
+                  "pleased",
+                  "glad",
+                  "honored"
+              ]
+    },
+    {
+        "w":  "silly",
+        "c":  "th",
+        "zh":  "傻的,愚蠢的",
+        "en":  "funny in a foolish way",
+        "ex":  "That is a silly joke.",
+        "exz":  "那是一个傻傻的笑话。",
+        "s":  [
+                  "foolish",
+                  "goofy",
+                  "crazy"
+              ]
+    },
+    {
+        "w":  "naughty",
+        "c":  "th",
+        "zh":  "淘气的,顽皮的",
+        "en":  "behaving a little badly",
+        "ex":  "The naughty dog runs away.",
+        "exz":  "这只淘气的狗跑走了。",
+        "s":  [
+                  "bad",
+                  "mischievous",
+                  "wild"
+              ]
+    },
+    {
+        "w":  "wonderful",
+        "c":  "th",
+        "zh":  "极好的,精彩的",
+        "en":  "very good and nice",
+        "ex":  "We had a wonderful day.",
+        "exz":  "我们度过了美好的一天。",
+        "s":  [
+                  "great",
+                  "amazing",
+                  "lovely"
+              ]
+    },
+    {
+        "w":  "amazing",
+        "c":  "th",
+        "zh":  "令人惊奇的",
+        "en":  "very surprising and good",
+        "ex":  "The show is truly amazing.",
+        "exz":  "这场表演真令人惊奇。",
+        "s":  [
+                  "wonderful",
+                  "incredible",
+                  "great"
+              ]
+    },
+    {
+        "w":  "pretty",
+        "c":  "th",
+        "zh":  "漂亮的",
+        "en":  "nice to look at",
+        "ex":  "She has a pretty dress.",
+        "exz":  "她有一条漂亮的裙子。",
+        "s":  [
+                  "beautiful",
+                  "lovely",
+                  "cute"
+              ]
+    },
+    {
+        "w":  "empty",
+        "c":  "th",
+        "zh":  "空的",
+        "en":  "having nothing inside",
+        "ex":  "The box is empty now.",
+        "exz":  "盒子现在是空的。",
+        "s":  [
+                  "bare",
+                  "vacant",
+                  "hollow"
+              ]
+    },
+    {
+        "w":  "heavy",
+        "c":  "th",
+        "zh":  "重的",
+        "en":  "weighing a lot",
+        "ex":  "This bag is very heavy.",
+        "exz":  "这个包很重。",
+        "s":  [
+                  "weighty",
+                  "massive",
+                  "bulky"
+              ]
+    },
+    {
+        "w":  "park",
+        "c":  "th",
+        "zh":  "公园",
+        "en":  "a public place with grass and trees",
+        "ex":  "We play in the park.",
+        "exz":  "我们在公园里玩。",
+        "s":  [
+                  "garden",
+                  "playground",
+                  "square"
+              ]
+    },
+    {
+        "w":  "pool",
+        "c":  "th",
+        "zh":  "水池,游泳池",
+        "en":  "a place filled with water",
+        "ex":  "Children swim in the pool.",
+        "exz":  "孩子们在游泳池里游泳。",
+        "s":  [
+                  "pond",
+                  "basin",
+                  "lagoon"
+              ]
+    },
+    {
+        "w":  "beach",
+        "c":  "th",
+        "zh":  "海滩,沙滩",
+        "en":  "land with sand near the sea",
+        "ex":  "We walk on the beach.",
+        "exz":  "我们在海滩上散步。",
+        "s":  [
+                  "shore",
+                  "coast",
+                  "sand"
+              ]
+    },
+    {
+        "w":  "police",
+        "c":  "th",
+        "zh":  "警察,警方",
+        "en":  "people who keep everyone safe",
+        "ex":  "The police help lost children.",
+        "exz":  "警察帮助走失的孩子。",
+        "s":  [
+                  "officers",
+                  "force",
+                  "law"
+              ]
+    },
+    {
+        "w":  "museum",
+        "c":  "th",
+        "zh":  "博物馆",
+        "en":  "a place with old and special things",
+        "ex":  "We visit the museum today.",
+        "exz":  "我们今天参观博物馆。",
+        "s":  [
+                  "gallery",
+                  "library",
+                  "hall"
+              ]
+    },
+    {
+        "w":  "cinema",
+        "c":  "th",
+        "zh":  "电影院",
+        "en":  "a place to watch movies",
+        "ex":  "We go to the cinema.",
+        "exz":  "我们去电影院。",
+        "s":  [
+                  "theater",
+                  "movies",
+                  "hall"
+              ]
+    },
+    {
+        "w":  "duck",
+        "c":  "th",
+        "zh":  "鸭子",
+        "en":  "a bird that swims in water",
+        "ex":  "The duck swims in water.",
+        "exz":  "鸭子在水中游泳。",
+        "s":  [
+                  "bird",
+                  "fowl",
+                  "drake"
+              ]
+    },
+    {
+        "w":  "mouse",
+        "c":  "th",
+        "zh":  "老鼠",
+        "en":  "a small animal with a long tail",
+        "ex":  "The mouse eats some cheese.",
+        "exz":  "老鼠吃一些奶酪。",
+        "s":  [
+                  "rat",
+                  "rodent",
+                  "creature"
+              ]
+    },
+    {
+        "w":  "frog",
+        "c":  "th",
+        "zh":  "青蛙",
+        "en":  "a small green jumping animal",
+        "ex":  "The frog jumps very high.",
+        "exz":  "青蛙跳得很高。",
+        "s":  [
+                  "toad",
+                  "amphibian",
+                  "animal"
+              ]
+    },
+    {
+        "w":  "butterfly",
+        "c":  "th",
+        "zh":  "蝴蝶",
+        "en":  "an insect with pretty wings",
+        "ex":  "The butterfly is very pretty.",
+        "exz":  "这只蝴蝶非常漂亮。",
+        "s":  [
+                  "insect",
+                  "moth",
+                  "bug"
+              ]
+    },
+    {
+        "w":  "farmer",
+        "c":  "th",
+        "zh":  "农民,农场主",
+        "en":  "a person who grows food",
+        "ex":  "The farmer feeds the cows.",
+        "exz":  "农民喂牛。",
+        "s":  [
+                  "grower",
+                  "rancher",
+                  "peasant"
+              ]
+    },
+    {
+        "w":  "driver",
+        "c":  "th",
+        "zh":  "司机,驾驶员",
+        "en":  "a person who drives a car",
+        "ex":  "The driver stops the bus.",
+        "exz":  "司机停下公交车。",
+        "s":  [
+                  "motorist",
+                  "chauffeur",
+                  "operator"
+              ]
+    },
+    {
+        "w":  "worker",
+        "c":  "th",
+        "zh":  "工人,劳动者",
+        "en":  "a person who does a job",
+        "ex":  "The worker builds a house.",
+        "exz":  "工人建一座房子。",
+        "s":  [
+                  "laborer",
+                  "employee",
+                  "hand"
+              ]
+    },
+    {
+        "w":  "husband",
+        "c":  "th",
+        "zh":  "丈夫",
+        "en":  "the man a woman is married to",
+        "ex":  "Her husband cooks dinner.",
+        "exz":  "她的丈夫做晚饭。",
+        "s":  [
+                  "spouse",
+                  "mate",
+                  "partner"
+              ]
+    },
+    {
+        "w":  "wife",
+        "c":  "th",
+        "zh":  "妻子",
+        "en":  "the woman a man is married to",
+        "ex":  "His wife reads a book.",
+        "exz":  "他的妻子读一本书。",
+        "s":  [
+                  "spouse",
+                  "mate",
+                  "partner"
+              ]
+    },
+    {
+        "w":  "lesson",
+        "c":  "th",
+        "zh":  "课,课程",
+        "en":  "a time when you learn",
+        "ex":  "The lesson starts at nine.",
+        "exz":  "课在九点开始。",
+        "s":  [
+                  "class",
+                  "course",
+                  "study"
+              ]
+    },
+    {
+        "w":  "math",
+        "c":  "th",
+        "zh":  "数学",
+        "en":  "the study of numbers",
+        "ex":  "I like math at school.",
+        "exz":  "我喜欢学校的数学。",
+        "s":  [
+                  "arithmetic",
+                  "numbers",
+                  "calculation"
+              ]
+    },
+    {
+        "w":  "grade",
+        "c":  "th",
+        "zh":  "年级,分数",
+        "en":  "a level or mark in school",
+        "ex":  "She is in grade three.",
+        "exz":  "她上三年级。",
+        "s":  [
+                  "level",
+                  "mark",
+                  "score"
+              ]
+    },
+    {
+        "w":  "clothes",
+        "c":  "th",
+        "zh":  "衣服",
+        "en":  "things you wear on your body",
+        "ex":  "I wash my clothes today.",
+        "exz":  "我今天洗我的衣服。",
+        "s":  [
+                  "dress",
+                  "garments",
+                  "outfit"
+              ]
+    },
+    {
+        "w":  "mirror",
+        "c":  "th",
+        "zh":  "镜子",
+        "en":  "glass that shows your face",
+        "ex":  "She looks in the mirror.",
+        "exz":  "她照镜子。",
+        "s":  [
+                  "glass",
+                  "reflector",
+                  "surface"
+              ]
+    },
+    {
+        "w":  "screen",
+        "c":  "th",
+        "zh":  "屏幕",
+        "en":  "a flat part that shows pictures",
+        "ex":  "The screen shows a movie.",
+        "exz":  "屏幕上放着一部电影。",
+        "s":  [
+                  "display",
+                  "monitor",
+                  "panel"
+              ]
+    },
+    {
+        "w":  "age",
+        "c":  "th",
+        "zh":  "年龄,年纪",
+        "en":  "how old a person is",
+        "ex":  "What is your age?",
+        "exz":  "你多大了？",
+        "s":  [
+                  "years",
+                  "lifetime",
+                  "era"
+              ]
     }
 ]
