@@ -10,12 +10,30 @@ import android.speech.tts.TextToSpeech
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Indication
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
@@ -98,11 +116,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -270,6 +293,13 @@ enum class PracticeType(val title: String) {
     Example("例句填空"),
     Spelling("拼写挑战"),
     Synonym("近义词配对")
+}
+
+// 难度按认知负担递进：识别 → 语境 → 回忆产出
+enum class Difficulty(val title: String, val tint: Color, val types: List<PracticeType>) {
+    Easy("简单", Color(0xFF166534), listOf(PracticeType.Listen, PracticeType.Meaning)),
+    Medium("中等", Color(0xFFB45309), listOf(PracticeType.Listen, PracticeType.Meaning, PracticeType.Example)),
+    Hard("困难", Color(0xFFB91C1C), listOf(PracticeType.Listen, PracticeType.Meaning, PracticeType.Example, PracticeType.Spelling, PracticeType.Synonym))
 }
 
 sealed class Screen {
@@ -523,6 +553,7 @@ private fun localEpochDay(millis: Long): Long {
     return start.timeInMillis / 86_400_000L
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun OgdenKidsApp() {
     val context = LocalContext.current
@@ -590,13 +621,33 @@ fun OgdenKidsApp() {
         )
     ) {
         Surface(color = Paper, modifier = Modifier.fillMaxSize()) {
-            when (val current = screen) {
-                Screen.Main -> MainScaffold(
-                    selectedTab = selectedTab,
-                    onTab = { selectedTab = it },
-                    content = { padding ->
-                        when (selectedTab) {
-                            Tab.Challenge -> ChallengeScreen(
+            AnimatedContent(
+                targetState = screen,
+                transitionSpec = {
+                    ContentTransform(
+                        targetContentEnter = slideInHorizontally(initialOffsetX = { it / 5 }, animationSpec = tween(260)) + fadeIn(tween(260)),
+                        initialContentExit = slideOutHorizontally(targetOffsetX = { -it / 5 }, animationSpec = tween(260)) + fadeOut(tween(220))
+                    )
+                },
+                label = "screen"
+            ) { current ->
+                when (current) {
+                    Screen.Main -> MainScaffold(
+                        selectedTab = selectedTab,
+                        onTab = { selectedTab = it },
+                        content = { padding ->
+                            AnimatedContent(
+                                targetState = selectedTab,
+                                transitionSpec = {
+                                    ContentTransform(
+                                        targetContentEnter = fadeIn(tween(220)),
+                                        initialContentExit = fadeOut(tween(180))
+                                    )
+                                },
+                                label = "tab"
+                            ) { tab ->
+                                when (tab) {
+                                    Tab.Challenge -> ChallengeScreen(
                                 words = words,
                                 store = progressStore,
                                 padding = padding,
@@ -620,13 +671,14 @@ fun OgdenKidsApp() {
                                 words = words,
                                 store = progressStore,
                                 padding = padding,
-                                onMistakes = { screen = Screen.WordCollection("错词本", "mistakes") },
-                                onFavorites = { screen = Screen.WordCollection("收藏夹", "favorites") }
-                            )
+                                    onMistakes = { screen = Screen.WordCollection("错词本", "mistakes") },
+                                    onFavorites = { screen = Screen.WordCollection("收藏夹", "favorites") }
+                                )
+                                }
+                            }
                         }
-                    }
-                )
-                is Screen.Detail -> WordDetailScreen(
+                    )
+                    is Screen.Detail -> WordDetailScreen(
                     word = current.word,
                     progress = progressStore.progress(current.word.word),
                     accent = accent,
@@ -697,6 +749,7 @@ fun OgdenKidsApp() {
                         "创作初衷" to "https://longlong-skyligo.github.io/posts/basic-english/"
                     )
                 )
+                }
             }
         }
     }
@@ -910,6 +963,12 @@ data class Proverb(val en: String, val zh: String)
 @Composable
 fun ProverbCard(proverb: Proverb) {
     var flipped by remember(proverb.en) { mutableStateOf(false) }
+    val rotation by animateFloatAsState(
+        targetValue = if (flipped) 180f else 0f,
+        animationSpec = tween(520),
+        label = "proverbFlip"
+    )
+    val density = LocalDensity.current
     Card(
         colors = CardDefaults.cardColors(containerColor = PaperElevated),
         shape = RoundedCornerShape(18.dp),
@@ -922,10 +981,14 @@ fun ProverbCard(proverb: Proverb) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .graphicsLayer {
+                    rotationY = rotation
+                    cameraDistance = 12f * density.density
+                }
                 .padding(22.dp),
             contentAlignment = Alignment.Center
         ) {
-            if (!flipped) {
+            if (rotation <= 90f) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text(
                         proverb.en,
@@ -939,7 +1002,11 @@ fun ProverbCard(proverb: Proverb) {
                     Text("Tap to turn", color = InkFaint, fontSize = 11.sp, fontFamily = FontFamily.Serif)
                 }
             } else {
-                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(
+                    modifier = Modifier.graphicsLayer { rotationY = 180f },
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     Text(
                         proverb.zh,
                         color = InkSoft.copy(alpha = 0.72f),
@@ -1045,14 +1112,15 @@ fun ChallengeScreen(
             )
         }
         item {
+            val (statsInteraction, statsIndication, statsPress) = rememberPressScale()
             Card(
                 colors = CardDefaults.cardColors(containerColor = PaperElevated),
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(0.dp),
-                modifier = Modifier
+                modifier = statsPress
                     .fillMaxWidth()
                     .border(1.dp, Line, RoundedCornerShape(16.dp))
-                    .clickable(onClick = onOpenStats)
+                    .clickable(interactionSource = statsInteraction, indication = statsIndication, onClick = onOpenStats)
             ) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -1136,15 +1204,16 @@ fun HeroCard(title: String, subtitle: String, action: String, onAction: () -> Un
 @Composable
 fun StatsRow(learned: Int, mistakes: Int, favorites: Int, streak: Int) {
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
-        StatCard("已掌握", learned.toString(), Category.GeneralThings.tint, Modifier.weight(1f))
-        StatCard("错词", mistakes.toString(), Error, Modifier.weight(1f))
-        StatCard("收藏", favorites.toString(), Category.Opposites.tint, Modifier.weight(1f))
-        StatCard("连续", "${streak}天", Category.Picturable.tint, Modifier.weight(1f))
+        StatCard("已掌握", learned, "", Category.GeneralThings.tint, Modifier.weight(1f))
+        StatCard("错词", mistakes, "", Error, Modifier.weight(1f))
+        StatCard("收藏", favorites, "", Category.Opposites.tint, Modifier.weight(1f))
+        StatCard("连续", streak, "天", Category.Picturable.tint, Modifier.weight(1f))
     }
 }
 
 @Composable
-fun StatCard(label: String, value: String, tint: Color, modifier: Modifier = Modifier) {
+fun StatCard(label: String, value: Int, suffix: String = "", tint: Color, modifier: Modifier = Modifier) {
+    val animated by animateIntAsState(value, tween(600), label = "stat")
     Card(
         modifier = modifier.border(1.dp, Line, RoundedCornerShape(14.dp)),
         colors = CardDefaults.cardColors(containerColor = PaperElevated),
@@ -1152,7 +1221,7 @@ fun StatCard(label: String, value: String, tint: Color, modifier: Modifier = Mod
     ) {
         Column(Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             // 大字号下四列很窄，允许换行而不是裁掉数字
-            Text(value, color = tint, fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center)
+            Text("$animated$suffix", color = tint, fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center)
             AppText(label, color = InkFaint, fontSize = 12.sp, textAlign = TextAlign.Center)
         }
     }
@@ -1185,9 +1254,9 @@ fun StatsScreen(store: ProgressStore, onBack: () -> Unit) {
             }
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
-                    StatCard("30天答题", totalAnswered.toString(), Category.Function.tint, Modifier.weight(1f))
-                    StatCard("30天答对", totalCorrect.toString(), Success, Modifier.weight(1f))
-                    StatCard("连续天数", "${store.dailyStreak()}天", Category.Picturable.tint, Modifier.weight(1f))
+                    StatCard("30天答题", totalAnswered, "", Category.Function.tint, Modifier.weight(1f))
+                    StatCard("30天答对", totalCorrect, "", Success, Modifier.weight(1f))
+                    StatCard("连续天数", store.dailyStreak(), "天", Category.Picturable.tint, Modifier.weight(1f))
                 }
             }
             item {
@@ -1245,10 +1314,11 @@ fun DayBarChart(series: List<DailyActivityEntity>, modifier: Modifier = Modifier
 
 @Composable
 fun CategoryProgressCard(category: Category, learned: Int, total: Int, onClick: () -> Unit) {
+    val (pressInteraction, pressIndication, pressModifier) = rememberPressScale()
     Card(
-        modifier = Modifier
+        modifier = pressModifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(interactionSource = pressInteraction, indication = pressIndication, onClick = onClick)
             .border(1.dp, Line, RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(containerColor = PaperElevated),
         shape = RoundedCornerShape(16.dp)
@@ -1258,13 +1328,13 @@ fun CategoryProgressCard(category: Category, learned: Int, total: Int, onClick: 
                 CategoryDot(category)
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(category.label, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                    AppText("${category.zh} · $total WORDS", color = InkFaint, fontSize = 12.sp)
+                    Text(category.zh, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    AppText("$total 词", color = InkFaint, fontSize = 12.sp)
                 }
                 AppText("${ceil(total / 10.0).toInt()} 关", color = category.tint, fontWeight = FontWeight.Bold)
             }
             LinearProgressIndicator(
-                progress = learned / total.toFloat(),
+                progress = animateProgress(learned / total.toFloat()),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
@@ -1290,8 +1360,8 @@ fun LevelSelectionScreen(
     Scaffold(containerColor = Paper, topBar = {
         SecondaryTopBar(onBack) {
             Column(Modifier.weight(1f)) {
-                Text(category.label, fontWeight = FontWeight.Bold)
-                AppText("${category.zh} · $levels 个关卡", color = InkFaint, fontSize = 12.sp)
+                Text(category.zh, fontWeight = FontWeight.Bold)
+                AppText("$levels 个关卡", color = InkFaint, fontSize = 12.sp)
             }
         }
     }) { padding ->
@@ -1334,10 +1404,11 @@ fun LevelCard(
     total: Int,
     onClick: () -> Unit
 ) {
+    val (pressInteraction, pressIndication, pressModifier) = rememberPressScale()
     Card(
-        modifier = Modifier
+        modifier = pressModifier
             .fillMaxWidth()
-            .clickable(enabled = unlocked, onClick = onClick)
+            .clickable(interactionSource = pressInteraction, indication = pressIndication, enabled = unlocked, onClick = onClick)
             .border(1.dp, if (unlocked) Line else Color(0xFFE8E1D4), RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(containerColor = if (unlocked) PaperElevated else Color(0xFFF2EDE4)),
         shape = RoundedCornerShape(16.dp)
@@ -1373,7 +1444,7 @@ fun LevelCard(
                     fontSize = 13.sp
                 )
                 LinearProgressIndicator(
-                    progress = if (total == 0) 0f else mastered / total.toFloat(),
+                    progress = animateProgress(if (total == 0) 0f else mastered / total.toFloat()),
                     color = category.tint,
                     trackColor = category.soft,
                     modifier = Modifier
@@ -1682,10 +1753,11 @@ fun ReviewEntryCard(
     icon: ImageVector,
     onClick: () -> Unit
 ) {
+    val (pressInteraction, pressIndication, pressModifier) = rememberPressScale()
     Card(
-        modifier = Modifier
+        modifier = pressModifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(interactionSource = pressInteraction, indication = pressIndication, onClick = onClick)
             .border(1.dp, Line, RoundedCornerShape(16.dp)),
         colors = CardDefaults.cardColors(containerColor = PaperElevated),
         shape = RoundedCornerShape(16.dp)
@@ -2060,14 +2132,17 @@ fun PracticeScreen(
     }
     // 每次进入关卡（或重练）生成一个种子：决定题型顺序与干扰项，同一次尝试内保持稳定
     var attemptSeed by remember(source) { mutableStateOf(Random.nextInt()) }
-    val types = remember(attemptSeed) { PracticeType.values().toList().shuffled(Random(attemptSeed)) }
+    var difficulty by remember(source) { mutableStateOf<Difficulty?>(null) }
     var index by remember(source) { mutableStateOf(0) }
     var selected by remember(source) { mutableStateOf<String?>(null) }
     var typed by remember(source) { mutableStateOf("") }
     var answerShown by remember(source) { mutableStateOf(false) }
     var correctCount by remember(source) { mutableStateOf(0) }
+    var celebrateTick by remember(source) { mutableStateOf(0) }
+    val haptic = LocalHapticFeedback.current
     val word = source.getOrNull(index)
 
+    Box(Modifier.fillMaxSize()) {
     Scaffold(containerColor = Paper, topBar = {
         SecondaryTopBar(onBack) {
             Column(Modifier.weight(1f)) {
@@ -2082,6 +2157,15 @@ fun PracticeScreen(
             }
             return@Scaffold
         }
+        val currentDifficulty = difficulty
+        if (currentDifficulty == null) {
+            DifficultyPicker(
+                onSelect = { difficulty = it },
+                modifier = Modifier.fillMaxSize().padding(padding)
+            )
+            return@Scaffold
+        }
+        val types = remember(attemptSeed, currentDifficulty) { currentDifficulty.types.shuffled(Random(attemptSeed)) }
         val type = types[index % types.size]
         // 记忆题目，避免重组时选项重新洗牌
         val question = remember(word, level, index, attemptSeed) { buildQuestion(type, word, allWords, attemptSeed) }
@@ -2089,6 +2173,10 @@ fun PracticeScreen(
         val lastQuestion = index >= source.lastIndex
         val needed = ceil(source.size * 0.6).toInt()
         val passed = correctCount >= needed
+
+        LaunchedEffect(answerShown, lastQuestion, passed) {
+            if (answerShown && lastQuestion && passed) celebrateTick++
+        }
 
         LazyColumn(
             modifier = Modifier
@@ -2099,7 +2187,7 @@ fun PracticeScreen(
         ) {
             item {
                 LinearProgressIndicator(
-                    progress = (index + if (answerShown) 1 else 0) / source.size.toFloat(),
+                    progress = animateProgress((index + if (answerShown) 1 else 0) / source.size.toFloat()),
                     color = category.tint,
                     trackColor = category.soft,
                     modifier = Modifier
@@ -2136,7 +2224,9 @@ fun PracticeScreen(
                         OutlinedTextField(
                             value = typed,
                             onValueChange = { if (!answerShown) typed = it },
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .answerShake(answerShown && !isCorrect),
                             label = { AppText("输入英文拼写") },
                             placeholder = { AppText("在这里拼出单词") },
                             singleLine = true,
@@ -2149,7 +2239,12 @@ fun PracticeScreen(
                                     val guess = typed.trim()
                                     selected = guess
                                     val ok = guess.equals(question.answer, ignoreCase = true)
-                                    if (ok) correctCount++
+                                    if (ok) {
+                                        correctCount++
+                                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    } else {
+                                        haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                    }
                                     onRecord(word, ok)
                                     answerShown = true
                                 }
@@ -2157,7 +2252,8 @@ fun PracticeScreen(
                             enabled = !answerShown && typed.isNotBlank(),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .heightIn(min = 48.dp),
+                                .heightIn(min = 48.dp)
+                                .answerPop(answerShown && isCorrect),
                             shape = RoundedCornerShape(14.dp)
                         ) {
                             AppText("提交答案")
@@ -2174,12 +2270,20 @@ fun PracticeScreen(
                         if (!answerShown) {
                             selected = option
                             val ok = option == question.answer
-                            if (ok) correctCount++
+                            if (ok) {
+                                correctCount++
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            } else {
+                                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            }
                             onRecord(word, ok)
                             answerShown = true
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .answerPop(correctThis)
+                        .answerShake(wrongThis),
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = when {
@@ -2273,6 +2377,8 @@ fun PracticeScreen(
                 }
             }
         }
+    }
+        ConfettiOverlay(tick = celebrateTick, modifier = Modifier.fillMaxSize())
     }
 }
 
@@ -2395,13 +2501,15 @@ fun CompactWordRow(
     onSpeak: ((String) -> Unit)? = null,
     onFavorite: (() -> Unit)? = null
 ) {
+    val (pressInteraction, pressIndication, pressModifier) = rememberPressScale()
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(PaperElevated)
             .border(1.dp, Line, RoundedCornerShape(12.dp))
-            .clickable(onClick = onOpen)
+            .clickable(interactionSource = pressInteraction, indication = pressIndication, onClick = onOpen)
+            .then(pressModifier)
             .padding(horizontal = 14.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -2456,6 +2564,156 @@ fun EmptyCard(text: String) {
             .border(1.dp, Line, RoundedCornerShape(14.dp))
     ) {
         AppText(text, color = InkFaint, modifier = Modifier.padding(18.dp))
+    }
+}
+
+@Composable
+private fun Modifier.answerShake(trigger: Boolean): Modifier {
+    val offset = remember { Animatable(0f) }
+    LaunchedEffect(trigger) {
+        if (trigger) {
+            val spec = tween<Float>(50)
+            repeat(3) {
+                offset.animateTo(12f, spec)
+                offset.animateTo(-12f, spec)
+            }
+            offset.animateTo(0f, spec)
+        } else {
+            offset.snapTo(0f)
+        }
+    }
+    return graphicsLayer { translationX = offset.value }
+}
+
+@Composable
+private fun Modifier.answerPop(trigger: Boolean): Modifier {
+    val scale = remember { Animatable(1f) }
+    LaunchedEffect(trigger) {
+        if (trigger) {
+            scale.animateTo(1.06f, spring(dampingRatio = Spring.DampingRatioMediumBouncy))
+            scale.animateTo(1f, spring(dampingRatio = Spring.DampingRatioMediumBouncy))
+        } else {
+            scale.snapTo(1f)
+        }
+    }
+    return graphicsLayer { scaleX = scale.value; scaleY = scale.value }
+}
+
+@Composable
+private fun rememberPressScale(scaleTo: Float = 0.96f): Triple<MutableInteractionSource, Indication?, Modifier> {
+    val interaction = remember { MutableInteractionSource() }
+    val indication = LocalIndication.current
+    val pressed by interaction.collectIsPressedAsState()
+    val scale by animateFloatAsState(
+        targetValue = if (pressed) scaleTo else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "pressScale"
+    )
+    return Triple(interaction, indication, Modifier.graphicsLayer { scaleX = scale; scaleY = scale })
+}
+
+@Composable
+private fun animateProgress(target: Float): Float {
+    val value by animateFloatAsState(target, tween(600), label = "progress")
+    return value
+}
+
+private class ConfettiParticle(
+    val x: Float,
+    val drift: Float,
+    val speed: Float,
+    val color: Color,
+    val size: Float,
+    val spin: Float,
+    val spinSpeed: Float
+)
+
+@Composable
+fun ConfettiOverlay(tick: Int, modifier: Modifier = Modifier) {
+    val progress = remember { Animatable(0f) }
+    val particles = remember {
+        val rng = Random(7)
+        val colors = listOf(
+            Color(0xFFE11D48), Color(0xFFF59E0B), Color(0xFF10B981),
+            Color(0xFF3B82F6), Color(0xFF8B5CF6), Color(0xFFF97316)
+        )
+        List(40) {
+            ConfettiParticle(
+                x = rng.nextFloat(),
+                drift = rng.nextFloat() * 0.5f - 0.25f,
+                speed = 0.7f + rng.nextFloat() * 0.6f,
+                color = colors.random(rng),
+                size = 7f + rng.nextFloat() * 8f,
+                spin = rng.nextFloat() * 360f,
+                spinSpeed = rng.nextFloat() * 720f - 360f
+            )
+        }
+    }
+    LaunchedEffect(tick) {
+        if (tick > 0) {
+            progress.snapTo(0f)
+            progress.animateTo(1f, tween(2200, easing = LinearEasing))
+        }
+    }
+    val t = progress.value
+    if (tick > 0 && t < 1f) {
+        Canvas(modifier.fillMaxSize()) {
+            particles.forEach { part ->
+                val tt = t * part.speed
+                val x = (part.x + part.drift * tt) * size.width
+                val y = -30f + (size.height + 140f) * tt
+                val alpha = if (tt > 0.8f) ((1f - tt) / 0.2f).coerceIn(0f, 1f) else 1f
+                rotate(part.spin + part.spinSpeed * tt, pivot = Offset(x, y)) {
+                    drawRect(
+                        color = part.color.copy(alpha = alpha),
+                        topLeft = Offset(x - part.size / 2f, y - part.size / 2f),
+                        size = Size(part.size, part.size * 0.55f)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DifficultyPicker(onSelect: (Difficulty) -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.padding(18.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        Card(
+            colors = CardDefaults.cardColors(containerColor = PaperElevated),
+            shape = RoundedCornerShape(18.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, Line, RoundedCornerShape(18.dp))
+        ) {
+            Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                AppText("选择难度", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+                AppText("简单认词，困难要自己拼写", color = InkFaint, fontSize = 13.sp)
+            }
+        }
+        Difficulty.values().forEach { d ->
+            val (interaction, indication, press) = rememberPressScale()
+            Card(
+                colors = CardDefaults.cardColors(containerColor = PaperElevated),
+                shape = RoundedCornerShape(16.dp),
+                modifier = press
+                    .fillMaxWidth()
+                    .clickable(interactionSource = interaction, indication = indication, onClick = { onSelect(d) })
+                    .border(1.dp, Line, RoundedCornerShape(16.dp))
+            ) {
+                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(14.dp).clip(CircleShape).background(d.tint.forDark(LocalPalette.current.dark)))
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        AppText(d.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                        AppText(d.types.joinToString(" · ") { it.title }, color = InkFaint, fontSize = 12.sp)
+                    }
+                    AppText("开始 →", color = d.tint.forDark(LocalPalette.current.dark), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
     }
 }
 
