@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
+    id "org.jetbrains.kotlin.kapt"
 }
 
 android {
@@ -13,7 +14,15 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0.0"
+        // 应用界面只有简体中文一种语言
+        resConfigs "zh-rCN"
 
+        // 导出 Room 架构 json，方便日后审阅迁移
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
     }
 
     buildFeatures {
@@ -41,6 +50,9 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended"
     implementation "androidx.compose.material3:material3"
     implementation "androidx.compose.ui:ui"
+    implementation "androidx.room:room-runtime:2.5.2"
+    implementation "androidx.room:room-ktx:2.5.2"
+    kapt "androidx.room:room-compiler:2.5.2"
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.json:json:20240303"

@@ -1,19 +1,21 @@
 package com.example.ogdenkids
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
-import android.icu.text.Transliterator
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,14 +24,19 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -39,20 +46,23 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -70,17 +80,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -88,6 +107,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
+import com.example.ogdenkids.data.LevelProgressEntity
+import com.example.ogdenkids.data.ProgressDatabase
+import com.example.ogdenkids.data.WordProgressEntity
+import com.example.ogdenkids.data.legacyLevelProgress
+import com.example.ogdenkids.data.legacyWordProgress
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URLEncoder
@@ -98,27 +129,86 @@ import kotlin.random.Random
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // edge-to-edge：内容自行处理 inset，状态栏/导航栏由主题决定明暗
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent { OgdenKidsApp() }
     }
 }
 
-private val Paper = Color(0xFFFAF6ED)
-private val PaperElevated = Color(0xFFFFFDF7)
-private val Ink = Color(0xFF1C1917)
-private val InkSoft = Color(0xFF44403C)
-private val InkFaint = Color(0xFF78716C)
-private val Line = Color(0xFFE7E2D4)
-private val Success = Color(0xFF166534)
-private val Error = Color(0xFFB91C1C)
-private val LocalChineseMode = compositionLocalOf { ChineseMode.Hans }
+private class Palette(
+    val paper: Color,
+    val paperElevated: Color,
+    val ink: Color,
+    val inkSoft: Color,
+    val inkFaint: Color,
+    val line: Color,
+    val success: Color,
+    val error: Color,
+    val dark: Boolean
+)
+
+private val LightPalette = Palette(
+    paper = Color(0xFFFAF6ED),
+    paperElevated = Color(0xFFFFFDF7),
+    ink = Color(0xFF1C1917),
+    inkSoft = Color(0xFF44403C),
+    inkFaint = Color(0xFF78716C),
+    line = Color(0xFFE7E2D4),
+    success = Color(0xFF166534),
+    error = Color(0xFFB91C1C),
+    dark = false
+)
+
+// 深色仍是暖调「纸与墨」：底色偏棕黑，文字偏米白，不用中性灰
+private val DarkPalette = Palette(
+    paper = Color(0xFF17130F),
+    paperElevated = Color(0xFF221C16),
+    ink = Color(0xFFF3EADA),
+    inkSoft = Color(0xFFD2C6B4),
+    inkFaint = Color(0xFF9D9082),
+    line = Color(0xFF3B332B),
+    success = Color(0xFF6EE7A8),
+    error = Color(0xFFFCA5A5),
+    dark = true
+)
+
+private val LocalPalette = staticCompositionLocalOf { LightPalette }
+
+// 旧的顶层颜色常量改成按主题取值的组合式属性，几十处调用点写法不变
+private val Paper: Color
+    @Composable @ReadOnlyComposable get() = LocalPalette.current.paper
+private val PaperElevated: Color
+    @Composable @ReadOnlyComposable get() = LocalPalette.current.paperElevated
+private val Ink: Color
+    @Composable @ReadOnlyComposable get() = LocalPalette.current.ink
+private val InkSoft: Color
+    @Composable @ReadOnlyComposable get() = LocalPalette.current.inkSoft
+private val InkFaint: Color
+    @Composable @ReadOnlyComposable get() = LocalPalette.current.inkFaint
+private val Line: Color
+    @Composable @ReadOnlyComposable get() = LocalPalette.current.line
+private val Success: Color
+    @Composable @ReadOnlyComposable get() = LocalPalette.current.success
+private val Error: Color
+    @Composable @ReadOnlyComposable get() = LocalPalette.current.error
+
+// 分类色是深饱和色，直接放在深色底上对比不足，深色主题里统一提亮
+private fun Color.forDark(dark: Boolean) = if (dark) lerp(this, Color.White, 0.52f) else this
+
+private val Category.tint: Color
+    @Composable @ReadOnlyComposable get() = baseTint.forDark(LocalPalette.current.dark)
+
+private val Category.soft: Color
+    @Composable @ReadOnlyComposable get() =
+        if (LocalPalette.current.dark) baseTint.forDark(true).copy(alpha = 0.20f) else baseSoft
 
 enum class Category(
     val code: String,
     val label: String,
     val zh: String,
     val count: Int,
-    val tint: Color,
-    val soft: Color
+    val baseTint: Color,
+    val baseSoft: Color
 ) {
     Operations("op", "Operations", "操作词", 100, Color(0xFFB45309), Color(0xFFFEF3C7)),
     GeneralThings("gt", "General Things", "通用词", 400, Color(0xFF166534), Color(0xFFDCFCE7)),
@@ -152,20 +242,14 @@ data class WordProgress(
 )
 
 enum class Tab(val title: String, val icon: ImageVector) {
-    Home("首页", Icons.Default.Home),
     Challenge("闯关", Icons.Default.Star),
     Library("词库", Icons.Default.Book),
-    Review("复习", Icons.Default.Refresh),
-    Software("软件", Icons.Default.Info)
+    Review("复习", Icons.Default.Refresh)
 }
 
 enum class Accent(val label: String, val locale: Locale) {
     UK("UK 英式", Locale.UK),
     US("US 美式", Locale.US)
-}
-
-enum class ChineseMode(val label: String) {
-    Hans("简"), Hant("繁")
 }
 
 enum class PracticeType(val title: String) {
@@ -178,7 +262,8 @@ enum class PracticeType(val title: String) {
 
 sealed class Screen {
     object Main : Screen()
-    data class Detail(val word: OgdenWord) : Screen()
+    // neighbors 是打开详情时的那份列表，用来做上一个/下一个
+    data class Detail(val word: OgdenWord, val neighbors: List<OgdenWord>) : Screen()
     data class Levels(val category: Category) : Screen()
     data class Practice(val category: Category, val level: Int) : Screen()
     data class WordCollection(val title: String, val kind: String) : Screen()
@@ -211,33 +296,80 @@ fun loadWords(context: Context): List<OgdenWord> {
     }
 }
 
+// 存储分工：逐词进度与关卡完成放 Room（未来要按时间/正确率排序查询），
+// streak / lastStudyDay / lastCategory / lastLevel / accent 仍留在 SharedPreferences
+// —— 它们是单值标量，组合期间同步读写，为四个数字单开一张单行表只会多一层异步。
 class ProgressStore(context: Context) {
     private val prefs = context.getSharedPreferences("ogden-progress", Context.MODE_PRIVATE)
+    private val dao = ProgressDatabase.get(context).progressDao()
+    // 自己持有作用域而不用 rememberCoroutineScope：退出组合不该取消刚提交的落库。
+    // 默认 Main，快照状态只在主线程改；数据库读写各处显式切 IO
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
-    fun progress(word: String) = WordProgress(
-        favorite = set("favorites").contains(word),
-        mistake = set("mistakes").contains(word),
-        mastery = prefs.getInt("mastery.$word", 0),
-        attempts = prefs.getInt("attempts.$word", 0),
-        correct = prefs.getInt("correct.$word", 0)
-    )
+    // 组合期间只读这份内存快照；数据库读写一律在协程里，写入是「先改快照再落库」
+    private val entries = mutableStateMapOf<String, WordProgress>()
+    private val levels = mutableStateMapOf<String, Boolean>()
+    // lastAnsweredAt 界面不显示，只在整行覆盖写时要带上，放普通 map 不参与重组
+    private val answeredAt = mutableMapOf<String, Long>()
+    private var streak by mutableStateOf(prefs.getInt("streak", 0))
+    // 首帧数据库还没读完，界面先等这个标志，避免统计闪一次 0
+    var ready by mutableStateOf(false)
+        private set
 
-    fun toggleFavorite(word: String) = updateSet("favorites", word, !set("favorites").contains(word))
+    init {
+        scope.launch {
+            val (words, completed) = withContext(Dispatchers.IO) {
+                importLegacyPrefsIfNeeded()
+                dao.allWordProgress() to dao.allLevelProgress()
+            }
+            words.forEach {
+                entries[it.word] = it.toWordProgress()
+                answeredAt[it.word] = it.lastAnsweredAt
+            }
+            completed.forEach { levels[levelKey(it.category, it.level)] = true }
+            ready = true
+        }
+    }
+
+    // 首次跑新版时把旧偏好里的进度搬进数据库：确认写入成功后才记 roomImported 标志，
+    // 旧键一律保留不删，万一日后发现映射有误还能人工找回
+    private suspend fun importLegacyPrefsIfNeeded() {
+        if (prefs.getBoolean(IMPORTED_KEY, false)) return
+        val snapshot = prefs.all
+        val words = legacyWordProgress(snapshot)
+        val completed = legacyLevelProgress(snapshot)
+        if (words.isNotEmpty()) dao.saveWordProgress(words)
+        if (completed.isNotEmpty()) dao.saveLevelProgress(completed)
+        prefs.edit().putBoolean(IMPORTED_KEY, true).commit()
+    }
+
+    fun progress(word: String): WordProgress = entries[word] ?: Blank
+
+    fun toggleFavorite(word: String) {
+        val next = progress(word).let { it.copy(favorite = !it.favorite) }
+        entries[word] = next
+        persist(word, next)
+    }
 
     fun record(word: String, correct: Boolean) {
-        val current = progress(word)
-        val nextMastery = when {
-            correct -> (current.mastery + 1).coerceAtMost(3)
-            else -> (current.mastery - 1).coerceAtLeast(0)
-        }
-        prefs.edit()
-            .putInt("attempts.$word", current.attempts + 1)
-            .putInt("correct.$word", current.correct + if (correct) 1 else 0)
-            .putInt("mastery.$word", nextMastery)
-            .putLong("last.$word", System.currentTimeMillis())
-            .apply()
-        updateSet("mistakes", word, !correct || nextMastery == 0)
+        val next = nextProgress(progress(word), correct)
+        entries[word] = next
+        answeredAt[word] = System.currentTimeMillis()
+        persist(word, next)
         if (correct) bumpDailyStreak()
+    }
+
+    private fun persist(word: String, value: WordProgress) {
+        val entity = WordProgressEntity(
+            word = word,
+            favorite = value.favorite,
+            mistake = value.mistake,
+            mastery = value.mastery,
+            attempts = value.attempts,
+            correct = value.correct,
+            lastAnsweredAt = answeredAt[word] ?: 0L
+        )
+        scope.launch(Dispatchers.IO) { dao.saveWordProgress(entity) }
     }
 
     fun masteredCount(words: List<OgdenWord>) = words.count { progress(it.word).mastery >= 3 }
@@ -246,7 +378,7 @@ class ProgressStore(context: Context) {
 
     fun favoriteWords(words: List<OgdenWord>) = words.filter { progress(it.word).favorite }
 
-    fun dailyStreak(): Int = prefs.getInt("streak", 0)
+    fun dailyStreak(): Int = streak
 
     fun lastCategory(): Category = runCatching {
         Category.from(prefs.getString("lastCategory", Category.Operations.code) ?: Category.Operations.code)
@@ -265,91 +397,157 @@ class ProgressStore(context: Context) {
         Accent.valueOf(prefs.getString("accent", Accent.US.name) ?: Accent.US.name)
     }.getOrDefault(Accent.US)
 
-    fun savedChineseMode(): ChineseMode = runCatching {
-        ChineseMode.valueOf(prefs.getString("chineseMode", ChineseMode.Hant.name) ?: ChineseMode.Hant.name)
-    }.getOrDefault(ChineseMode.Hant)
-
     fun saveAccent(accent: Accent) {
         prefs.edit().putString("accent", accent.name).commit()
     }
 
-    fun saveChineseMode(mode: ChineseMode) {
-        prefs.edit().putString("chineseMode", mode.name).commit()
-    }
-
     fun isLevelComplete(category: Category, level: Int): Boolean =
-        prefs.getBoolean("level.${category.code}.$level.complete", false)
+        levels[levelKey(category.code, level)] == true
 
     fun isLevelUnlocked(category: Category, level: Int): Boolean =
         level <= 1 || isLevelComplete(category, level - 1)
 
     fun markLevelComplete(category: Category, level: Int) {
-        prefs.edit().putBoolean("level.${category.code}.$level.complete", true).commit()
+        levels[levelKey(category.code, level)] = true
+        val entity = LevelProgressEntity(category.code, level, System.currentTimeMillis())
+        scope.launch(Dispatchers.IO) { dao.saveLevelProgress(entity) }
     }
+
+    // 清空学习进度：内存快照立即归零（界面无需重启），数据库与标量随后清
+    fun resetProgress() {
+        entries.clear()
+        levels.clear()
+        answeredAt.clear()
+        streak = 0
+        // 先清库再清偏好：反过来若中途进程被杀，导入标志还在而库里旧行会复活
+        scope.launch(Dispatchers.IO) {
+            dao.clearWordProgress()
+            dao.clearLevelProgress()
+            val editor = prefs.edit()
+            resettableProgressKeys(prefs.all.keys).forEach { editor.remove(it) }
+            editor.commit()
+        }
+    }
+
+    private fun levelKey(categoryCode: String, level: Int) = "$categoryCode.$level"
 
     private fun bumpDailyStreak() {
         val today = System.currentTimeMillis() / 86_400_000L
-        val last = prefs.getLong("lastStudyDay", 0L)
-        val streak = prefs.getInt("streak", 0)
-        val next = when {
-            last == today -> streak
-            last == today - 1 -> streak + 1
-            else -> 1
-        }
+        val next = nextStreak(prefs.getLong("lastStudyDay", 0L), today, streak)
+        streak = next
         prefs.edit().putLong("lastStudyDay", today).putInt("streak", next).apply()
     }
 
-    private fun set(key: String): Set<String> = prefs.getStringSet(key, emptySet()).orEmpty()
-
-    private fun updateSet(key: String, word: String, present: Boolean) {
-        val next = set(key).toMutableSet()
-        if (present) next.add(word) else next.remove(word)
-        prefs.edit().putStringSet(key, next).commit()
+    private companion object {
+        const val IMPORTED_KEY = "roomImported"
+        val Blank = WordProgress(favorite = false, mistake = false, mastery = 0, attempts = 0, correct = 0)
     }
+}
+
+private fun WordProgressEntity.toWordProgress() = WordProgress(
+    favorite = favorite,
+    mistake = mistake,
+    mastery = mastery,
+    attempts = attempts,
+    correct = correct
+)
+
+// 重置要删哪些键，抽成纯函数便于单测：accent 是偏好设置不属于进度，必须留下；
+// roomImported 是迁移标志，删掉会让残留的旧键在下次启动被重新导入，也必须留下
+fun resettableProgressKeys(keys: Set<String>): Set<String> =
+    keys.filterTo(mutableSetOf()) { it != "accent" && it != "roomImported" }
+
+// 答题后的熟练度/错词流转：答对 +1 上限 3，答错 -1 下限 0，掌握度归零也计入错词
+fun nextProgress(current: WordProgress, correct: Boolean): WordProgress {
+    val mastery = if (correct) (current.mastery + 1).coerceAtMost(3) else (current.mastery - 1).coerceAtLeast(0)
+    return current.copy(
+        mistake = !correct || mastery == 0,
+        mastery = mastery,
+        attempts = current.attempts + 1,
+        correct = current.correct + if (correct) 1 else 0
+    )
+}
+
+// 连续学习天数：同一天不变，隔一天 +1，断档从 1 重新开始
+fun nextStreak(lastDay: Long, today: Long, streak: Int): Int = when {
+    lastDay == today -> streak
+    lastDay == today - 1 -> streak + 1
+    else -> 1
 }
 
 @Composable
 fun OgdenKidsApp() {
     val context = LocalContext.current
-    val words = remember { loadWords(context) }
+    // 词库 JSON 约 380 KB，放到 IO 线程解析，首帧只显示加载态
+    val loadedWords by produceState<List<OgdenWord>?>(initialValue = null) {
+        value = withContext(Dispatchers.IO) { loadWords(context) }
+    }
+    val words = loadedWords
     val progressStore = remember { ProgressStore(context) }
+    // 词库解析与数据库首次读取都是异步的，两者都就绪后才渲染，避免统计先闪一次 0
+    if (words == null || !progressStore.ready) {
+        LoadingScreen()
+        return
+    }
     var screen by remember { mutableStateOf<Screen>(Screen.Main) }
-    var selectedTab by remember { mutableStateOf(Tab.Home) }
+    var selectedTab by rememberSaveable { mutableStateOf(Tab.Challenge) }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
-    var chineseMode by remember { mutableStateOf(progressStore.savedChineseMode()) }
     val speak = rememberSpeaker(accent)
+    val dark = isSystemInDarkTheme()
+    val palette = if (dark) DarkPalette else LightPalette
+    val view = LocalView.current
+    SideEffect {
+        // 状态栏/导航栏背景透明，只切换图标明暗
+        val window = (view.context as? Activity)?.window ?: return@SideEffect
+        WindowCompat.getInsetsController(window, view).apply {
+            isAppearanceLightStatusBars = !dark
+            isAppearanceLightNavigationBars = !dark
+        }
+    }
 
-    MaterialTheme(
-        colorScheme = lightColorScheme(
-            primary = Category.Operations.tint,
-            secondary = Category.GeneralThings.tint,
-            background = Paper,
-            surface = PaperElevated,
+    // 二级页面先回主页；主页非闯关 tab 先回闯关；闯关 tab 不拦截，交给系统退出
+    BackHandler(enabled = screen != Screen.Main || selectedTab != Tab.Challenge) {
+        if (screen != Screen.Main) screen = Screen.Main else selectedTab = Tab.Challenge
+    }
+
+    val colorScheme = if (dark) {
+        darkColorScheme(
+            primary = Category.Operations.baseTint.forDark(true),
+            secondary = Category.GeneralThings.baseTint.forDark(true),
+            background = palette.paper,
+            surface = palette.paperElevated,
+            onPrimary = Color(0xFF1B1410),
+            onBackground = palette.ink,
+            onSurface = palette.ink
+        )
+    } else {
+        lightColorScheme(
+            primary = Category.Operations.baseTint,
+            secondary = Category.GeneralThings.baseTint,
+            background = palette.paper,
+            surface = palette.paperElevated,
             onPrimary = Color.White,
-            onBackground = Ink,
-            onSurface = Ink
-        ),
+            onBackground = palette.ink,
+            onSurface = palette.ink
+        )
+    }
+
+    CompositionLocalProvider(LocalPalette provides palette) {
+    MaterialTheme(
+        colorScheme = colorScheme,
         typography = MaterialTheme.typography.copy(
             headlineLarge = MaterialTheme.typography.headlineLarge.copy(fontFamily = FontFamily.Serif),
             headlineMedium = MaterialTheme.typography.headlineMedium.copy(fontFamily = FontFamily.Serif),
             titleLarge = MaterialTheme.typography.titleLarge.copy(fontFamily = FontFamily.Serif)
         )
     ) {
-        CompositionLocalProvider(LocalChineseMode provides chineseMode) {
         Surface(color = Paper, modifier = Modifier.fillMaxSize()) {
             when (val current = screen) {
                 Screen.Main -> MainScaffold(
                     selectedTab = selectedTab,
                     onTab = { selectedTab = it },
-                    accent = accent,
-                    onAccent = { accent = it; progressStore.saveAccent(it) },
-                    chineseMode = chineseMode,
-                    onChineseMode = { chineseMode = it; progressStore.saveChineseMode(it) },
                     content = { padding ->
                         when (selectedTab) {
-                            Tab.Home -> ProverbHomeScreen(
-                                padding = padding
-                            )
                             Tab.Challenge -> ChallengeScreen(
                                 words = words,
                                 store = progressStore,
@@ -358,16 +556,16 @@ fun OgdenKidsApp() {
                                     screen = Screen.Practice(progressStore.lastCategory(), progressStore.lastLevel())
                                 },
                                 onCategory = { category -> screen = Screen.Levels(category) },
-                                onOpenLibrary = { selectedTab = Tab.Library }
+                                onOpenLibrary = { selectedTab = Tab.Library },
+                                onOpenSettings = { screen = Screen.Settings }
                             )
                             Tab.Library -> LibraryScreen(
                                 words = words,
                                 store = progressStore,
                                 padding = padding,
                                 accent = accent,
-                                zh = chineseMode,
                                 onSpeak = speak,
-                                onOpen = { screen = Screen.Detail(it) }
+                                onOpen = { word, siblings -> screen = Screen.Detail(word, siblings) }
                             )
                             Tab.Review -> ReviewScreen(
                                 words = words,
@@ -376,12 +574,6 @@ fun OgdenKidsApp() {
                                 onMistakes = { screen = Screen.WordCollection("错词本", "mistakes") },
                                 onFavorites = { screen = Screen.WordCollection("收藏夹", "favorites") }
                             )
-                            Tab.Software -> SoftwareScreen(
-                                padding = padding,
-                                onSettings = { screen = Screen.Settings },
-                                onPrivacy = { screen = Screen.Privacy },
-                                onAbout = { screen = Screen.About }
-                            )
                         }
                     }
                 )
@@ -389,13 +581,12 @@ fun OgdenKidsApp() {
                     word = current.word,
                     progress = progressStore.progress(current.word.word),
                     accent = accent,
-                    zh = chineseMode,
+                    onAccent = { accent = it; progressStore.saveAccent(it) },
                     onBack = { screen = Screen.Main },
                     onSpeak = speak,
-                    onFavorite = {
-                        progressStore.toggleFavorite(current.word.word)
-                        progressStore.progress(current.word.word)
-                    }
+                    onFavorite = { progressStore.toggleFavorite(current.word.word) },
+                    neighbors = current.neighbors,
+                    onNavigate = { next -> screen = Screen.Detail(next, current.neighbors) }
                 )
                 is Screen.Levels -> LevelSelectionScreen(
                     words = words,
@@ -412,7 +603,6 @@ fun OgdenKidsApp() {
                         allWords = words,
                         category = current.category,
                         level = current.level,
-                        zh = chineseMode,
                         onSpeak = speak,
                         onBack = { screen = Screen.Main },
                         onComplete = {
@@ -427,16 +617,16 @@ fun OgdenKidsApp() {
                     title = current.title,
                     words = if (current.kind == "mistakes") progressStore.mistakeWords(words) else progressStore.favoriteWords(words),
                     store = progressStore,
-                    zh = chineseMode,
                     onBack = { screen = Screen.Main },
-                    onOpen = { screen = Screen.Detail(it) }
+                    onOpen = { word, siblings -> screen = Screen.Detail(word, siblings) }
                 )
                 Screen.Settings -> SettingsScreen(
                     accent = accent,
-                    chineseMode = chineseMode,
                     onAccent = { accent = it; progressStore.saveAccent(it) },
-                    onChineseMode = { chineseMode = it; progressStore.saveChineseMode(it) },
-                    onBack = { screen = Screen.Main }
+                    onReset = { progressStore.resetProgress() },
+                    onBack = { screen = Screen.Main },
+                    onPrivacy = { screen = Screen.Privacy },
+                    onAbout = { screen = Screen.About }
                 )
                 Screen.Privacy -> LegalInfoScreen(
                     title = "隐私声明",
@@ -456,7 +646,7 @@ fun OgdenKidsApp() {
                 )
             }
         }
-        }
+    }
     }
 }
 
@@ -585,7 +775,7 @@ fun AppText(
     softWrap: Boolean = true
 ) {
     Text(
-        convertZh(text, LocalChineseMode.current),
+        text,
         modifier = modifier,
         color = color,
         fontSize = fontSize,
@@ -604,33 +794,24 @@ fun AppText(
 fun MainScaffold(
     selectedTab: Tab,
     onTab: (Tab) -> Unit,
-    accent: Accent,
-    onAccent: (Accent) -> Unit,
-    chineseMode: ChineseMode,
-    onChineseMode: (ChineseMode) -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
+        modifier = Modifier
+            .statusBarsPadding()
+            .navigationBarsPadding(),
+        // 整个 Scaffold 已避让系统栏，内容不再重复加 inset
+        contentWindowInsets = WindowInsets(0),
         containerColor = Paper,
         bottomBar = {
-            Column {
-                if (selectedTab == Tab.Library) {
-                    SettingsToggleRow(
-                        accent = accent,
-                        chineseMode = chineseMode,
-                        onAccent = onAccent,
-                        onChineseMode = onChineseMode
+            NavigationBar(containerColor = PaperElevated) {
+                Tab.values().forEach { tab ->
+                    NavigationBarItem(
+                        selected = selectedTab == tab,
+                        onClick = { onTab(tab) },
+                        icon = { Icon(tab.icon, contentDescription = tab.title) },
+                        label = { AppText(tab.title) }
                     )
-                }
-                NavigationBar(containerColor = PaperElevated) {
-                    Tab.values().forEach { tab ->
-                        NavigationBarItem(
-                            selected = selectedTab == tab,
-                            onClick = { onTab(tab) },
-                            icon = { Icon(tab.icon, contentDescription = tab.title) },
-                            label = { AppText(tab.title) }
-                        )
-                    }
                 }
             }
         },
@@ -639,12 +820,7 @@ fun MainScaffold(
 }
 
 @Composable
-fun SettingsToggleRow(
-    accent: Accent,
-    chineseMode: ChineseMode,
-    onAccent: (Accent) -> Unit,
-    onChineseMode: (ChineseMode) -> Unit
-) {
+fun SettingsToggleRow(accent: Accent, onAccent: (Accent) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -656,64 +832,27 @@ fun SettingsToggleRow(
     ) {
         TogglePill(Accent.UK.label, accent == Accent.UK, { onAccent(Accent.UK) }, Modifier.weight(1f))
         TogglePill(Accent.US.label, accent == Accent.US, { onAccent(Accent.US) }, Modifier.weight(1f))
-        TogglePill(ChineseMode.Hans.label, chineseMode == ChineseMode.Hans, { onChineseMode(ChineseMode.Hans) })
-        TogglePill(ChineseMode.Hant.label, chineseMode == ChineseMode.Hant, { onChineseMode(ChineseMode.Hant) })
+    }
+}
+
+// 二级页顶栏统一在这里处理状态栏 inset（edge-to-edge 后普通 Row 不会自动避让）
+@Composable
+fun SecondaryTopBar(onBack: () -> Unit, content: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(PaperElevated)
+            .border(1.dp, Line)
+            .statusBarsPadding()
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
+        content()
     }
 }
 
 data class Proverb(val en: String, val zh: String)
-
-@Composable
-fun ProverbHomeScreen(padding: PaddingValues) {
-    val quotes = remember {
-        proverbs().shuffled().take(2)
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-            .padding(start = 18.dp, top = 30.dp, end = 18.dp, bottom = 18.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-                "Ogden's Basic English",
-                fontFamily = FontFamily.Cursive,
-                fontWeight = FontWeight.Normal,
-                fontSize = 32.sp,
-                lineHeight = 38.sp,
-                color = Ink
-            )
-            AppText(
-                "今日读两句，再学十个词",
-                color = InkFaint,
-                fontSize = 13.sp,
-                fontFamily = FontFamily.Serif
-            )
-        }
-        Spacer(Modifier.height(15.dp))
-        quotes.forEach { proverb ->
-            ProverbCard(proverb)
-            Spacer(Modifier.height(15.dp))
-        }
-        Spacer(Modifier.weight(1f))
-        Text(
-            "從850個詞開始，做一個有情有義的人……",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 0.dp, vertical = 4.dp),
-            color = InkSoft,
-            fontSize = 13.sp,
-            lineHeight = 20.sp,
-            fontFamily = FontFamily.Cursive,
-            fontWeight = FontWeight.Normal,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            overflow = TextOverflow.Clip,
-            softWrap = false
-        )
-    }
-}
 
 @Composable
 fun ProverbCard(proverb: Proverb) {
@@ -723,13 +862,13 @@ fun ProverbCard(proverb: Proverb) {
         shape = RoundedCornerShape(18.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(176.dp)
+            .heightIn(min = 176.dp)
             .clickable { flipped = !flipped }
             .border(1.dp, Line, RoundedCornerShape(18.dp))
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(22.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -784,9 +923,23 @@ fun ChallengeScreen(
     padding: PaddingValues,
     onContinue: () -> Unit,
     onCategory: (Category) -> Unit,
-    onOpenLibrary: () -> Unit
+    onOpenLibrary: () -> Unit,
+    onOpenSettings: () -> Unit
 ) {
-    val mastered = store.masteredCount(words)
+    // 谚语从原首页移到闯关页顶部，只取一句，避免把学习内容挤到折叠线以下
+    val proverb = remember { proverbs().shuffled().first() }
+    // 统计只在进度状态变化时重算，不随每次重组遍历 850 词
+    val mastered by remember(words, store) { derivedStateOf { store.masteredCount(words) } }
+    val mistakes by remember(words, store) { derivedStateOf { store.mistakeWords(words).size } }
+    val favorites by remember(words, store) { derivedStateOf { store.favoriteWords(words).size } }
+    val categoryStats by remember(words, store) {
+        derivedStateOf {
+            Category.values().associateWith { category ->
+                val categoryWords = words.filter { it.category == category }
+                categoryWords.count { store.progress(it.word).mastery >= 3 } to categoryWords.size
+            }
+        }
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -796,8 +949,34 @@ fun ChallengeScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         item {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(
+                        "Ogden's Basic English",
+                        fontFamily = FontFamily.Cursive,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 32.sp,
+                        lineHeight = 38.sp,
+                        color = Ink
+                    )
+                    AppText(
+                        "今日读一句，再学十个词",
+                        color = InkFaint,
+                        fontSize = 13.sp,
+                        fontFamily = FontFamily.Serif
+                    )
+                }
+                IconButton(onClick = onOpenSettings, modifier = Modifier.size(48.dp)) {
+                    Icon(Icons.Default.Info, contentDescription = "设置与关于软件", tint = InkSoft)
+                }
+            }
+        }
+        item {
+            ProverbCard(proverb)
+        }
+        item {
             HeroCard(
-                title = "Ogden's Basic English",
+                title = "今日闯关",
                 subtitle = "850 词闯关 · 中英双语 · 离线可学",
                 action = "继续之前",
                 onAction = onContinue
@@ -806,8 +985,8 @@ fun ChallengeScreen(
         item {
             StatsRow(
                 learned = mastered,
-                mistakes = store.mistakeWords(words).size,
-                favorites = store.favoriteWords(words).size,
+                mistakes = mistakes,
+                favorites = favorites,
                 streak = store.dailyStreak()
             )
         }
@@ -815,12 +994,11 @@ fun ChallengeScreen(
             SectionTitle("分类闯关", "每 10 个词一关，先短跑，再复习")
         }
         items(Category.values()) { category ->
-            val categoryWords = words.filter { it.category == category }
-            val learned = categoryWords.count { store.progress(it.word).mastery >= 3 }
+            val (learned, total) = categoryStats.getValue(category)
             CategoryProgressCard(
                 category = category,
                 learned = learned,
-                total = categoryWords.size,
+                total = total,
                 onClick = { onCategory(category) }
             )
         }
@@ -834,6 +1012,20 @@ fun ChallengeScreen(
                 Spacer(Modifier.width(8.dp))
                 AppText("打开完整词库")
             }
+        }
+        item {
+            Text(
+                "从850个词开始，做一个有情有义的人……",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                color = InkSoft,
+                fontSize = 13.sp,
+                lineHeight = 20.sp,
+                fontFamily = FontFamily.Cursive,
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -853,9 +1045,7 @@ fun HeroCard(title: String, subtitle: String, action: String, onAction: () -> Un
                 lineHeight = 36.sp,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.SemiBold,
-                color = Ink,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                color = Ink
             )
             AppText(subtitle, color = InkSoft, fontWeight = FontWeight.Medium)
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -888,8 +1078,9 @@ fun StatCard(label: String, value: String, tint: Color, modifier: Modifier = Mod
         shape = RoundedCornerShape(14.dp)
     ) {
         Column(Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(value, color = tint, fontWeight = FontWeight.Bold, fontSize = 20.sp, maxLines = 1)
-            AppText(label, color = InkFaint, fontSize = 12.sp)
+            // 大字号下四列很窄，允许换行而不是裁掉数字
+            Text(value, color = tint, fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center)
+            AppText(label, color = InkFaint, fontSize = 12.sp, textAlign = TextAlign.Center)
         }
     }
 }
@@ -939,15 +1130,7 @@ fun LevelSelectionScreen(
     val categoryWords = words.filter { it.category == category }
     val levels = ceil(categoryWords.size / 10.0).toInt()
     Scaffold(containerColor = Paper, topBar = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(PaperElevated)
-                .border(1.dp, Line)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
+        SecondaryTopBar(onBack) {
             Column(Modifier.weight(1f)) {
                 Text(category.label, fontWeight = FontWeight.Bold)
                 AppText("${category.zh} · $levels 个关卡", color = InkFaint, fontSize = 12.sp)
@@ -1014,7 +1197,7 @@ fun LevelCard(
             ) {
                     AppText(
                     if (complete) "✓" else level.toString(),
-                    color = if (complete) Color.White else category.tint,
+                    color = if (complete) Paper else category.tint,
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp
                 )
@@ -1058,38 +1241,53 @@ fun LibraryScreen(
     store: ProgressStore,
     padding: PaddingValues,
     accent: Accent,
-    zh: ChineseMode,
     onSpeak: (String) -> Unit,
-    onOpen: (OgdenWord) -> Unit
+    onOpen: (OgdenWord, List<OgdenWord>) -> Unit
 ) {
     var query by remember { mutableStateOf("") }
     var category by remember { mutableStateOf<Category?>(null) }
-    val filtered = words.filter { word ->
-        (category == null || word.category == category) &&
-            (query.isBlank() ||
-                word.word.contains(query, ignoreCase = true) ||
-                word.zh.contains(query) ||
-                word.englishDefinition.contains(query, ignoreCase = true))
+    // 输入框即时响应，过滤延迟 250ms，避免逐字符遍历 850 词
+    var debouncedQuery by remember { mutableStateOf("") }
+    LaunchedEffect(query) {
+        delay(250)
+        debouncedQuery = query
     }
-    LazyColumn(
+    val filtered = remember(words, debouncedQuery, category) {
+        words.filter { matchesLibraryFilter(it, debouncedQuery, category) }
+    }
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    val showTop by remember { derivedStateOf { listState.firstVisibleItemIndex > 4 } }
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(padding)
     ) {
-        item {
+        // 搜索与筛选常驻在列表之上，不随 850 行滚走
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Paper)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
                 modifier = Modifier.fillMaxWidth(),
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { query = "" }, modifier = Modifier.size(48.dp)) {
+                            Icon(Icons.Default.Close, contentDescription = "清空搜索", tint = InkFaint)
+                        }
+                    }
+                },
                 placeholder = { AppText("搜索单词、中文或释义") },
                 singleLine = true,
                 shape = RoundedCornerShape(16.dp)
             )
-        }
-        item {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 FilterChip(selected = category == null, onClick = { category = null }, label = { Text("All · 850") })
                 Category.values().forEach {
@@ -1100,61 +1298,42 @@ fun LibraryScreen(
                     )
                 }
             }
-        }
-        item {
             AppText("显示 ${filtered.size} 个词", color = InkFaint, fontSize = 13.sp)
         }
-        items(filtered, key = { it.word }) { word ->
-            WordListCard(
-                word = word,
-                progress = store.progress(word.word),
-                accent = accent,
-                zh = zh,
-                onSpeak = onSpeak,
-                onClick = { onOpen(word) }
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun WordListCard(
-    word: OgdenWord,
-    progress: WordProgress,
-    accent: Accent,
-    zh: ChineseMode,
-    onSpeak: (String) -> Unit,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .border(1.dp, Line, RoundedCornerShape(14.dp)),
-        colors = CardDefaults.cardColors(containerColor = PaperElevated),
-        shape = RoundedCornerShape(14.dp)
-    ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(word.word, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
-                        Spacer(Modifier.width(8.dp))
-                        Text(if (accent == Accent.UK) word.ipaUk else word.ipaUs, color = InkFaint, fontStyle = FontStyle.Italic)
+        Box(Modifier.weight(1f)) {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxSize(),
+                // 底部留出回到顶部按钮的位置，避免遮住最后一行的收藏按钮
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 80.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (filtered.isEmpty()) {
+                    item { EmptyCard("没有匹配的单词，换个词试试。") }
+                } else {
+                    items(filtered, key = { it.word }) { word ->
+                        val progress = store.progress(word.word)
+                        CompactWordRow(
+                            word = word,
+                            progress = progress,
+                            onOpen = { onOpen(word, filtered) },
+                            ipa = if (accent == Accent.UK) word.ipaUk else word.ipaUs,
+                            onSpeak = onSpeak,
+                            onFavorite = { store.toggleFavorite(word.word) }
+                        )
                     }
-                    Text(convertZh(word.zh, zh), fontWeight = FontWeight.Medium, color = Ink)
-                }
-                IconButton(onClick = { onSpeak(word.word) }) {
-                    Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = word.category.tint)
                 }
             }
-            Text(word.englishDefinition, color = InkFaint, fontStyle = FontStyle.Italic)
-            Text(word.example, color = InkSoft, fontFamily = FontFamily.Serif)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                word.synonyms.take(3).forEach { AssistChip(onClick = { onSpeak(it) }, label = { Text(it) }) }
-                repeat(progress.mastery) {
-                    Icon(Icons.Default.Star, contentDescription = null, tint = Category.Picturable.tint, modifier = Modifier.size(18.dp))
+            if (showTop) {
+                FloatingActionButton(
+                    onClick = { scope.launch { listState.animateScrollToItem(0) } },
+                    containerColor = PaperElevated,
+                    contentColor = InkSoft,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(Icons.Default.KeyboardArrowUp, contentDescription = "回到顶部")
                 }
             }
         }
@@ -1167,30 +1346,25 @@ fun WordDetailScreen(
     word: OgdenWord,
     progress: WordProgress,
     accent: Accent,
-    zh: ChineseMode,
+    onAccent: (Accent) -> Unit,
     onBack: () -> Unit,
     onSpeak: (String) -> Unit,
-    onFavorite: () -> WordProgress
+    onFavorite: () -> Unit,
+    neighbors: List<OgdenWord>,
+    onNavigate: (OgdenWord) -> Unit
 ) {
-    var visibleProgress by remember(word.word, progress.favorite, progress.mastery, progress.attempts, progress.correct) {
-        mutableStateOf(progress)
-    }
+    // 邻词按打开详情时那份列表的顺序（词库为当前过滤结果，收藏/错词为该集合）
+    val index = neighbors.indexOfFirst { it.word == word.word }
+    val previous = if (index > 0) neighbors[index - 1] else null
+    val next = if (index >= 0 && index < neighbors.lastIndex) neighbors[index + 1] else null
     Scaffold(containerColor = Paper, topBar = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(PaperElevated)
-                .border(1.dp, Line)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
+        SecondaryTopBar(onBack) {
             AppText("单词详情", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            IconButton(onClick = { visibleProgress = onFavorite() }) {
+            IconButton(onClick = onFavorite) {
                 Icon(
-                    if (visibleProgress.favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = "收藏",
-                    tint = if (visibleProgress.favorite) Error else InkFaint
+                    if (progress.favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = if (progress.favorite) "取消收藏" else "收藏",
+                    tint = if (progress.favorite) Error else InkFaint
                 )
             }
         }
@@ -1215,15 +1389,26 @@ fun WordDetailScreen(
                                 Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = word.category.tint)
                             }
                         }
-                        Text(if (accent == Accent.UK) word.ipaUk else word.ipaUs, color = InkFaint, fontSize = 16.sp)
+                        // 详情页是对比英美读音的地方，音标旁直接给切换入口（设置页仍是同一个全局状态）
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                if (accent == Accent.UK) word.ipaUk else word.ipaUs,
+                                color = InkFaint,
+                                fontSize = 16.sp,
+                                modifier = Modifier.weight(1f)
+                            )
+                            TogglePill(Accent.UK.label, accent == Accent.UK, { onAccent(Accent.UK) })
+                            Spacer(Modifier.width(8.dp))
+                            TogglePill(Accent.US.label, accent == Accent.US, { onAccent(Accent.US) })
+                        }
                         CategoryBadge(word.category)
-                        Text(convertZh(word.zh, zh), fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
+                        Text(word.zh, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
                         Text(word.englishDefinition, color = InkSoft, fontStyle = FontStyle.Italic)
                     }
                 }
             }
             item {
-                InfoBlock("例句", word.example, convertZh(word.exampleZh, zh), word.category.tint) {
+                InfoBlock("例句", word.example, word.exampleZh, word.category.tint) {
                     onSpeak(word.example)
                 }
             }
@@ -1242,12 +1427,46 @@ fun WordDetailScreen(
                         Icon(
                             Icons.Default.Star,
                             contentDescription = null,
-                            tint = if (index < visibleProgress.mastery) Category.Picturable.tint else Line,
+                            tint = if (index < progress.mastery) Category.Picturable.tint else Line,
                             modifier = Modifier.size(32.dp)
                         )
                     }
                 }
-                AppText("练习 ${visibleProgress.attempts} 次 · 答对 ${visibleProgress.correct} 次", color = InkFaint)
+                AppText("练习 ${progress.attempts} 次 · 答对 ${progress.correct} 次", color = InkFaint)
+            }
+            if (previous != null || next != null) {
+                item {
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                        OutlinedButton(
+                            onClick = { previous?.let(onNavigate) },
+                            enabled = previous != null,
+                            modifier = Modifier
+                                .weight(1f)
+                                .heightIn(min = 48.dp),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            AppText(
+                                if (previous == null) "上一个" else "上一个 · ${previous.word}",
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        OutlinedButton(
+                            onClick = { next?.let(onNavigate) },
+                            enabled = next != null,
+                            modifier = Modifier
+                                .weight(1f)
+                                .heightIn(min = 48.dp),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            AppText(
+                                if (next == null) "下一个" else "下一个 · ${next.word}",
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -1261,8 +1480,8 @@ fun ReviewScreen(
     onMistakes: () -> Unit,
     onFavorites: () -> Unit
 ) {
-    val mistakes = store.mistakeWords(words)
-    val favorites = store.favoriteWords(words)
+    val mistakes by remember(words, store) { derivedStateOf { store.mistakeWords(words) } }
+    val favorites by remember(words, store) { derivedStateOf { store.favoriteWords(words) } }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -1341,21 +1560,18 @@ fun WordCollectionScreen(
     title: String,
     words: List<OgdenWord>,
     store: ProgressStore,
-    zh: ChineseMode,
     onBack: () -> Unit,
-    onOpen: (OgdenWord) -> Unit
+    onOpen: (OgdenWord, List<OgdenWord>) -> Unit
 ) {
     Scaffold(containerColor = Paper, topBar = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(PaperElevated)
-                .border(1.dp, Line)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
-            AppText("$title · ${words.size}", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+        SecondaryTopBar(onBack) {
+            AppText(
+                "$title · ${words.size}",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }) { padding ->
         LazyColumn(
@@ -1369,7 +1585,7 @@ fun WordCollectionScreen(
                 item { EmptyCard("这里暂时还没有单词。") }
             } else {
                 items(words, key = { it.word }) { word ->
-                    CompactWordRow(word, store.progress(word.word), zh, onOpen)
+                    CompactWordRow(word, store.progress(word.word), onOpen = { onOpen(word, words) })
                 }
             }
         }
@@ -1379,86 +1595,19 @@ fun WordCollectionScreen(
 data class LegalSection(val heading: String, val body: String)
 
 @Composable
-fun SoftwareScreen(
-    padding: PaddingValues,
-    onSettings: () -> Unit,
+fun SettingsScreen(
+    accent: Accent,
+    onAccent: (Accent) -> Unit,
+    onReset: () -> Unit,
+    onBack: () -> Unit,
     onPrivacy: () -> Unit,
     onAbout: () -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding),
-        contentPadding = PaddingValues(18.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
-        item {
-            SectionTitle("关于软件", "应用说明、隐私声明与作者信息")
-        }
-        item {
-            Card(
-                colors = CardDefaults.cardColors(containerColor = PaperElevated),
-                shape = RoundedCornerShape(18.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(1.dp, Line, RoundedCornerShape(18.dp))
-            ) {
-                Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("Ogden Basic", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
-                    AppText("英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft)
-                    AppText("当前版本：1.0", color = InkFaint, fontSize = 13.sp)
-                }
-            }
-        }
-        item {
-            OutlinedButton(
-                onClick = onSettings,
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp)
-            ) {
-                AppText("软件设置")
-            }
-        }
-        item {
-            OutlinedButton(
-                onClick = onPrivacy,
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp)
-            ) {
-                AppText("隐私声明")
-            }
-        }
-        item {
-            OutlinedButton(
-                onClick = onAbout,
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp)
-            ) {
-                AppText("关于作者")
-            }
-        }
-    }
-}
-
-@Composable
-fun SettingsScreen(
-    accent: Accent,
-    chineseMode: ChineseMode,
-    onAccent: (Accent) -> Unit,
-    onChineseMode: (ChineseMode) -> Unit,
-    onBack: () -> Unit
-) {
+    var confirming by remember { mutableStateOf(false) }
+    var resetDone by remember { mutableStateOf(false) }
     Scaffold(containerColor = Paper, topBar = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(PaperElevated)
-                .border(1.dp, Line)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
-            AppText("软件设置", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+        SecondaryTopBar(onBack) {
+            AppText("设置与关于软件", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
         }
     }) { padding ->
         LazyColumn(
@@ -1469,7 +1618,25 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             item {
-                SectionTitle("软件设置", "全局发音与文字显示")
+                SectionTitle("应用信息", "离线词库与发音说明")
+            }
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = PaperElevated),
+                    shape = RoundedCornerShape(18.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, Line, RoundedCornerShape(18.dp))
+                ) {
+                    Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Text("Ogden Basic", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
+                        AppText("英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft)
+                        AppText("当前版本：1.0", color = InkFaint, fontSize = 13.sp)
+                    }
+                }
+            }
+            item {
+                SectionTitle("发音设置", "全局英式 / 美式发音")
             }
             item {
                 Card(
@@ -1480,16 +1647,105 @@ fun SettingsScreen(
                         .border(1.dp, Line, RoundedCornerShape(18.dp))
                 ) {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        SettingsToggleRow(
-                            accent = accent,
-                            chineseMode = chineseMode,
-                            onAccent = onAccent,
-                            onChineseMode = onChineseMode
-                        )
+                        SettingsToggleRow(accent = accent, onAccent = onAccent)
                     }
                 }
             }
+            item {
+                SectionTitle("学习数据", "掌握星星、错词本、收藏与关卡进度")
+            }
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = PaperElevated),
+                    shape = RoundedCornerShape(18.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, Line, RoundedCornerShape(18.dp))
+                ) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        AppText(
+                            if (resetDone) "学习进度已清空，发音设置保持不变。" else "重置后全部学习记录会被清空，且无法恢复。",
+                            color = if (resetDone) Success else InkSoft,
+                            fontSize = 13.sp,
+                            lineHeight = 20.sp
+                        )
+                        OutlinedButton(
+                            onClick = { confirming = true },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 48.dp),
+                            shape = RoundedCornerShape(14.dp),
+                            border = BorderStroke(1.dp, Error),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Error)
+                        ) {
+                            AppText("重置学习进度")
+                        }
+                    }
+                }
+            }
+            item {
+                SectionTitle("关于", "隐私声明与作者信息")
+            }
+            item {
+                OutlinedButton(
+                    onClick = onPrivacy,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 48.dp),
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    AppText("隐私声明")
+                }
+            }
+            item {
+                OutlinedButton(
+                    onClick = onAbout,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 48.dp),
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    AppText("关于作者")
+                }
+            }
         }
+    }
+    if (confirming) {
+        AlertDialog(
+            onDismissRequest = { confirming = false },
+            containerColor = PaperElevated,
+            shape = RoundedCornerShape(18.dp),
+            title = { AppText("重置学习进度？", fontWeight = FontWeight.Bold, fontSize = 20.sp) },
+            text = {
+                AppText(
+                    "将清空掌握星星、错词本、收藏、关卡解锁和连续天数，操作无法撤销。英式 / 美式发音设置会保留。",
+                    color = InkSoft,
+                    lineHeight = 22.sp
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onReset()
+                        resetDone = true
+                        confirming = false
+                    },
+                    modifier = Modifier.heightIn(min = 48.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Error, contentColor = Paper)
+                ) {
+                    AppText("确认重置")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { confirming = false },
+                    modifier = Modifier.heightIn(min = 48.dp)
+                ) {
+                    AppText("取消", color = InkSoft)
+                }
+            }
+        )
     }
 }
 
@@ -1502,15 +1758,7 @@ fun LegalInfoScreen(
 ) {
     val context = LocalContext.current
     Scaffold(containerColor = Paper, topBar = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(PaperElevated)
-                .border(1.dp, Line)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
+        SecondaryTopBar(onBack) {
             AppText(title, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
         }
     }) { padding ->
@@ -1613,12 +1861,12 @@ fun aboutSections() = listOf(
     )
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PracticeScreen(
     allWords: List<OgdenWord>,
     category: Category,
     level: Int,
-    zh: ChineseMode,
     onSpeak: (String) -> Unit,
     onBack: () -> Unit,
     onComplete: () -> Unit,
@@ -1627,22 +1875,18 @@ fun PracticeScreen(
     val source = remember(allWords, category, level) {
         allWords.filter { it.category == category }.drop((level - 1) * 10).take(10)
     }
+    // 每次进入关卡（或重练）生成一个种子：决定题型顺序与干扰项，同一次尝试内保持稳定
+    var attemptSeed by remember(source) { mutableStateOf(Random.nextInt()) }
+    val types = remember(attemptSeed) { PracticeType.values().toList().shuffled(Random(attemptSeed)) }
     var index by remember(source) { mutableStateOf(0) }
     var selected by remember(source) { mutableStateOf<String?>(null) }
+    var typed by remember(source) { mutableStateOf("") }
     var answerShown by remember(source) { mutableStateOf(false) }
     var correctCount by remember(source) { mutableStateOf(0) }
     val word = source.getOrNull(index)
 
     Scaffold(containerColor = Paper, topBar = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(PaperElevated)
-                .border(1.dp, Line)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
+        SecondaryTopBar(onBack) {
             Column(Modifier.weight(1f)) {
                 AppText("${category.zh} · 第 $level 关", fontWeight = FontWeight.Bold)
                 AppText("${index.coerceAtMost(source.size)} / ${source.size} · 答对 $correctCount", color = InkFaint, fontSize = 12.sp)
@@ -1655,9 +1899,13 @@ fun PracticeScreen(
             }
             return@Scaffold
         }
-        val type = PracticeType.values()[index % PracticeType.values().size]
-        val question = buildQuestion(type, word, allWords)
-        val isCorrect = selected == question.answer
+        val type = types[index % types.size]
+        // 记忆题目，避免重组时选项重新洗牌
+        val question = remember(word, level, index, attemptSeed) { buildQuestion(type, word, allWords, attemptSeed) }
+        val isCorrect = selected?.equals(question.answer, ignoreCase = true) == true
+        val lastQuestion = index >= source.lastIndex
+        val needed = ceil(source.size * 0.6).toInt()
+        val passed = correctCount >= needed
 
         LazyColumn(
             modifier = Modifier
@@ -1691,14 +1939,49 @@ fun PracticeScreen(
                                 Icon(Icons.Default.VolumeUp, contentDescription = "播放", modifier = Modifier.size(44.dp))
                             }
                         } else {
-                            Text(convertZh(question.prompt, zh), fontSize = 24.sp, fontWeight = FontWeight.SemiBold, lineHeight = 30.sp)
+                            Text(question.prompt, fontSize = 24.sp, fontWeight = FontWeight.SemiBold, lineHeight = 30.sp)
                         }
                         if (type == PracticeType.Spelling) {
-                            AppText("拼出这个单词", color = InkFaint)
+                            AppText("输入英文单词，不区分大小写", color = InkFaint)
                         }
                     }
                 }
             }
+            if (type == PracticeType.Spelling) {
+                item {
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        OutlinedTextField(
+                            value = typed,
+                            onValueChange = { if (!answerShown) typed = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { AppText("输入英文拼写") },
+                            placeholder = { AppText("在这里拼出单词") },
+                            singleLine = true,
+                            readOnly = answerShown,
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        Button(
+                            onClick = {
+                                if (!answerShown && typed.isNotBlank()) {
+                                    val guess = typed.trim()
+                                    selected = guess
+                                    val ok = guess.equals(question.answer, ignoreCase = true)
+                                    if (ok) correctCount++
+                                    onRecord(word, ok)
+                                    answerShown = true
+                                }
+                            },
+                            enabled = !answerShown && typed.isNotBlank(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 48.dp),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            AppText("提交答案")
+                        }
+                    }
+                }
+            } else {
             items(question.options) { option ->
                 val selectedThis = selected == option
                 val correctThis = answerShown && option == question.answer
@@ -1732,6 +2015,7 @@ fun PracticeScreen(
                     }
                 }
             }
+            }
             item {
                 AnimatedVisibility(answerShown) {
                     Card(
@@ -1740,24 +2024,66 @@ fun PracticeScreen(
                     ) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             AppText(if (isCorrect) "答对了！" else "这题先记到错词本", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
-                            Text("${word.word} · ${convertZh(word.zh, zh)}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                            if (type == PracticeType.Spelling && !isCorrect) {
+                                AppText("你写的是 ${selected.orEmpty()}，正确拼写是 ${word.word}", color = Error)
+                            }
+                            Text("${word.word} · ${word.zh}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                             Text(word.example, fontFamily = FontFamily.Serif, color = InkSoft)
-                            Button(
-                                onClick = {
-                                    if (index >= source.lastIndex) {
-                                        onComplete()
-                                        onBack()
+                            if (lastQuestion && !passed) {
+                                // 正确率不足 60%：不解锁下一关，只给返回或重练
+                                AppText(
+                                    "这一关答对 $correctCount / ${source.size}，答对 $needed 个就能解锁下一关。再练一次会换新题目，慢慢来。",
+                                    color = InkSoft,
+                                    fontSize = 14.sp,
+                                    lineHeight = 21.sp
+                                )
+                                Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                                    Button(
+                                        onClick = {
+                                            attemptSeed = Random.nextInt()
+                                            index = 0
+                                            selected = null
+                                            typed = ""
+                                            answerShown = false
+                                            correctCount = 0
+                                        },
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .heightIn(min = 48.dp),
+                                        shape = RoundedCornerShape(14.dp)
+                                    ) {
+                                        AppText("再练一次")
                                     }
-                                    else {
-                                        index++
-                                        selected = null
-                                        answerShown = false
+                                    OutlinedButton(
+                                        onClick = onBack,
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .heightIn(min = 48.dp),
+                                        shape = RoundedCornerShape(14.dp)
+                                    ) {
+                                        AppText("先返回")
                                     }
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(14.dp)
-                            ) {
-                                AppText(if (index >= source.lastIndex) "完成并返回" else "下一题")
+                                }
+                            } else {
+                                Button(
+                                    onClick = {
+                                        if (lastQuestion) {
+                                            onComplete()
+                                            onBack()
+                                        } else {
+                                            index++
+                                            selected = null
+                                            typed = ""
+                                            answerShown = false
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .heightIn(min = 48.dp),
+                                    shape = RoundedCornerShape(14.dp)
+                                ) {
+                                    AppText(if (lastQuestion) "完成并返回" else "下一题")
+                                }
                             }
                         }
                     }
@@ -1769,10 +2095,10 @@ fun PracticeScreen(
 
 data class Question(val prompt: String, val answer: String, val options: List<String>)
 
-fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>): Question {
+fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>, seed: Int = 0): Question {
     val distractors = allWords
         .filter { it.word != word.word }
-        .shuffled(Random(word.word.hashCode() + type.ordinal))
+        .shuffled(Random(word.word.hashCode() + type.ordinal + seed))
         .take(6)
     return when (type) {
         PracticeType.Listen -> Question(
@@ -1797,11 +2123,15 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
         )
         PracticeType.Synonym -> {
             val answer = word.synonyms.firstOrNull() ?: word.word
-            val synOptions = distractors.flatMap { it.synonyms.take(1) }.take(3)
+            // 先用其他词的近义词补干扰项，不足时退回单词本身，保证 4 个互异且不与答案重复
+            val options = linkedSetOf(answer)
+            (distractors.flatMap { it.synonyms } + distractors.map { it.word }).forEach { candidate ->
+                if (options.size < 4 && !candidate.equals(answer, ignoreCase = true)) options.add(candidate)
+            }
             Question(
                 prompt = "哪个词接近 ${word.word} 的意思？",
                 answer = answer,
-                options = (synOptions + answer).distinct().shuffled()
+                options = options.toList().shuffled()
             )
         }
     }
@@ -1845,12 +2175,13 @@ fun TogglePill(label: String, selected: Boolean, onClick: () -> Unit, modifier: 
     TextButton(
         onClick = onClick,
         modifier = modifier
+            .heightIn(min = 48.dp)
             .clip(RoundedCornerShape(99.dp))
             .background(if (selected) Ink else PaperElevated)
             .border(1.dp, if (selected) Ink else Line, RoundedCornerShape(99.dp)),
-        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 12.dp)
     ) {
-        AppText(label, color = if (selected) Color.White else InkSoft, maxLines = 1, fontSize = 12.sp)
+        AppText(label, color = if (selected) Paper else InkSoft, maxLines = 1, fontSize = 12.sp)
     }
 }
 
@@ -1873,26 +2204,60 @@ fun InfoBlock(title: String, en: String, zh: String, tint: Color, onSpeak: () ->
 }
 
 @Composable
-fun CompactWordRow(word: OgdenWord, progress: WordProgress, zh: ChineseMode, onOpen: (OgdenWord) -> Unit) {
+fun CompactWordRow(
+    word: OgdenWord,
+    progress: WordProgress,
+    onOpen: () -> Unit,
+    ipa: String? = null,
+    onSpeak: ((String) -> Unit)? = null,
+    onFavorite: (() -> Unit)? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(PaperElevated)
             .border(1.dp, Line, RoundedCornerShape(12.dp))
-            .clickable { onOpen(word) }
-            .padding(14.dp),
+            .clickable(onClick = onOpen)
+            .padding(horizontal = 14.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         CategoryDot(word.category)
         Spacer(Modifier.width(10.dp))
         Column(Modifier.weight(1f)) {
-            Text(word.word, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Serif, fontSize = 22.sp)
-            Text(convertZh(word.zh, zh), color = InkSoft, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(word.word, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Serif, fontSize = 22.sp)
+                if (!ipa.isNullOrBlank()) {
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        ipa,
+                        color = InkFaint,
+                        fontSize = 13.sp,
+                        fontStyle = FontStyle.Italic,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+            Text(word.zh, color = InkSoft, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Row {
             repeat(progress.mastery) {
                 Icon(Icons.Default.Star, contentDescription = null, tint = Category.Picturable.tint, modifier = Modifier.size(16.dp))
+            }
+        }
+        if (onSpeak != null) {
+            IconButton(onClick = { onSpeak(word.word) }, modifier = Modifier.size(48.dp)) {
+                Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = word.category.tint)
+            }
+        }
+        if (onFavorite != null) {
+            IconButton(onClick = onFavorite, modifier = Modifier.size(48.dp)) {
+                Icon(
+                    if (progress.favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = if (progress.favorite) "取消收藏" else "收藏",
+                    tint = if (progress.favorite) Error else InkFaint
+                )
             }
         }
     }
@@ -1911,11 +2276,19 @@ fun EmptyCard(text: String) {
     }
 }
 
-fun convertZh(text: String, mode: ChineseMode): String {
-    if (mode == ChineseMode.Hans) return text
-    return runCatching { ChineseTransliterator.hansToHant.transliterate(text) }.getOrDefault(text)
+fun matchesLibraryFilter(word: OgdenWord, query: String, category: Category?): Boolean =
+    (category == null || word.category == category) &&
+        (query.isBlank() ||
+            word.word.contains(query, ignoreCase = true) ||
+            word.zh.contains(query) ||
+            word.englishDefinition.contains(query, ignoreCase = true))
+
+@Composable
+fun LoadingScreen() {
+    Surface(color = Paper, modifier = Modifier.fillMaxSize()) {
+        Box(Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
+            EmptyCard("正在准备词库……")
+        }
+    }
 }
 
-private object ChineseTransliterator {
-    val hansToHant: Transliterator = Transliterator.getInstance("Simplified-Traditional")
-}

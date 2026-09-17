@@ -20,7 +20,7 @@
 
 - 内置 Ogden Basic English 850 词，支持离线学习。
 - 词库分为 Operations、General Things、Picturable、Qualities、Opposites。
-- 支持搜索、分类筛选、US/UK 发音切换、简体/繁体显示。
+- 支持搜索、分类筛选、US/UK 发音切换，界面固定简体中文。
 - 首页展示英文谚语卡片，点击翻转查看中文翻译。
 - 每 10 个词为一关，分类逐步解锁。
 - 练习包含听音选词、看中文选英文、例句填空、拼写挑战、近义词配对。

@@ -1,8 +1,9 @@
 <resources>
+    <!-- 系统栏改为透明，明暗与图标颜色由 Compose 按主题设置 -->
     <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:fontFamily">sans</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">#FAF6ED</item>
-        <item name="android:navigationBarColor">#FAF6ED</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/paper</item>
     </style>
 </resources>

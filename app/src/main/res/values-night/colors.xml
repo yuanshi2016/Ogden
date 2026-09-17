@@ -1,0 +1,4 @@
+<resources>
+    <!-- 深色下的窗口底色，与 Compose 的暖色深色纸面一致 -->
+    <color name="paper">#17130F</color>
+</resources>
