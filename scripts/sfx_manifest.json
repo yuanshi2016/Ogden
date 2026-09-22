@@ -1,0 +1,29 @@
+{
+  "api_base": "http://127.0.0.1:7860/qwenapi/v1",
+  "model_name": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+  "speaker": "serena",
+  "language": "chinese",
+  "instruct": "亲切活泼、充满鼓励的年轻女声，声音温暖明亮，像温柔的老师在夸奖孩子，语调上扬，情绪饱满，语速适中。",
+  "out_dir": "app/src/main/assets/audio/sfx",
+  "mp3_bitrate": "48k",
+  "target_peak_db": -6.0,
+  "min_duration": 0.5,
+  "max_duration": 4.0,
+  "sfx": [
+    { "name": "correct", "text": "答对啦，真棒！" },
+    { "name": "correct2", "text": "太棒了！" },
+    { "name": "correct3", "text": "真聪明！" },
+    { "name": "wrong", "text": "没关系，再试一次！" },
+    { "name": "combo", "text": "太厉害了！" },
+    { "name": "combo3", "text": "三连对，继续加油！" },
+    { "name": "combo5", "text": "五连对！太强了！" },
+    { "name": "combo6", "text": "六连对，不可思议！" },
+    { "name": "combo7", "text": "七连对，超厉害！" },
+    { "name": "combo8", "text": "八连对，你是小天才！" },
+    { "name": "combo9", "text": "九连对，稳稳的！" },
+    { "name": "combo10", "text": "十连对！传奇时刻！" },
+    { "name": "combo_max", "text": "连击爆表了，太燃了！" },
+    { "name": "perfect", "text": "全部答对，太完美了！" },
+    { "name": "complete", "text": "闯关成功！你太棒了！" }
+  ]
+}

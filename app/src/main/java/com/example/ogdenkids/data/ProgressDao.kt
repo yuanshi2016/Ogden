@@ -43,11 +43,44 @@ interface ProgressDao {
     @Query("DELETE FROM daily_activity WHERE day < :day")
     suspend fun pruneDailyActivity(day: Long)
 
-    // 复习排序：没掌握的词里，先给从未答过（lastAnsweredAt = 0）与最久没答的
-    // 目前还没有界面调用，是本次改用数据库的直接理由；真正的间隔重复算法留待后续
+    @Query("SELECT * FROM category_reward")
+    suspend fun allRewards(): List<RewardEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveReward(item: RewardEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveRewards(items: List<RewardEntity>)
+
+    @Query("SELECT * FROM earned_reward")
+    suspend fun allEarnedRewards(): List<EarnedRewardEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveEarnedReward(item: EarnedRewardEntity)
+
+    @Query("DELETE FROM earned_reward")
+    suspend fun clearEarnedRewards()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveAnswerEvent(item: AnswerEventEntity)
+
+    @Query("SELECT * FROM answer_event ORDER BY answeredAt DESC LIMIT :limit")
+    suspend fun recentAnswerEvents(limit: Int = 500): List<AnswerEventEntity>
+
+    @Query("SELECT * FROM answer_event WHERE day >= :fromDay ORDER BY answeredAt ASC")
+    suspend fun answerEventsSince(fromDay: Long): List<AnswerEventEntity>
+
+    @Query("DELETE FROM answer_event")
+    suspend fun clearAnswerEvents()
+
+    @Query("DELETE FROM answer_event WHERE answeredAt < :beforeMillis")
+    suspend fun pruneAnswerEvents(beforeMillis: Long)
+
+    // 复习：mastery 未满星且练过；dueAt<=now（dueAt=0 视为已到期）；按 dueAt ASC, mastery ASC
     @Query(
-        "SELECT * FROM word_progress WHERE mastery < :mastery " +
-            "ORDER BY lastAnsweredAt ASC, mastery ASC LIMIT :limit"
+        "SELECT * FROM word_progress WHERE mastery < :mastery AND attempts > 0 " +
+            "AND (dueAt = 0 OR dueAt <= :now) " +
+            "ORDER BY dueAt ASC, mastery ASC, word ASC LIMIT :limit"
     )
-    suspend fun wordsDueForReview(mastery: Int = 3, limit: Int = 20): List<WordProgressEntity>
+    suspend fun wordsDueForReview(now: Long, mastery: Int = 3, limit: Int = 20): List<WordProgressEntity>
 }

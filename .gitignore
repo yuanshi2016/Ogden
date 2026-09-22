@@ -2,9 +2,14 @@
 .idea/
 .kotlin/
 build/
+.cxx/
 local.properties
 *.iml
 app/build/
 captures/
 tools/
 *.apk
+**/__pycache__/
+*.pyc
+scripts/*.log
+scripts/*.err.log

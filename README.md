@@ -25,8 +25,11 @@
 - 每 10 个词为一关，分类逐步解锁。
 - 练习包含听音选词、看中文选英文、例句填空、拼写挑战、近义词配对。
 - 本地保存学习进度、收藏、错词、熟练度和连续学习天数。
-- 复习中心提供错词本和收藏夹。
-- 内置 US / UK 两套单词音频，优先离线播放。
+- 复习中心：智能复习队列（未满星、最久未答优先）、错词本、收藏夹；均可一键开练。
+- 设置页支持学习进度 JSON 导出 / 导入（不含 API Key 与家长密码）。
+- 学习图表含近 30 天柱状图与薄弱词 Top10。
+- 可选 AI 口语对练（绑定待复习词）与拍照答疑（需自备 DeepSeek Key）。
+- 内置 US / UK 两套单词音频，优先离线播放；跟读使用本地 whisper。
 
 ## Word Data
 
@@ -73,8 +76,11 @@ app/build/outputs/apk/debug/app-debug.apk
 
 ## Notes
 
+- 上架包名（applicationId）已是 `com.skivein.ogdenbasic`（作者 Skivein）；源码 namespace 仍为 `com.example.ogdenkids`。旧包 `com.example.ogdenkids` 需卸载后重装。
 - App 首版以离线学习为主，不接入账号、云同步或排行榜。
 - 发音优先使用内置音频；例句或缺失音频场景可回退到系统 TTS / 在线服务。
+- 跟读模型首次使用时从网络下载（约 57MB），之后完全离线识别。
+- 可选：每日复习通知、DeepSeek AI 口语/拍照（自备 Key，本机加密存储）。
 - 一点颜体字体来自 [wordshub/free-font](https://github.com/wordshub/free-font)，用于首页底部短句。
 
 ## License

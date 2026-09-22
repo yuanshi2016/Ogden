@@ -1,59 +1,85 @@
 plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
-    id "org.jetbrains.kotlin.kapt"
+    id "org.jetbrains.kotlin.plugin.compose"
+    id "com.google.devtools.ksp"
 }
 
 android {
     namespace "com.example.ogdenkids"
-    compileSdk 33
+    // E4c：compile/target 35；Kotlin 2 + Compose 插件
+    compileSdk 35
 
     defaultConfig {
-        applicationId "com.example.ogdenkids"
+        applicationId "com.skivein.ogdenbasic"
         minSdk 24
-        targetSdk 33
+        targetSdk 35
         versionCode 1
         versionName "1.0.0"
-        // 应用界面只有简体中文一种语言
         resConfigs "zh-rCN"
 
-        // 导出 Room 架构 json，方便日后审阅迁移
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
-            }
+        // NDK 29 默认更好支持 16KB；CMake 已加 max-page-size=16384
+        ndkVersion "29.0.14033849"
+        ndk {
+            abiFilters "arm64-v8a", "x86_64"
         }
     }
 
     buildFeatures {
         compose true
+        buildConfig false
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion "1.4.3"
+    externalNativeBuild {
+        cmake {
+            path file("src/main/cpp/CMakeLists.txt")
+        }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = false
+        }
     }
 }
 
 dependencies {
-    implementation platform("androidx.compose:compose-bom:2023.06.01")
-    implementation "androidx.activity:activity-compose:1.7.2"
+    implementation platform("androidx.compose:compose-bom:2024.10.01")
+    implementation "androidx.activity:activity-compose:1.9.3"
+    implementation "androidx.core:core-ktx:1.15.0"
     implementation "androidx.compose.foundation:foundation"
     implementation "androidx.compose.material:material-icons-extended"
     implementation "androidx.compose.material3:material3"
     implementation "androidx.compose.ui:ui"
-    implementation "androidx.room:room-runtime:2.5.2"
-    implementation "androidx.room:room-ktx:2.5.2"
-    kapt "androidx.room:room-compiler:2.5.2"
+    implementation "androidx.room:room-runtime:2.6.1"
+    implementation "androidx.room:room-ktx:2.6.1"
+    ksp "androidx.room:room-compiler:2.6.1"
+    implementation "androidx.security:security-crypto:1.1.0-alpha06"
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.json:json:20240303"
+}
+
+ksp {
+    arg("room.schemaLocation", file("$projectDir/schemas").absolutePath.replace('\\', '/'))
 }

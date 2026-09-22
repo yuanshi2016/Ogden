@@ -1,11 +1,30 @@
 package com.example.ogdenkids
 
 import org.json.JSONArray
+import com.example.ogdenkids.data.DailyActivityEntity
+import com.example.ogdenkids.data.EarnedRewardEntity
+import com.example.ogdenkids.data.LevelProgressEntity
+import com.example.ogdenkids.data.ProgressSnapshot
+import com.example.ogdenkids.data.WordProgressEntity
+import com.example.ogdenkids.data.decodeProgressSnapshot
+import com.example.ogdenkids.data.encodeProgressSnapshot
 import com.example.ogdenkids.data.legacyLevelProgress
+import com.example.ogdenkids.data.legacyRewards
 import com.example.ogdenkids.data.legacyWordProgress
+import com.example.ogdenkids.data.Sm2State
+import com.example.ogdenkids.data.nextSm2
+import com.example.ogdenkids.data.AnswerEventEntity
+import com.example.ogdenkids.data.qualityFromCorrect
+import com.example.ogdenkids.data.qualityFromSpeak
+import com.example.ogdenkids.data.qualityHistogram
+import com.example.ogdenkids.data.selectDueForReview
+import com.example.ogdenkids.data.selectWeakWords
+import com.example.ogdenkids.data.summarizeQuality
+import com.example.ogdenkids.data.tutorFocusAddon
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -96,13 +115,27 @@ class OgdenDataTest {
     @Test
     fun resetDropsProgressKeysButKeepsAccent() {
         val keys = setOf(
-            "accent", "roomImported", "favorites", "mistakes", "mastery.cat", "attempts.cat", "correct.cat",
+            "accent", "themeMode", "speakLevel", "roomImported", "aiKey", "parentPin",
+            "reviewReminderEnabled", "reviewReminderHour", "reminderDueCount",
+            SpeakCalibrationStore.SAMPLES_KEY, SpeakCalibrationStore.THRESHOLDS_KEY,
+            "favorites", "mistakes", "mastery.cat", "attempts.cat", "correct.cat",
             "last.cat", "level.op.1.complete", "streak", "lastStudyDay", "lastCategory", "lastLevel"
         )
         val dropped = resettableProgressKeys(keys)
         assertFalse(dropped.contains("accent"))
+        assertFalse(dropped.contains("themeMode"))
+        assertFalse(dropped.contains("speakLevel"))
         assertFalse(dropped.contains("roomImported"))
-        assertEquals(keys - "accent" - "roomImported", dropped)
+        assertFalse(dropped.contains("aiKey"))
+        assertFalse(dropped.contains("parentPin"))
+        assertFalse(dropped.contains("reviewReminderEnabled"))
+        assertFalse(dropped.contains("reviewReminderHour"))
+        assertFalse(dropped.contains("reminderDueCount"))
+        assertFalse(dropped.contains(SpeakCalibrationStore.SAMPLES_KEY))
+        assertFalse(dropped.contains(SpeakCalibrationStore.THRESHOLDS_KEY))
+        assertTrue(dropped.contains("streak"))
+        assertTrue(dropped.contains("favorites"))
+        assertTrue(dropped.contains("mastery.cat"))
     }
 
     @Test
@@ -184,5 +217,422 @@ class OgdenDataTest {
         val prefs = mapOf<String, Any?>("accent" to "US")
         assertTrue(legacyWordProgress(prefs).isEmpty())
         assertTrue(legacyLevelProgress(prefs).isEmpty())
+    }
+
+    @Test
+    fun legacyRewardPrefsMapToRows() {
+        val rows = legacyRewards(mapOf(
+            "reward.op.Easy" to "贴纸",
+            "reward.gt.Hard" to "  ",
+            "reward.pt" to "缺难度",
+            "accent" to "US"
+        )).associateBy { it.category }
+        assertEquals(1, rows.size)
+        assertEquals("贴纸", rows.getValue("op").text)
+        assertEquals("Easy", rows.getValue("op").difficulty)
+    }
+
+    @Test
+    fun examCountClampsToPool() {
+        assertEquals(10, examCountDefault(10))
+        assertEquals(50, examCountDefault(400))
+        assertEquals(1, clampExamCount(0, 400))
+        assertEquals(400, clampExamCount(999, 400))
+        assertEquals(50, clampExamCount(50, 400))
+        val a = practiceWords(parsed, Category.GeneralThings, 0, 1, 50)
+        val b = practiceWords(parsed, Category.GeneralThings, 0, 2, 50)
+        assertEquals(50, a.size)
+        assertEquals(50, b.size)
+        assertTrue(a.all { it.category == Category.GeneralThings })
+        assertNotEquals(a.map { it.word }, b.map { it.word })
+        assertEquals(400, practiceWords(parsed, Category.GeneralThings, 0, 1, 400).size)
+        val levelPool = parsed.filter { it.category == Category.Operations }.take(10)
+        val level1 = practiceWords(parsed, Category.Operations, 1, 99)
+        val level1b = practiceWords(parsed, Category.Operations, 1, 100)
+        assertEquals(10, level1.size)
+        // 同一关词集合固定，顺序按种子打乱
+        assertEquals(levelPool.map { it.word }.toSet(), level1.map { it.word }.toSet())
+        assertNotEquals(level1.map { it.word }, level1b.map { it.word })
+    }
+
+    @Test
+    fun earnedRewardsGroupBySameText() {
+        val rows = listOf(
+            EarnedRewardEntity("op", "Easy", "手机碎片", 1),
+            EarnedRewardEntity("gt", "Easy", "手机碎片", 2),
+            EarnedRewardEntity("pt", "Hard", "贴纸", 3),
+            EarnedRewardEntity("vb", "Speak", "  ", 4)
+        )
+        val grouped = groupEarnedRewards(rows)
+        assertEquals(listOf("手机碎片", "贴纸"), grouped.map { it.text })
+        assertEquals(2, grouped.first().count)
+        assertEquals(1, grouped.last().count)
+    }
+
+    @Test
+    fun normalizeSpokenStripsPunctuationAndCase() {
+        assertEquals("cat", normalizeSpoken("  Cat.  "))
+        assertEquals("it's", normalizeSpoken("It's"))
+        assertEquals("get up", normalizeSpoken("get   up!"))
+    }
+
+    @Test
+    fun metaphoneGroupsSimilarSounds() {
+        assertEquals(metaphone("cat"), metaphone("kat"))
+        assertEquals(metaphone("phone"), metaphone("fone"))
+        assertNotEquals(metaphone("cat"), metaphone("dog"))
+    }
+
+    @Test
+    fun spokenSimilarityRanksMatchQuality() {
+        assertEquals(1f, spokenSimilarity("cat", "cat"))
+        assertEquals(1f, spokenSimilarity("cat", " Cat. "))
+        assertTrue(spokenSimilarity("cat", "a cat") >= 0.95f)
+        assertTrue(spokenSimilarity("cat", "kat") >= 0.85f)
+        assertTrue(spokenSimilarity("cat", "bat") < 0.85f)
+        assertEquals(0f, spokenSimilarity("", "cat"))
+    }
+
+    @Test
+    fun assessPronunciationRespectsLevels() {
+        // 精确匹配：任何级别都过
+        assertTrue(assessPronunciation("cat", "cat", 0.8f, SpeakLevel.Strict).passed)
+        // 音近：宽松/标准过，严格不过
+        assertTrue(assessPronunciation("cat", "kat", 0.8f, SpeakLevel.Lenient).passed)
+        assertTrue(assessPronunciation("cat", "kat", 0.8f, SpeakLevel.Normal).passed)
+        assertFalse(assessPronunciation("cat", "kat", 0.8f, SpeakLevel.Strict).passed)
+        // 精确但置信度低：标准/严格不过，宽松过
+        assertFalse(assessPronunciation("cat", "cat", 0.1f, SpeakLevel.Normal).passed)
+        assertFalse(assessPronunciation("cat", "cat", 0.1f, SpeakLevel.Strict).passed)
+        assertTrue(assessPronunciation("cat", "cat", 0.1f, SpeakLevel.Lenient).passed)
+        // 完全不对：任何级别都不过
+        assertFalse(assessPronunciation("cat", "dog", 0.9f, SpeakLevel.Lenient).passed)
+    }
+
+    @Test
+    fun assessPronunciationUsesCustomThresholds() {
+        val loose = SpeakThresholds(minSimilarity = 0.5f, minConfidence = 0.1f)
+        // 默认 Normal 下 "kat"+高置信度过；严格自定义门槛可卡住
+        assertTrue(assessPronunciation("cat", "kat", 0.8f, SpeakLevel.Normal).passed)
+        val strictCustom = SpeakThresholds(minSimilarity = 0.99f, minConfidence = 0.9f)
+        assertFalse(assessPronunciation("cat", "kat", 0.8f, SpeakLevel.Normal, strictCustom).passed)
+        // 自定义放宽后低置信度也可过
+        assertTrue(assessPronunciation("cat", "cat", 0.15f, SpeakLevel.Normal, loose).passed)
+    }
+
+    @Test
+    fun adjustSpeakThresholdsLowersWhenUserSaysShouldPass() {
+        val base = defaultSpeakThresholds(SpeakLevel.Normal)
+        // 相似度刚过默认门槛边缘、机器判不过，用户说其实对了 → 降门槛
+        val samples = listOf(
+            SpeakFeedbackSample(0.80f, 0.4f, userSaysShouldPass = true, level = SpeakLevel.Normal),
+            SpeakFeedbackSample(0.82f, 0.35f, userSaysShouldPass = true, level = SpeakLevel.Normal)
+        )
+        val adjusted = adjustSpeakThresholds(base, samples, SpeakLevel.Normal)
+        assertTrue(adjusted.minSimilarity < base.minSimilarity)
+        assertTrue(adjusted.minConfidence <= base.minConfidence)
+    }
+
+    @Test
+    fun adjustSpeakThresholdsRaisesWhenUserSaysShouldFail() {
+        val base = defaultSpeakThresholds(SpeakLevel.Normal)
+        // 机器判过、用户说其实错了 → 升门槛
+        val samples = listOf(
+            SpeakFeedbackSample(0.90f, 0.5f, userSaysShouldPass = false, level = SpeakLevel.Normal),
+            SpeakFeedbackSample(0.88f, 0.45f, userSaysShouldPass = false, level = SpeakLevel.Normal)
+        )
+        val adjusted = adjustSpeakThresholds(base, samples, SpeakLevel.Normal)
+        assertTrue(adjusted.minSimilarity > base.minSimilarity)
+    }
+
+    @Test
+    fun speakThresholdsRoundTrip() {
+        val map = mapOf(
+            SpeakLevel.Normal to SpeakThresholds(0.8f, 0.25f),
+            SpeakLevel.Strict to SpeakThresholds(0.97f, 0.6f)
+        )
+        val back = decodeSpeakThresholds(encodeSpeakThresholds(map))
+        assertEquals(0.8f, back.getValue(SpeakLevel.Normal).minSimilarity, 1e-5f)
+        assertEquals(0.25f, back.getValue(SpeakLevel.Normal).minConfidence, 1e-5f)
+        assertEquals(0.97f, back.getValue(SpeakLevel.Strict).minSimilarity, 1e-5f)
+    }
+
+    @Test
+    fun screenSaverRoundTripsPracticeAndDetail() {
+        val scope = object : androidx.compose.runtime.saveable.SaverScope {
+            override fun canBeSaved(value: Any): Boolean = true
+        }
+        val practice = Screen.Practice(
+            categoryCode = "op",
+            level = 2,
+            examCount = 0,
+            wordKeys = listOf("cat", "dog"),
+            title = "收藏夹"
+        )
+        val saved = with(Screen.Saver) { scope.save(practice) }!!
+        val restored = Screen.Saver.restore(saved) as Screen.Practice
+        assertEquals("op", restored.categoryCode)
+        assertEquals(2, restored.level)
+        assertEquals(listOf("cat", "dog"), restored.wordKeys)
+        assertEquals("收藏夹", restored.title)
+
+        val detail = Screen.Detail("cat", listOf("cat", "dog", "fish"))
+        val detailSaved = with(Screen.Saver) { scope.save(detail) }!!
+        val detailBack = Screen.Saver.restore(detailSaved) as Screen.Detail
+        assertEquals("cat", detailBack.wordKey)
+        assertEquals(listOf("cat", "dog", "fish"), detailBack.neighborKeys)
+    }
+
+    @Test
+    fun reviewReminderNextTriggerSkipsPastHour() {
+        val cal = java.util.Calendar.getInstance().apply {
+            set(2026, java.util.Calendar.SEPTEMBER, 23, 20, 30, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+        val now = cal.timeInMillis
+        val next = ReviewReminderScheduler.nextTriggerMillis(now, hour = 19)
+        val nextCal = java.util.Calendar.getInstance().apply { timeInMillis = next }
+        assertEquals(24, nextCal.get(java.util.Calendar.DAY_OF_MONTH))
+        assertEquals(19, nextCal.get(java.util.Calendar.HOUR_OF_DAY))
+        assertEquals(0, nextCal.get(java.util.Calendar.MINUTE))
+    }
+
+    @Test
+    fun levenshteinDistanceIsCorrect() {
+        assertEquals(0, levenshtein("cat", "cat"))
+        assertEquals(3, levenshtein("kitten", "sitting"))
+        assertEquals(1, levenshtein("cat", "cut"))
+    }
+
+    @Test
+    fun dueForReviewOrdersByDueAtAndLowMastery() {
+        fun row(
+            word: String,
+            mastery: Int,
+            attempts: Int,
+            dueAt: Long,
+            last: Long = 0L
+        ) = word to WordProgressEntity(
+            word,
+            mastery = mastery,
+            attempts = attempts,
+            lastAnsweredAt = last,
+            dueAt = dueAt
+        )
+
+        val now = 1_000_000L
+        val keys = selectDueForReview(
+            listOf(
+                row("never", 0, 0, 0), // 从未答过，不进队列
+                row("due-early", 1, 3, dueAt = 100),
+                row("due-later", 2, 5, dueAt = 500),
+                row("legacy-zero", 0, 2, dueAt = 0L), // dueAt==0 视为已到期，排最前
+                row("not-yet", 1, 4, dueAt = now + 10_000), // 未到期，不进
+                row("mastered", 3, 10, dueAt = 50)
+            ),
+            limit = 10,
+            nowMillis = now
+        )
+        // dueAt ASC: 0, 100, 500；同 due 再 mastery
+        assertEquals(listOf("legacy-zero", "due-early", "due-later"), keys)
+        assertEquals(
+            2,
+            selectDueForReview(
+                listOf(row("a", 1, 1, 1), row("b", 1, 1, 2)),
+                limit = 2,
+                nowMillis = now
+            ).size
+        )
+        assertTrue(selectDueForReview(emptyList(), 5, now).isEmpty())
+    }
+
+    @Test
+    fun comboCueMapsExactStreak() {
+        assertEquals(SfxCue.Combo, comboCue(2))
+        assertEquals(SfxCue.Combo3, comboCue(3))
+        assertTrue(comboCue(4) in listOf(SfxCue.Correct, SfxCue.Correct2, SfxCue.Correct3))
+        assertNotEquals(SfxCue.Combo3, comboCue(4))
+        // 5–10 与连击数文案一一对应（9 绝不能播 combo10）
+        assertEquals(SfxCue.Combo5, comboCue(5))
+        assertEquals(SfxCue.Combo6, comboCue(6))
+        assertEquals(SfxCue.Combo7, comboCue(7))
+        assertEquals(SfxCue.Combo8, comboCue(8))
+        assertEquals(SfxCue.Combo9, comboCue(9))
+        assertEquals(SfxCue.Combo10, comboCue(10))
+        assertEquals(SfxCue.ComboMax, comboCue(11))
+        assertEquals(SfxCue.ComboMax, comboCue(15))
+        assertNotEquals(SfxCue.Combo10, comboCue(9))
+    }
+
+    @Test
+    fun qualityHistogramAndSummary() {
+        val events = listOf(
+            AnswerEventEntity(word = "a", correct = false, quality = 0, answeredAt = 1, day = 1),
+            AnswerEventEntity(word = "b", correct = false, quality = 1, answeredAt = 2, day = 1),
+            AnswerEventEntity(word = "c", correct = true, quality = 4, answeredAt = 3, day = 1),
+            AnswerEventEntity(word = "d", correct = true, quality = 5, answeredAt = 4, day = 1),
+            AnswerEventEntity(word = "e", correct = true, quality = 5, answeredAt = 5, day = 1)
+        )
+        val hist = qualityHistogram(events)
+        assertEquals(1, hist[0])
+        assertEquals(1, hist[1])
+        assertEquals(0, hist[2])
+        assertEquals(0, hist[3])
+        assertEquals(1, hist[4])
+        assertEquals(2, hist[5])
+        val sum = summarizeQuality(events)
+        assertEquals(5, sum.total)
+        assertEquals(0.6f, sum.passRate, 1e-5f) // 3/5 with q>=3
+        assertEquals((0 + 1 + 4 + 5 + 5) / 5f, sum.averageQuality, 1e-5f)
+        assertEquals(0, summarizeQuality(emptyList()).total)
+    }
+
+    @Test
+    fun nextSm2QualitySchedule() {
+        val t0 = 1_000_000L
+        val fresh = Sm2State()
+        // q=1 失败：重置 n、短间隔、EF 下降
+        val afterFail = nextSm2(fresh, quality = 1, nowMillis = t0)
+        assertEquals(0, afterFail.repetitions)
+        assertEquals(Sm2State.FAIL_INTERVAL_DAYS, afterFail.intervalDays, 1e-9)
+        assertTrue(afterFail.easeFactor < Sm2State.DEFAULT_EASE)
+        assertEquals(t0 + (Sm2State.FAIL_INTERVAL_DAYS * Sm2State.DAY_MS).toLong(), afterFail.dueAt)
+
+        // q=5 完美：n=1 → 1 天，EF 上升
+        val afterPass1 = nextSm2(fresh, quality = 5, nowMillis = t0)
+        assertEquals(1, afterPass1.repetitions)
+        assertEquals(1.0, afterPass1.intervalDays, 1e-9)
+        assertTrue(afterPass1.easeFactor > Sm2State.DEFAULT_EASE)
+        assertEquals(t0 + (1.0 * Sm2State.DAY_MS).toLong(), afterPass1.dueAt)
+
+        val afterPass2 = nextSm2(afterPass1, quality = 5, nowMillis = t0 + 1)
+        assertEquals(2, afterPass2.repetitions)
+        assertEquals(6.0, afterPass2.intervalDays, 1e-9)
+
+        val afterPass3 = nextSm2(afterPass2, quality = 5, nowMillis = t0 + 2)
+        assertEquals(3, afterPass3.repetitions)
+        assertTrue(afterPass3.intervalDays >= 6.0)
+        assertTrue(afterPass3.easeFactor <= 3.0 + 1e-9)
+
+        // q=4 正确有犹豫：EF 不变（经典公式）
+        val q4 = nextSm2(fresh, quality = 4, nowMillis = t0)
+        assertEquals(Sm2State.DEFAULT_EASE, q4.easeFactor, 1e-9)
+        assertEquals(1, q4.repetitions)
+
+        // 兼容 boolean 重载
+        assertEquals(4, qualityFromCorrect(true))
+        assertEquals(1, qualityFromCorrect(false))
+        assertEquals(nextSm2(fresh, quality = 4, nowMillis = t0), nextSm2(fresh, correct = true, nowMillis = t0))
+
+        // 跟读质量
+        assertEquals(5, qualityFromSpeak(true, 0.99f))
+        assertEquals(0, qualityFromSpeak(false, 0.1f))
+
+        // 易度下限
+        val low = nextSm2(Sm2State(easeFactor = Sm2State.MIN_EASE), quality = 0, nowMillis = t0)
+        assertEquals(Sm2State.MIN_EASE, low.easeFactor, 1e-9)
+    }
+
+    @Test
+    fun weakWordsSortByAccuracyThenAttempts() {
+        fun row(word: String, correct: Int, attempts: Int) =
+            word to WordProgressEntity(word, correct = correct, attempts = attempts)
+
+        val weak = selectWeakWords(
+            listOf(
+                row("bad", 1, 10),
+                row("ok", 5, 10),
+                row("worse", 0, 3),
+                row("fresh", 0, 0)
+            ),
+            limit = 3
+        ).map { it.first }
+        assertEquals(listOf("worse", "bad", "ok"), weak)
+    }
+
+    @Test
+    fun progressBackupRoundTripKeepsLearningData() {
+        val snapshot = ProgressSnapshot(
+            words = listOf(
+                WordProgressEntity(
+                    "cat",
+                    favorite = true,
+                    mistake = false,
+                    mastery = 2,
+                    attempts = 4,
+                    correct = 3,
+                    lastAnsweredAt = 99L,
+                    intervalDays = 6.0,
+                    easeFactor = 2.6,
+                    dueAt = 12345L
+                )
+            ),
+            levels = listOf(LevelProgressEntity("op", 1, 88L)),
+            daily = listOf(DailyActivityEntity(10, answered = 5, correct = 4)),
+            earned = listOf(EarnedRewardEntity("op", "Easy", "贴纸", 77L)),
+            streak = 3,
+            lastStudyDay = 10L,
+            lastCategory = "gt",
+            lastLevel = 2
+        )
+        val json = encodeProgressSnapshot(snapshot, exportedAt = 1_700_000_000_000L)
+        val back = decodeProgressSnapshot(json)
+        assertEquals(1, back.words.size)
+        assertEquals("cat", back.words.first().word)
+        assertTrue(back.words.first().favorite)
+        assertEquals(2, back.words.first().mastery)
+        assertEquals(99L, back.words.first().lastAnsweredAt)
+        assertEquals(6.0, back.words.first().intervalDays, 1e-9)
+        assertEquals(2.6, back.words.first().easeFactor, 1e-9)
+        assertEquals(12345L, back.words.first().dueAt)
+        assertEquals("op", back.levels.first().category)
+        assertEquals(1, back.levels.first().level)
+        assertEquals(5, back.daily.first().answered)
+        assertEquals("贴纸", back.earned.first().text)
+        assertEquals(3, back.streak)
+        assertEquals("gt", back.lastCategory)
+        assertEquals(2, back.lastLevel)
+        assertFalse(json.contains("aiKey"))
+        assertFalse(json.contains("parentPin"))
+    }
+
+    @Test
+    fun progressBackupMissingSm2FieldsUsesDefaults() {
+        val json = """
+            {"version":1,"words":[{"w":"dog","mastery":1,"attempts":2,"correct":1,"last":10}],
+            "levels":[],"daily":[],"earned":[],"streak":0,"lastStudyDay":0,"lastCategory":"op","lastLevel":1}
+        """.trimIndent()
+        val back = decodeProgressSnapshot(json)
+        val dog = back.words.single()
+        assertEquals("dog", dog.word)
+        assertEquals(0.0, dog.intervalDays, 1e-9)
+        assertEquals(Sm2State.DEFAULT_EASE, dog.easeFactor, 1e-9)
+        assertEquals(0L, dog.dueAt)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun progressBackupRejectsUnknownVersion() {
+        decodeProgressSnapshot("""{"version":99,"words":[]}""")
+    }
+
+    @Test
+    fun tutorFocusAddonListsWordsAndStaysEmptyWhenNone() {
+        assertEquals("", tutorFocusAddon(emptyList()))
+        assertEquals("", tutorFocusAddon(listOf("  ", "")))
+        val text = tutorFocusAddon(listOf("cat", "dog", "cat", "fish"), maxWords = 2)
+        assertTrue(text.contains("cat"))
+        assertTrue(text.contains("dog"))
+        assertFalse(text.contains("fish"))
+        assertTrue(text.contains("Ogden words"))
+    }
+
+    @Test
+    fun customPracticeWordsUsesKeysAndSeed() {
+        val keys = parsed.take(5).map { it.word }
+        val a = practiceWords(parsed, Category.Operations, 0, seed = 1, wordKeys = keys)
+        val b = practiceWords(parsed, Category.Operations, 0, seed = 2, wordKeys = keys)
+        assertEquals(5, a.size)
+        assertEquals(keys.toSet(), a.map { it.word }.toSet())
+        assertNotEquals(a.map { it.word }, b.map { it.word })
     }
 }
