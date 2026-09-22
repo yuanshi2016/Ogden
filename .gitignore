@@ -1,5 +1,6 @@
 .gradle/
 .idea/
+.idea
 .kotlin/
 build/
 .cxx/
@@ -13,3 +14,4 @@ tools/
 *.pyc
 scripts/*.log
 scripts/*.err.log
+/app/src/main/cpp/whisper.cpp/
