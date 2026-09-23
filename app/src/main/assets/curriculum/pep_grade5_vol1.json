@@ -22,7 +22,11 @@
       "face",
       "smile",
       "strong",
-      "nice"
+      "nice",
+      "different",
+      "same",
+      "each",
+      "other"
     ],
     "phrases": [
       {
@@ -40,6 +44,10 @@
       {
         "en": "My friends are different, but we like each other.",
         "zh": "我的朋友们各不相同，但我们彼此喜欢。"
+      },
+      {
+        "en": "Do you look the same as your friend?",
+        "zh": "你和朋友长得一样吗？"
       }
     ],
     "activities": [
@@ -83,7 +91,11 @@
       "smile",
       "excited",
       "love",
-      "hope"
+      "hope",
+      "afraid",
+      "worried",
+      "better",
+      "today"
     ],
     "phrases": [
       {
@@ -101,6 +113,10 @@
       {
         "en": "She looks tired after school.",
         "zh": "放学后她看起来很累。"
+      },
+      {
+        "en": "Why are you worried?",
+        "zh": "你为什么担心？"
       }
     ],
     "activities": [
@@ -144,7 +160,11 @@
       "dance",
       "music",
       "game",
-      "ball"
+      "ball",
+      "hobby",
+      "often",
+      "sometimes",
+      "always"
     ],
     "phrases": [
       {
@@ -162,6 +182,10 @@
       {
         "en": "Let's sing and dance together.",
         "zh": "我们一起唱歌跳舞吧。"
+      },
+      {
+        "en": "What is your hobby?",
+        "zh": "你的爱好是什么？"
       }
     ],
     "activities": [
@@ -199,7 +223,11 @@
       "walk",
       "run",
       "drink",
-      "water"
+      "water",
+      "habit",
+      "exercise",
+      "meal",
+      "always"
     ],
     "phrases": [
       {
@@ -217,6 +245,10 @@
       {
         "en": "Walking is a healthy habit.",
         "zh": "走路是一种健康习惯。"
+      },
+      {
+        "en": "Good habits keep you healthy.",
+        "zh": "好习惯让你保持健康。"
       }
     ],
     "activities": [
@@ -260,7 +292,11 @@
       "milk",
       "apple",
       "fish",
-      "cake"
+      "cake",
+      "order",
+      "menu",
+      "hungry",
+      "please"
     ],
     "phrases": [
       {
@@ -278,6 +314,10 @@
       {
         "en": "Please pass the bread.",
         "zh": "请把面包递给我。"
+      },
+      {
+        "en": "I would like some soup, please.",
+        "zh": "我想要一些汤。"
       }
     ],
     "activities": [
@@ -316,7 +356,11 @@
       "wind",
       "sky",
       "grass",
-      "plant"
+      "plant",
+      "save",
+      "care",
+      "dirty",
+      "clean"
     ],
     "phrases": [
       {
@@ -334,6 +378,10 @@
       {
         "en": "Let's plant more trees.",
         "zh": "我们多种树吧。"
+      },
+      {
+        "en": "We should save water every day.",
+        "zh": "我们每天都应该节约用水。"
       }
     ],
     "activities": [
@@ -376,7 +424,11 @@
       "hope",
       "love",
       "together",
-      "smile"
+      "smile",
+      "wish",
+      "gift",
+      "music",
+      "new"
     ],
     "phrases": [
       {

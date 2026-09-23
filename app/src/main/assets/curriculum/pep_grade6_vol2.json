@@ -22,7 +22,11 @@
       "than",
       "more",
       "both",
-      "compare"
+      "compare",
+      "taller",
+      "older",
+      "younger",
+      "measure"
     ],
     "phrases": [
       {
@@ -40,6 +44,14 @@
       {
         "en": "Both of us are young and strong.",
         "zh": "我们俩都年轻又强壮。"
+      },
+      {
+        "en": "Who is older, you or your sister?",
+        "zh": "你和姐姐谁更大？"
+      },
+      {
+        "en": "Let's compare our heights.",
+        "zh": "我们来比比身高吧。"
       }
     ],
     "activities": [
@@ -83,7 +95,11 @@
       "friend",
       "family",
       "film",
-      "house"
+      "house",
+      "went",
+      "saw",
+      "played",
+      "watched"
     ],
     "phrases": [
       {
@@ -101,6 +117,14 @@
       {
         "en": "We visited the park last Sunday.",
         "zh": "上周日我们去了公园。"
+      },
+      {
+        "en": "I went to the cinema last weekend.",
+        "zh": "上周末我去看电影了。"
+      },
+      {
+        "en": "Did you play football yesterday?",
+        "zh": "你昨天踢足球了吗？"
       }
     ],
     "activities": [
@@ -139,7 +163,11 @@
       "mountain",
       "city",
       "day",
-      "week"
+      "week",
+      "went",
+      "saw",
+      "visited",
+      "took"
     ],
     "phrases": [
       {
@@ -157,6 +185,14 @@
       {
         "en": "Did you visit the city museum?",
         "zh": "你参观了城市博物馆吗？"
+      },
+      {
+        "en": "How did you go there?",
+        "zh": "你怎么去那里的？"
+      },
+      {
+        "en": "I took a train and saw many places.",
+        "zh": "我坐火车，看了很多地方。"
       }
     ],
     "activities": [
@@ -199,7 +235,11 @@
       "new",
       "school",
       "house",
-      "year"
+      "year",
+      "was",
+      "were",
+      "ago",
+      "become"
     ],
     "phrases": [
       {
@@ -217,6 +257,14 @@
       {
         "en": "Some things are the same; some are different.",
         "zh": "有些一样，有些不同。"
+      },
+      {
+        "en": "Our school was smaller ten years ago.",
+        "zh": "十年前我们学校更小。"
+      },
+      {
+        "en": "I have become taller than before.",
+        "zh": "我比以前长高了。"
       }
     ],
     "activities": [
@@ -255,7 +303,11 @@
       "tall",
       "now",
       "then",
-      "hope"
+      "hope",
+      "went",
+      "taller",
+      "visited",
+      "remember"
     ],
     "phrases": [
       {
@@ -277,6 +329,10 @@
       {
         "en": "I hope every day can be happy.",
         "zh": "我希望每天都能快乐。"
+      },
+      {
+        "en": "Remember the happy days and keep learning.",
+        "zh": "记住快乐的日子，继续学习。"
       }
     ],
     "activities": [

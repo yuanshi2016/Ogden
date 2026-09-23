@@ -101,8 +101,8 @@ class CurriculumTest {
     @Test
     fun everyUnitHasWordsAndPhrasesInRange() {
         units.forEach { unit ->
-            assertTrue("${unit.id} words=${unit.words.size}", unit.words.size in 8..15)
-            assertTrue("${unit.id} phrases=${unit.phrases.size}", unit.phrases.size in 3..5)
+            assertTrue("${unit.id} words=${unit.words.size}", unit.words.size in 8..18)
+            assertTrue("${unit.id} phrases=${unit.phrases.size}", unit.phrases.size in 3..6)
             assertTrue("${unit.id} goals", unit.goalsZh.size in 1..2)
             assertTrue("${unit.id} activities", unit.activities.size in 1..2)
         }
@@ -222,8 +222,8 @@ class CurriculumTest {
     @Test
     fun grade4UnitsHaveWordsPhrasesAndResolve() {
         units4.forEach { unit ->
-            assertTrue("${unit.id} words=${unit.words.size}", unit.words.size in 8..15)
-            assertTrue("${unit.id} phrases=${unit.phrases.size}", unit.phrases.size in 3..5)
+            assertTrue("${unit.id} words=${unit.words.size}", unit.words.size in 8..18)
+            assertTrue("${unit.id} phrases=${unit.phrases.size}", unit.phrases.size in 3..6)
             assertTrue("${unit.id} goals", unit.goalsZh.size in 1..2)
             assertTrue("${unit.id} activities", unit.activities.size in 1..2)
             assertEquals(4, unit.grade)
@@ -272,8 +272,8 @@ class CurriculumTest {
     @Test
     fun grade5UnitsHaveWordsPhrasesAndResolve() {
         units5.forEach { unit ->
-            assertTrue("${unit.id} words=${unit.words.size}", unit.words.size in 8..15)
-            assertTrue("${unit.id} phrases=${unit.phrases.size}", unit.phrases.size in 3..5)
+            assertTrue("${unit.id} words=${unit.words.size}", unit.words.size in 8..18)
+            assertTrue("${unit.id} phrases=${unit.phrases.size}", unit.phrases.size in 3..6)
             assertTrue("${unit.id} goals", unit.goalsZh.size in 1..2)
             assertTrue("${unit.id} activities", unit.activities.size in 1..2)
             assertEquals(5, unit.grade)
@@ -302,8 +302,8 @@ class CurriculumTest {
     @Test
     fun grade6UnitsHaveWordsPhrasesAndResolve() {
         units6.forEach { unit ->
-            assertTrue("${unit.id} words=${unit.words.size}", unit.words.size in 8..15)
-            assertTrue("${unit.id} phrases=${unit.phrases.size}", unit.phrases.size in 3..5)
+            assertTrue("${unit.id} words=${unit.words.size}", unit.words.size in 8..18)
+            assertTrue("${unit.id} phrases=${unit.phrases.size}", unit.phrases.size in 3..6)
             assertTrue("${unit.id} goals", unit.goalsZh.size in 1..2)
             assertTrue("${unit.id} activities", unit.activities.size in 1..2)
             assertEquals(6, unit.grade)
@@ -344,7 +344,7 @@ class CurriculumTest {
 
     @Test
     fun pepExtraWordsHaveSynonymsIpaAndText() {
-        assertEquals(44, extraWords.size)
+        assertTrue("extra size=${extraWords.size}", extraWords.size >= 44)
         extraWords.forEach { w ->
             assertTrue("${w.word} zh", w.zh.isNotBlank())
             assertTrue("${w.word} en", w.englishDefinition.isNotBlank())
@@ -354,6 +354,20 @@ class CurriculumTest {
             assertTrue("${w.word} ipaUk", w.ipaUk.isNotBlank())
             assertTrue("${w.word} ipaUs", w.ipaUs.isNotBlank())
         }
+    }
+
+    @Test
+    fun unitsThickenByGradeTrajectory() {
+        fun check(units: List<CurriculumUnit>, minW: Int, maxW: Int, minP: Int, maxP: Int) {
+            units.forEach { u ->
+                assertTrue("${u.id} words=${u.words.size}", u.words.size in minW..maxW)
+                assertTrue("${u.id} phrases=${u.phrases.size}", u.phrases.size in minP..maxP)
+            }
+        }
+        check(units, 14, 14, 5, 5)
+        check(units4, 15, 15, 5, 5)
+        check(units5, 16, 16, 5, 5)
+        check(units6, 16, 16, 6, 6)
     }
 
     @Test

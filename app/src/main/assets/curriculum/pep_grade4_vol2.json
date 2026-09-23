@@ -6,19 +6,66 @@
     "unit": 1,
     "titleEn": "Class rules",
     "titleZh": "班级规则",
-    "goalsZh": ["会说课堂常用规则", "会用祈使句提醒同伴"],
-    "words": ["rule", "quiet", "listen", "school", "desk", "chair", "book", "bag", "teacher", "boy", "girl", "hand"],
+    "goalsZh": [
+      "会说课堂常用规则",
+      "会用祈使句提醒同伴"
+    ],
+    "words": [
+      "rule",
+      "quiet",
+      "listen",
+      "school",
+      "desk",
+      "chair",
+      "book",
+      "bag",
+      "teacher",
+      "boy",
+      "girl",
+      "hand",
+      "must",
+      "should",
+      "classroom"
+    ],
     "phrases": [
-      { "en": "Please be quiet.", "zh": "请安静。" },
-      { "en": "Listen to the teacher.", "zh": "听老师说。" },
-      { "en": "Put up your hand.", "zh": "请举手。" },
-      { "en": "Don't run in the classroom.", "zh": "不要在教室里跑。" }
+      {
+        "en": "Please be quiet.",
+        "zh": "请安静。"
+      },
+      {
+        "en": "Listen to the teacher.",
+        "zh": "听老师说。"
+      },
+      {
+        "en": "Put up your hand.",
+        "zh": "请举手。"
+      },
+      {
+        "en": "Don't run in the classroom.",
+        "zh": "不要在教室里跑。"
+      },
+      {
+        "en": "We must follow the class rules.",
+        "zh": "我们必须遵守班规。"
+      }
     ],
     "activities": [
-      { "type": "roleplay", "titleZh": "班级小班长", "bodyZh": "一人当班长说规则，一人遵守或故意犯规，再用英文纠正。" },
-      { "type": "chant", "titleZh": "规则歌", "bodyZh": "念 Quiet, listen, hands up — these are our class rules!" }
+      {
+        "type": "roleplay",
+        "titleZh": "班级小班长",
+        "bodyZh": "一人当班长说规则，一人遵守或故意犯规，再用英文纠正。"
+      },
+      {
+        "type": "chant",
+        "titleZh": "规则歌",
+        "bodyZh": "念 Quiet, listen, hands up — these are our class rules!"
+      }
     ],
-    "weeksHint": [1, 2, 3]
+    "weeksHint": [
+      1,
+      2,
+      3
+    ]
   },
   {
     "id": "pep.g4.vol2.u2",
@@ -27,18 +74,61 @@
     "unit": 2,
     "titleEn": "Family rules",
     "titleZh": "家庭规则",
-    "goalsZh": ["会说家规与责任", "会用 must/should 简单表达"],
-    "words": ["family", "house", "must", "should", "help", "clean", "wash", "bed", "night", "morning", "please", "thank"],
+    "goalsZh": [
+      "会说家规与责任",
+      "会用 must/should 简单表达"
+    ],
+    "words": [
+      "family",
+      "house",
+      "must",
+      "should",
+      "help",
+      "clean",
+      "wash",
+      "bed",
+      "night",
+      "morning",
+      "please",
+      "thank",
+      "early",
+      "late",
+      "together"
+    ],
     "phrases": [
-      { "en": "We must help at home.", "zh": "我们必须在家帮忙。" },
-      { "en": "You should wash your hands.", "zh": "你应该洗手。" },
-      { "en": "Please make your bed.", "zh": "请整理床铺。" },
-      { "en": "Thank you for helping.", "zh": "谢谢你帮忙。" }
+      {
+        "en": "We must help at home.",
+        "zh": "我们必须在家帮忙。"
+      },
+      {
+        "en": "You should wash your hands.",
+        "zh": "你应该洗手。"
+      },
+      {
+        "en": "Please make your bed.",
+        "zh": "请整理床铺。"
+      },
+      {
+        "en": "Thank you for helping.",
+        "zh": "谢谢你帮忙。"
+      },
+      {
+        "en": "Don't go to bed too late.",
+        "zh": "不要太晚睡觉。"
+      }
     ],
     "activities": [
-      { "type": "parent", "titleZh": "我家三条规则", "bodyZh": "和孩子写出三条家规，用 We must... / You should... 读出来。" }
+      {
+        "type": "parent",
+        "titleZh": "我家三条规则",
+        "bodyZh": "和孩子写出三条家规，用 We must... / You should... 读出来。"
+      }
     ],
-    "weeksHint": [4, 5, 6]
+    "weeksHint": [
+      4,
+      5,
+      6
+    ]
   },
   {
     "id": "pep.g4.vol2.u3",
@@ -47,19 +137,65 @@
     "unit": 3,
     "titleEn": "Time for school",
     "titleZh": "上学时间",
-    "goalsZh": ["会说作息与时间点", "会安排简单的一天"],
-    "words": ["time", "clock", "morning", "afternoon", "night", "school", "breakfast", "lunch", "go", "come", "get", "up"],
+    "goalsZh": [
+      "会说作息与时间点",
+      "会安排简单的一天"
+    ],
+    "words": [
+      "time",
+      "clock",
+      "morning",
+      "afternoon",
+      "night",
+      "school",
+      "breakfast",
+      "lunch",
+      "go",
+      "come",
+      "get",
+      "up",
+      "before",
+      "after",
+      "ready"
+    ],
     "phrases": [
-      { "en": "What time is it?", "zh": "现在几点了？" },
-      { "en": "I get up at seven.", "zh": "我七点起床。" },
-      { "en": "It's time for school.", "zh": "该上学了。" },
-      { "en": "I have lunch at twelve.", "zh": "我十二点吃午饭。" }
+      {
+        "en": "What time is it?",
+        "zh": "现在几点了？"
+      },
+      {
+        "en": "I get up at seven.",
+        "zh": "我七点起床。"
+      },
+      {
+        "en": "It's time for school.",
+        "zh": "该上学了。"
+      },
+      {
+        "en": "I have lunch at twelve.",
+        "zh": "我十二点吃午饭。"
+      },
+      {
+        "en": "I go to school after breakfast.",
+        "zh": "我吃完早饭后去上学。"
+      }
     ],
     "activities": [
-      { "type": "roleplay", "titleZh": "一日时间表", "bodyZh": "画起床、早饭、上学、午饭四点，用 I ... at ... 介绍。" },
-      { "type": "listen", "titleZh": "听钟点", "bodyZh": "家长说数字，孩子说 It's time for..." }
+      {
+        "type": "roleplay",
+        "titleZh": "一日时间表",
+        "bodyZh": "画起床、早饭、上学、午饭四点，用 I ... at ... 介绍。"
+      },
+      {
+        "type": "listen",
+        "titleZh": "听钟点",
+        "bodyZh": "家长说数字，孩子说 It's time for..."
+      }
     ],
-    "weeksHint": [7, 8]
+    "weeksHint": [
+      7,
+      8
+    ]
   },
   {
     "id": "pep.g4.vol2.u4",
@@ -68,18 +204,61 @@
     "unit": 4,
     "titleEn": "Going shopping",
     "titleZh": "去购物",
-    "goalsZh": ["会问价格与颜色", "会简单买卖对话"],
-    "words": ["shop", "buy", "sell", "price", "money", "clothes", "shirt", "dress", "skirt", "color", "red", "blue"],
+    "goalsZh": [
+      "会问价格与颜色",
+      "会简单买卖对话"
+    ],
+    "words": [
+      "shop",
+      "buy",
+      "sell",
+      "price",
+      "money",
+      "clothes",
+      "shirt",
+      "dress",
+      "skirt",
+      "color",
+      "red",
+      "blue",
+      "try",
+      "size",
+      "cheap"
+    ],
     "phrases": [
-      { "en": "How much is this shirt?", "zh": "这件衬衫多少钱？" },
-      { "en": "I want a blue dress.", "zh": "我想要一条蓝色连衣裙。" },
-      { "en": "Can I try it on?", "zh": "我可以试穿吗？" },
-      { "en": "I'll take this one, please.", "zh": "请给我这一件。" }
+      {
+        "en": "How much is this shirt?",
+        "zh": "这件衬衫多少钱？"
+      },
+      {
+        "en": "I want a blue dress.",
+        "zh": "我想要一条蓝色连衣裙。"
+      },
+      {
+        "en": "Can I try it on?",
+        "zh": "我可以试穿吗？"
+      },
+      {
+        "en": "I'll take this one, please.",
+        "zh": "请给我这一件。"
+      },
+      {
+        "en": "This shirt is cheap and nice.",
+        "zh": "这件衬衫又便宜又好看。"
+      }
     ],
     "activities": [
-      { "type": "roleplay", "titleZh": "小小商店", "bodyZh": "摆三件衣物标价，用 How much / I'll take... 演买卖。" }
+      {
+        "type": "roleplay",
+        "titleZh": "小小商店",
+        "bodyZh": "摆三件衣物标价，用 How much / I'll take... 演买卖。"
+      }
     ],
-    "weeksHint": [10, 11, 12]
+    "weeksHint": [
+      10,
+      11,
+      12
+    ]
   },
   {
     "id": "pep.g4.vol2.u5",
@@ -88,19 +267,66 @@
     "unit": 5,
     "titleEn": "Farms and us",
     "titleZh": "农场和我们",
-    "goalsZh": ["会说农场动物与产物", "会表达数量"],
-    "words": ["farm", "cow", "pig", "sheep", "chicken", "duck", "horse", "egg", "milk", "grain", "animal", "bird"],
+    "goalsZh": [
+      "会说农场动物与产物",
+      "会表达数量"
+    ],
+    "words": [
+      "farm",
+      "cow",
+      "pig",
+      "sheep",
+      "chicken",
+      "duck",
+      "horse",
+      "egg",
+      "milk",
+      "grain",
+      "animal",
+      "bird",
+      "farmer",
+      "field",
+      "grow"
+    ],
     "phrases": [
-      { "en": "There are many animals on the farm.", "zh": "农场里有很多动物。" },
-      { "en": "Cows give us milk.", "zh": "奶牛给我们牛奶。" },
-      { "en": "I can see two sheep.", "zh": "我能看见两只羊。" },
-      { "en": "Chickens lay eggs.", "zh": "鸡下蛋。" }
+      {
+        "en": "There are many animals on the farm.",
+        "zh": "农场里有很多动物。"
+      },
+      {
+        "en": "Cows give us milk.",
+        "zh": "奶牛给我们牛奶。"
+      },
+      {
+        "en": "I can see two sheep.",
+        "zh": "我能看见两只羊。"
+      },
+      {
+        "en": "Chickens lay eggs.",
+        "zh": "鸡下蛋。"
+      },
+      {
+        "en": "Farmers work on the farm.",
+        "zh": "农民在农场干活。"
+      }
     ],
     "activities": [
-      { "type": "chant", "titleZh": "农场歌", "bodyZh": "念 Cow, pig, sheep and hen — animals on the farm again!" },
-      { "type": "parent", "titleZh": "数一数", "bodyZh": "用玩具动物练 I can see three..." }
+      {
+        "type": "chant",
+        "titleZh": "农场歌",
+        "bodyZh": "念 Cow, pig, sheep and hen — animals on the farm again!"
+      },
+      {
+        "type": "parent",
+        "titleZh": "数一数",
+        "bodyZh": "用玩具动物练 I can see three..."
+      }
     ],
-    "weeksHint": [13, 14, 15]
+    "weeksHint": [
+      13,
+      14,
+      15
+    ]
   },
   {
     "id": "pep.g4.vol2.u6",
@@ -109,18 +335,60 @@
     "unit": 6,
     "titleEn": "From farm to table",
     "titleZh": "从农场到餐桌",
-    "goalsZh": ["会说食物来源与餐食", "会简单餐桌礼貌用语"],
-    "words": ["food", "bread", "milk", "egg", "fruit", "vegetable", "table", "dinner", "lunch", "plate", "cook", "eat"],
+    "goalsZh": [
+      "会说食物来源与餐食",
+      "会简单餐桌礼貌用语"
+    ],
+    "words": [
+      "food",
+      "bread",
+      "milk",
+      "egg",
+      "fruit",
+      "vegetable",
+      "table",
+      "dinner",
+      "lunch",
+      "plate",
+      "cook",
+      "eat",
+      "pass",
+      "hungry",
+      "healthy"
+    ],
     "phrases": [
-      { "en": "Food comes from the farm.", "zh": "食物来自农场。" },
-      { "en": "Please pass the bread.", "zh": "请把面包递给我。" },
-      { "en": "I like fruit and milk.", "zh": "我喜欢水果和牛奶。" },
-      { "en": "Wash your hands before dinner.", "zh": "晚饭前要洗手。" }
+      {
+        "en": "Food comes from the farm.",
+        "zh": "食物来自农场。"
+      },
+      {
+        "en": "Please pass the bread.",
+        "zh": "请把面包递给我。"
+      },
+      {
+        "en": "I like fruit and milk.",
+        "zh": "我喜欢水果和牛奶。"
+      },
+      {
+        "en": "Wash your hands before dinner.",
+        "zh": "晚饭前要洗手。"
+      },
+      {
+        "en": "Where does our food come from?",
+        "zh": "我们的食物从哪里来？"
+      }
     ],
     "activities": [
-      { "type": "roleplay", "titleZh": "餐桌礼仪", "bodyZh": "晚饭时用 Please / Thank you / Pass the... 说三句。" }
+      {
+        "type": "roleplay",
+        "titleZh": "餐桌礼仪",
+        "bodyZh": "晚饭时用 Please / Thank you / Pass the... 说三句。"
+      }
     ],
-    "weeksHint": [16, 17]
+    "weeksHint": [
+      16,
+      17
+    ]
   },
   {
     "id": "pep.g4.vol2.rev",
@@ -129,18 +397,58 @@
     "unit": 7,
     "titleEn": "A great weekend plan",
     "titleZh": "很棒的周末计划",
-    "goalsZh": ["综合复习规则、时间、购物与农场", "能说出一个周末计划"],
-    "words": ["weekend", "plan", "park", "shop", "farm", "family", "friend", "play", "food", "time", "happy", "go"],
+    "goalsZh": [
+      "综合复习规则、时间、购物与农场",
+      "能说出一个周末计划"
+    ],
+    "words": [
+      "weekend",
+      "plan",
+      "park",
+      "shop",
+      "farm",
+      "family",
+      "friend",
+      "play",
+      "food",
+      "time",
+      "happy",
+      "go",
+      "first",
+      "then",
+      "ready"
+    ],
     "phrases": [
-      { "en": "I have a great weekend plan.", "zh": "我有一个很棒的周末计划。" },
-      { "en": "First, I go to the park.", "zh": "首先，我去公园。" },
-      { "en": "Then we go shopping.", "zh": "然后我们去购物。" },
-      { "en": "On Sunday, we visit a farm.", "zh": "星期天我们去农场。" },
-      { "en": "I am happy with my family.", "zh": "和家人在一起我很开心。" }
+      {
+        "en": "I have a great weekend plan.",
+        "zh": "我有一个很棒的周末计划。"
+      },
+      {
+        "en": "First, I go to the park.",
+        "zh": "首先，我去公园。"
+      },
+      {
+        "en": "Then we go shopping.",
+        "zh": "然后我们去购物。"
+      },
+      {
+        "en": "On Sunday, we visit a farm.",
+        "zh": "星期天我们去农场。"
+      },
+      {
+        "en": "I am happy with my family.",
+        "zh": "和家人在一起我很开心。"
+      }
     ],
     "activities": [
-      { "type": "parent", "titleZh": "周末计划书", "bodyZh": "写出星期六和星期天各一件事，用 First... Then... 说给家长听。" }
+      {
+        "type": "parent",
+        "titleZh": "周末计划书",
+        "bodyZh": "写出星期六和星期天各一件事，用 First... Then... 说给家长听。"
+      }
     ],
-    "weeksHint": [18]
+    "weeksHint": [
+      18
+    ]
   }
 ]

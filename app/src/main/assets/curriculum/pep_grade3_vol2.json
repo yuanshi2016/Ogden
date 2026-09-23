@@ -6,18 +6,59 @@
     "unit": 1,
     "titleEn": "Meeting new people",
     "titleZh": "认识新朋友",
-    "goalsZh": ["会说 I'm from...", "会介绍新同学"],
-    "words": ["country", "city", "school", "classmate", "teacher", "new", "here", "from", "boy", "girl", "friend", "welcome"],
+    "goalsZh": [
+      "会说 I'm from...",
+      "会介绍新同学"
+    ],
+    "words": [
+      "country",
+      "city",
+      "school",
+      "classmate",
+      "teacher",
+      "new",
+      "here",
+      "from",
+      "boy",
+      "girl",
+      "friend",
+      "welcome",
+      "say",
+      "hello"
+    ],
     "phrases": [
-      { "en": "I'm from China.", "zh": "我来自中国。" },
-      { "en": "Where are you from?", "zh": "你来自哪里？" },
-      { "en": "This is my new classmate.", "zh": "这是我的新同学。" },
-      { "en": "She is our English teacher.", "zh": "她是我们的英语老师。" }
+      {
+        "en": "I'm from China.",
+        "zh": "我来自中国。"
+      },
+      {
+        "en": "Where are you from?",
+        "zh": "你来自哪里？"
+      },
+      {
+        "en": "This is my new classmate.",
+        "zh": "这是我的新同学。"
+      },
+      {
+        "en": "She is our English teacher.",
+        "zh": "她是我们的英语老师。"
+      },
+      {
+        "en": "Nice to meet you, too.",
+        "zh": "我也很高兴认识你。"
+      }
     ],
     "activities": [
-      { "type": "roleplay", "titleZh": "新同学见面", "bodyZh": "两人一组，用 Hello, I'm... I'm from... 互相介绍。" }
+      {
+        "type": "roleplay",
+        "titleZh": "新同学见面",
+        "bodyZh": "两人一组，用 Hello, I'm... I'm from... 互相介绍。"
+      }
     ],
-    "weeksHint": [1, 2]
+    "weeksHint": [
+      1,
+      2
+    ]
   },
   {
     "id": "pep.g3.vol2.u2",
@@ -26,20 +67,64 @@
     "unit": 2,
     "titleEn": "My words and actions",
     "titleZh": "我的言行",
-    "goalsZh": ["会听懂课堂指令", "会说礼貌用语"],
-    "words": ["listen", "read", "write", "stand", "sit", "open", "close", "quiet", "hand", "please", "sorry", "thanks"],
+    "goalsZh": [
+      "会听懂课堂指令",
+      "会说礼貌用语"
+    ],
+    "words": [
+      "listen",
+      "read",
+      "write",
+      "stand",
+      "sit",
+      "open",
+      "close",
+      "quiet",
+      "hand",
+      "please",
+      "sorry",
+      "thanks",
+      "come",
+      "go"
+    ],
     "phrases": [
-      { "en": "Please stand up.", "zh": "请起立。" },
-      { "en": "Open your book, please.", "zh": "请打开书。" },
-      { "en": "Listen and read after me.", "zh": "听并跟我读。" },
-      { "en": "Be quiet, please.", "zh": "请安静。" },
-      { "en": "Put up your hand.", "zh": "请举手。" }
+      {
+        "en": "Please stand up.",
+        "zh": "请起立。"
+      },
+      {
+        "en": "Open your book, please.",
+        "zh": "请打开书。"
+      },
+      {
+        "en": "Listen and read after me.",
+        "zh": "听并跟我读。"
+      },
+      {
+        "en": "Be quiet, please.",
+        "zh": "请安静。"
+      },
+      {
+        "en": "Put up your hand.",
+        "zh": "请举手。"
+      }
     ],
     "activities": [
-      { "type": "listen", "titleZh": "听指令做动作", "bodyZh": "家长说 stand up / sit down / open the door，孩子照做。" },
-      { "type": "chant", "titleZh": "Classroom chant", "bodyZh": "念 listen, read, write, stand，每句配动作。" }
+      {
+        "type": "listen",
+        "titleZh": "听指令做动作",
+        "bodyZh": "家长说 stand up / sit down / open the door，孩子照做。"
+      },
+      {
+        "type": "chant",
+        "titleZh": "Classroom chant",
+        "bodyZh": "念 listen, read, write, stand，每句配动作。"
+      }
     ],
-    "weeksHint": [3, 4]
+    "weeksHint": [
+      3,
+      4
+    ]
   },
   {
     "id": "pep.g3.vol2.u3",
@@ -48,18 +133,59 @@
     "unit": 3,
     "titleEn": "Tools and senses for learning",
     "titleZh": "学习工具与感官",
-    "goalsZh": ["会说文具名称", "会用五感描述物品"],
-    "words": ["book", "pen", "pencil", "ruler", "bag", "box", "paper", "eye", "ear", "nose", "look", "smell", "touch"],
+    "goalsZh": [
+      "会说文具名称",
+      "会用五感描述物品"
+    ],
+    "words": [
+      "book",
+      "pen",
+      "pencil",
+      "ruler",
+      "bag",
+      "box",
+      "paper",
+      "eye",
+      "ear",
+      "nose",
+      "look",
+      "smell",
+      "touch",
+      "hear"
+    ],
     "phrases": [
-      { "en": "This is my pencil box.", "zh": "这是我的铅笔盒。" },
-      { "en": "May I use your ruler?", "zh": "我可以用你的尺子吗？" },
-      { "en": "Look with your eyes.", "zh": "用眼睛看。" },
-      { "en": "Touch it and tell me.", "zh": "摸一摸再告诉我。" }
+      {
+        "en": "This is my pencil box.",
+        "zh": "这是我的铅笔盒。"
+      },
+      {
+        "en": "May I use your ruler?",
+        "zh": "我可以用你的尺子吗？"
+      },
+      {
+        "en": "Look with your eyes.",
+        "zh": "用眼睛看。"
+      },
+      {
+        "en": "Touch it and tell me.",
+        "zh": "摸一摸再告诉我。"
+      },
+      {
+        "en": "I can hear with my ears.",
+        "zh": "我用耳朵听。"
+      }
     ],
     "activities": [
-      { "type": "roleplay", "titleZh": "书包大检查", "bodyZh": "把文具一件件拿出来，用英文说出名字。" }
+      {
+        "type": "roleplay",
+        "titleZh": "书包大检查",
+        "bodyZh": "把文具一件件拿出来，用英文说出名字。"
+      }
     ],
-    "weeksHint": [5, 6]
+    "weeksHint": [
+      5,
+      6
+    ]
   },
   {
     "id": "pep.g3.vol2.u4",
@@ -68,18 +194,59 @@
     "unit": 4,
     "titleEn": "Healthy food",
     "titleZh": "健康食物",
-    "goalsZh": ["会问 Do you like...?", "会说常见食物"],
-    "words": ["food", "rice", "milk", "egg", "apple", "banana", "tomato", "meat", "vegetable", "fruit", "healthy", "like", "drink"],
+    "goalsZh": [
+      "会问 Do you like...?",
+      "会说常见食物"
+    ],
+    "words": [
+      "food",
+      "rice",
+      "milk",
+      "egg",
+      "apple",
+      "banana",
+      "tomato",
+      "meat",
+      "vegetable",
+      "fruit",
+      "healthy",
+      "like",
+      "drink",
+      "bread"
+    ],
     "phrases": [
-      { "en": "Do you like milk?", "zh": "你喜欢牛奶吗？" },
-      { "en": "Yes, I like apples.", "zh": "是的，我喜欢苹果。" },
-      { "en": "Vegetables are healthy.", "zh": "蔬菜很健康。" },
-      { "en": "Have some rice, please.", "zh": "请吃点米饭。" }
+      {
+        "en": "Do you like milk?",
+        "zh": "你喜欢牛奶吗？"
+      },
+      {
+        "en": "Yes, I like apples.",
+        "zh": "是的，我喜欢苹果。"
+      },
+      {
+        "en": "Vegetables are healthy.",
+        "zh": "蔬菜很健康。"
+      },
+      {
+        "en": "Have some rice, please.",
+        "zh": "请吃点米饭。"
+      },
+      {
+        "en": "I am hungry. I want some bread.",
+        "zh": "我饿了，想要一些面包。"
+      }
     ],
     "activities": [
-      { "type": "parent", "titleZh": "餐桌问答", "bodyZh": "吃饭时问 Do you like...?，孩子用 Yes/No 回答并说出食物名。" }
+      {
+        "type": "parent",
+        "titleZh": "餐桌问答",
+        "bodyZh": "吃饭时问 Do you like...?，孩子用 Yes/No 回答并说出食物名。"
+      }
     ],
-    "weeksHint": [7, 8]
+    "weeksHint": [
+      7,
+      8
+    ]
   },
   {
     "id": "pep.g3.vol2.u5",
@@ -88,18 +255,59 @@
     "unit": 5,
     "titleEn": "Old things",
     "titleZh": "老物件",
-    "goalsZh": ["会说 old/new 对比", "会介绍一件旧物"],
-    "words": ["old", "new", "clock", "watch", "picture", "chair", "bottle", "stone", "story", "family", "photo", "keep"],
+    "goalsZh": [
+      "会说 old/new 对比",
+      "会介绍一件旧物"
+    ],
+    "words": [
+      "old",
+      "new",
+      "clock",
+      "watch",
+      "picture",
+      "chair",
+      "bottle",
+      "stone",
+      "story",
+      "family",
+      "photo",
+      "keep",
+      "toy",
+      "doll"
+    ],
     "phrases": [
-      { "en": "This clock is very old.", "zh": "这个钟很旧了。" },
-      { "en": "It's my grandfather's watch.", "zh": "这是我爷爷的手表。" },
-      { "en": "The old photo tells a story.", "zh": "这张老照片讲了一个故事。" },
-      { "en": "We keep it at home.", "zh": "我们把它留在家里。" }
+      {
+        "en": "This clock is very old.",
+        "zh": "这个钟很旧了。"
+      },
+      {
+        "en": "It's my grandfather's watch.",
+        "zh": "这是我爷爷的手表。"
+      },
+      {
+        "en": "The old photo tells a story.",
+        "zh": "这张老照片讲了一个故事。"
+      },
+      {
+        "en": "We keep it at home.",
+        "zh": "我们把它留在家里。"
+      },
+      {
+        "en": "Is this toy new or old?",
+        "zh": "这个玩具是新的还是旧的？"
+      }
     ],
     "activities": [
-      { "type": "roleplay", "titleZh": "家里的老物件", "bodyZh": "找一件旧东西，说 It's old. It's my ...'s." }
+      {
+        "type": "roleplay",
+        "titleZh": "家里的老物件",
+        "bodyZh": "找一件旧东西，说 It's old. It's my ...'s."
+      }
     ],
-    "weeksHint": [9, 10]
+    "weeksHint": [
+      9,
+      10
+    ]
   },
   {
     "id": "pep.g3.vol2.u6",
@@ -108,19 +316,64 @@
     "unit": 6,
     "titleEn": "Numbers in Life",
     "titleZh": "生活中的数字",
-    "goalsZh": ["会读较大的数字", "会问价格和时间"],
-    "words": ["number", "count", "ten", "hundred", "thousand", "price", "money", "time", "clock", "age", "phone", "ticket"],
+    "goalsZh": [
+      "会读较大的数字",
+      "会问价格和时间"
+    ],
+    "words": [
+      "number",
+      "count",
+      "ten",
+      "hundred",
+      "thousand",
+      "price",
+      "money",
+      "time",
+      "clock",
+      "age",
+      "phone",
+      "ticket",
+      "buy",
+      "sell"
+    ],
     "phrases": [
-      { "en": "How much is it? Ten yuan.", "zh": "多少钱？十元。" },
-      { "en": "What time is it now?", "zh": "现在几点了？" },
-      { "en": "Two hundred is a big number.", "zh": "二百是个大数字。" },
-      { "en": "I need two tickets, please.", "zh": "请给我两张票。" }
+      {
+        "en": "How much is it? Ten yuan.",
+        "zh": "多少钱？十元。"
+      },
+      {
+        "en": "What time is it now?",
+        "zh": "现在几点了？"
+      },
+      {
+        "en": "Two hundred is a big number.",
+        "zh": "二百是个大数字。"
+      },
+      {
+        "en": "I need two tickets, please.",
+        "zh": "请给我两张票。"
+      },
+      {
+        "en": "I have twenty yuan.",
+        "zh": "我有二十元。"
+      }
     ],
     "activities": [
-      { "type": "chant", "titleZh": "数字接龙", "bodyZh": "十个十个数：ten, twenty... 用 ten 与 hundred 组合说出来。" },
-      { "type": "parent", "titleZh": "超市小任务", "bodyZh": "看价签用英文读出数字，问 How much is it?" }
+      {
+        "type": "chant",
+        "titleZh": "数字接龙",
+        "bodyZh": "十个十个数：ten, twenty... 用 ten 与 hundred 组合说出来。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "超市小任务",
+        "bodyZh": "看价签用英文读出数字，问 How much is it?"
+      }
     ],
-    "weeksHint": [11, 12]
+    "weeksHint": [
+      11,
+      12
+    ]
   },
   {
     "id": "pep.g3.vol2.rev",
@@ -129,18 +382,58 @@
     "unit": 7,
     "titleEn": "Going to a school fair",
     "titleZh": "去学校集市",
-    "goalsZh": ["会在集市上买卖问答", "能综合复习下册词句"],
-    "words": ["school", "market", "shop", "buy", "price", "money", "ticket", "food", "toy", "game", "share", "help"],
+    "goalsZh": [
+      "会在集市上买卖问答",
+      "能综合复习下册词句"
+    ],
+    "words": [
+      "school",
+      "market",
+      "shop",
+      "buy",
+      "price",
+      "money",
+      "ticket",
+      "food",
+      "toy",
+      "game",
+      "share",
+      "help",
+      "happy",
+      "come"
+    ],
     "phrases": [
-      { "en": "Let's go to the school fair.", "zh": "我们去学校集市吧。" },
-      { "en": "How much is this toy?", "zh": "这个玩具多少钱？" },
-      { "en": "I want to buy some food.", "zh": "我想买一些食物。" },
-      { "en": "Can you help me, please?", "zh": "你能帮我一下吗？" },
-      { "en": "Let's share the game.", "zh": "我们一起玩这个游戏吧。" }
+      {
+        "en": "Let's go to the school fair.",
+        "zh": "我们去学校集市吧。"
+      },
+      {
+        "en": "How much is this toy?",
+        "zh": "这个玩具多少钱？"
+      },
+      {
+        "en": "I want to buy some food.",
+        "zh": "我想买一些食物。"
+      },
+      {
+        "en": "Can you help me, please?",
+        "zh": "你能帮我一下吗？"
+      },
+      {
+        "en": "Let's share the game.",
+        "zh": "我们一起玩这个游戏吧。"
+      }
     ],
     "activities": [
-      { "type": "roleplay", "titleZh": "摆摊叫卖", "bodyZh": "摆三样东西标价，用 How much / Here you are 演一次买卖。" }
+      {
+        "type": "roleplay",
+        "titleZh": "摆摊叫卖",
+        "bodyZh": "摆三样东西标价，用 How much / Here you are 演一次买卖。"
+      }
     ],
-    "weeksHint": [13, 14]
+    "weeksHint": [
+      13,
+      14
+    ]
   }
 ]

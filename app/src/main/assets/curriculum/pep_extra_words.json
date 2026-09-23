@@ -658,5 +658,425 @@
       "uk": "/pæk/",
       "us": "/pæk/"
     }
+  },
+  {
+    "w": "afraid",
+    "c": "th",
+    "zh": "害怕的",
+    "en": "feeling fear",
+    "ex": "I am afraid of the dark.",
+    "exz": "我怕黑。",
+    "s": [
+      "scared"
+    ],
+    "ipa": {
+      "uk": "/əˈfreɪd/",
+      "us": "/əˈfreɪd/"
+    }
+  },
+  {
+    "w": "autumn",
+    "c": "th",
+    "zh": "秋天",
+    "en": "the season after summer",
+    "ex": "Leaves fall in autumn.",
+    "exz": "秋天树叶落下。",
+    "s": [
+      "fall"
+    ],
+    "ipa": {
+      "uk": "/ˈɔːtəm/",
+      "us": "/ˈɔːtəm/"
+    }
+  },
+  {
+    "w": "become",
+    "c": "th",
+    "zh": "变成；成为",
+    "en": "to start to be something",
+    "ex": "I want to become a teacher.",
+    "exz": "我想成为一名老师。",
+    "s": [
+      "turn"
+    ],
+    "ipa": {
+      "uk": "/bɪˈkʌm/",
+      "us": "/bɪˈkʌm/"
+    }
+  },
+  {
+    "w": "better",
+    "c": "th",
+    "zh": "更好的",
+    "en": "more good",
+    "ex": "I feel better today.",
+    "exz": "我今天感觉好多了。",
+    "s": [
+      "improved"
+    ],
+    "ipa": {
+      "uk": "/ˈbetə/",
+      "us": "/ˈbetər/"
+    }
+  },
+  {
+    "w": "check",
+    "c": "th",
+    "zh": "检查",
+    "en": "to look at something carefully",
+    "ex": "Check your bag before you go.",
+    "exz": "出发前检查一下你的包。",
+    "s": [
+      "examine"
+    ],
+    "ipa": {
+      "uk": "/tʃek/",
+      "us": "/tʃek/"
+    }
+  },
+  {
+    "w": "cross",
+    "c": "th",
+    "zh": "穿过；横过",
+    "en": "to go from one side to the other",
+    "ex": "Cross the road carefully.",
+    "exz": "小心过马路。",
+    "s": [
+      "pass"
+    ],
+    "ipa": {
+      "uk": "/krɒs/",
+      "us": "/krɔːs/"
+    }
+  },
+  {
+    "w": "dish",
+    "c": "th",
+    "zh": "盘子；一道菜",
+    "en": "a plate or a cooked food item",
+    "ex": "Please wash the dishes.",
+    "exz": "请洗碗。",
+    "s": [
+      "plate"
+    ],
+    "ipa": {
+      "uk": "/dɪʃ/",
+      "us": "/dɪʃ/"
+    }
+  },
+  {
+    "w": "exciting",
+    "c": "th",
+    "zh": "令人兴奋的",
+    "en": "making you feel very happy and eager",
+    "ex": "The trip is exciting.",
+    "exz": "这次旅行很刺激。",
+    "s": [
+      "thrilling"
+    ],
+    "ipa": {
+      "uk": "/ɪkˈsaɪtɪŋ/",
+      "us": "/ɪkˈsaɪtɪŋ/"
+    }
+  },
+  {
+    "w": "fresh",
+    "c": "th",
+    "zh": "新鲜的",
+    "en": "new and clean; not old",
+    "ex": "I like fresh fruit.",
+    "exz": "我喜欢新鲜水果。",
+    "s": [
+      "new"
+    ],
+    "ipa": {
+      "uk": "/freʃ/",
+      "us": "/freʃ/"
+    }
+  },
+  {
+    "w": "gift",
+    "c": "th",
+    "zh": "礼物",
+    "en": "something you give to someone",
+    "ex": "This gift is for you.",
+    "exz": "这份礼物是给你的。",
+    "s": [
+      "present"
+    ],
+    "ipa": {
+      "uk": "/ɡɪft/",
+      "us": "/ɡɪft/"
+    }
+  },
+  {
+    "w": "grow",
+    "c": "th",
+    "zh": "生长；种植",
+    "en": "to get bigger or to raise plants",
+    "ex": "Plants grow in the sun.",
+    "exz": "植物在阳光下生长。",
+    "s": [
+      "plant"
+    ],
+    "ipa": {
+      "uk": "/ɡrəʊ/",
+      "us": "/ɡroʊ/"
+    }
+  },
+  {
+    "w": "habit",
+    "c": "th",
+    "zh": "习惯",
+    "en": "something you do often",
+    "ex": "Reading is a good habit.",
+    "exz": "阅读是个好习惯。",
+    "s": [
+      "routine"
+    ],
+    "ipa": {
+      "uk": "/ˈhæbɪt/",
+      "us": "/ˈhæbɪt/"
+    }
+  },
+  {
+    "w": "miss",
+    "c": "th",
+    "zh": "想念；错过",
+    "en": "to feel sad because someone is away; or to fail to catch",
+    "ex": "I miss my hometown.",
+    "exz": "我想念我的家乡。",
+    "s": [
+      "long"
+    ],
+    "ipa": {
+      "uk": "/mɪs/",
+      "us": "/mɪs/"
+    }
+  },
+  {
+    "w": "neighbour",
+    "c": "th",
+    "zh": "邻居",
+    "en": "a person living near you",
+    "ex": "Our neighbour is kind.",
+    "exz": "我们的邻居很友善。",
+    "s": [
+      "neighbor"
+    ],
+    "ipa": {
+      "uk": "/ˈneɪbə/",
+      "us": "/ˈneɪbər/"
+    }
+  },
+  {
+    "w": "older",
+    "c": "th",
+    "zh": "更年长的",
+    "en": "more old; greater in age",
+    "ex": "She is older than me.",
+    "exz": "她比我大。",
+    "s": [
+      "elder"
+    ],
+    "ipa": {
+      "uk": "/ˈəʊldə/",
+      "us": "/ˈoʊldər/"
+    }
+  },
+  {
+    "w": "pass",
+    "c": "th",
+    "zh": "传递；经过",
+    "en": "to give something to someone or go by",
+    "ex": "Please pass the bread.",
+    "exz": "请把面包递给我。",
+    "s": [
+      "give"
+    ],
+    "ipa": {
+      "uk": "/pɑːs/",
+      "us": "/pæs/"
+    }
+  },
+  {
+    "w": "planet",
+    "c": "th",
+    "zh": "行星",
+    "en": "a large world that moves around a star",
+    "ex": "Earth is a planet.",
+    "exz": "地球是一颗行星。",
+    "s": [
+      "world"
+    ],
+    "ipa": {
+      "uk": "/ˈplænɪt/",
+      "us": "/ˈplænɪt/"
+    }
+  },
+  {
+    "w": "pollution",
+    "c": "th",
+    "zh": "污染",
+    "en": "dirty air, water or land made by people",
+    "ex": "Pollution is bad for the earth.",
+    "exz": "污染对地球有害。",
+    "s": [
+      "dirt"
+    ],
+    "ipa": {
+      "uk": "/pəˈluːʃn/",
+      "us": "/pəˈluːʃn/"
+    }
+  },
+  {
+    "w": "prepare",
+    "c": "th",
+    "zh": "准备",
+    "en": "to get ready for something",
+    "ex": "Please prepare your bag.",
+    "exz": "请准备好你的包。",
+    "s": [
+      "ready"
+    ],
+    "ipa": {
+      "uk": "/prɪˈpeə/",
+      "us": "/prɪˈper/"
+    }
+  },
+  {
+    "w": "protect",
+    "c": "th",
+    "zh": "保护",
+    "en": "to keep someone or something safe",
+    "ex": "We protect animals.",
+    "exz": "我们保护动物。",
+    "s": [
+      "guard"
+    ],
+    "ipa": {
+      "uk": "/prəˈtekt/",
+      "us": "/prəˈtekt/"
+    }
+  },
+  {
+    "w": "recycle",
+    "c": "th",
+    "zh": "回收利用",
+    "en": "to use something again instead of throwing it away",
+    "ex": "We recycle paper at school.",
+    "exz": "我们在学校回收纸张。",
+    "s": [
+      "reuse"
+    ],
+    "ipa": {
+      "uk": "/ˌriːˈsaɪkl/",
+      "us": "/ˌriːˈsaɪkl/"
+    }
+  },
+  {
+    "w": "skate",
+    "c": "th",
+    "zh": "滑冰",
+    "en": "to move on ice with skates",
+    "ex": "We skate in winter.",
+    "exz": "我们冬天滑冰。",
+    "s": [
+      "glide"
+    ],
+    "ipa": {
+      "uk": "/skeɪt/",
+      "us": "/skeɪt/"
+    }
+  },
+  {
+    "w": "took",
+    "c": "th",
+    "zh": "乘坐；拿（过去式）",
+    "en": "past form of take",
+    "ex": "I took a bus to school.",
+    "exz": "我坐公交去学校。",
+    "s": [
+      "take"
+    ],
+    "ipa": {
+      "uk": "/tʊk/",
+      "us": "/tʊk/"
+    }
+  },
+  {
+    "w": "watched",
+    "c": "th",
+    "zh": "观看（过去式）",
+    "en": "past form of watch",
+    "ex": "I watched a film yesterday.",
+    "exz": "我昨天看了一部电影。",
+    "s": [
+      "watch"
+    ],
+    "ipa": {
+      "uk": "/wɒtʃt/",
+      "us": "/wɑːtʃt/"
+    }
+  },
+  {
+    "w": "wish",
+    "c": "th",
+    "zh": "祝愿；希望",
+    "en": "to hope for something good",
+    "ex": "I wish you a happy year.",
+    "exz": "我祝你新年快乐。",
+    "s": [
+      "hope"
+    ],
+    "ipa": {
+      "uk": "/wɪʃ/",
+      "us": "/wɪʃ/"
+    }
+  },
+  {
+    "w": "world",
+    "c": "th",
+    "zh": "世界",
+    "en": "the earth and all people and places",
+    "ex": "I want to see the world.",
+    "exz": "我想看看这个世界。",
+    "s": [
+      "earth"
+    ],
+    "ipa": {
+      "uk": "/wɜːld/",
+      "us": "/wɝːld/"
+    }
+  },
+  {
+    "w": "worried",
+    "c": "th",
+    "zh": "担心的",
+    "en": "feeling that something bad may happen",
+    "ex": "She looks worried.",
+    "exz": "她看起来很担心。",
+    "s": [
+      "anxious"
+    ],
+    "ipa": {
+      "uk": "/ˈwʌrid/",
+      "us": "/ˈwɝːid/"
+    }
+  },
+  {
+    "w": "younger",
+    "c": "th",
+    "zh": "更年轻的",
+    "en": "more young; smaller in age",
+    "ex": "My brother is younger.",
+    "exz": "我弟弟更小。",
+    "s": [
+      "junior"
+    ],
+    "ipa": {
+      "uk": "/ˈjʌŋɡə/",
+      "us": "/ˈjʌŋɡər/"
+    }
   }
 ]
