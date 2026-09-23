@@ -14,9 +14,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         DailyActivityEntity::class,
         RewardEntity::class,
         EarnedRewardEntity::class,
-        AnswerEventEntity::class
+        AnswerEventEntity::class,
+        UnitProgressEntity::class,
+        UnitLevelProgressEntity::class
     ],
-    version = 6,
+    version = 8,
     exportSchema = true
 )
 abstract class ProgressDatabase : RoomDatabase() {
@@ -86,10 +88,39 @@ abstract class ProgressDatabase : RoomDatabase() {
             }
         }
 
+        // 课本单元进度表：只记 unitId + completedAt，解锁靠 index 顺序推
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `unit_progress` (" +
+                        "`unitId` TEXT NOT NULL, `completedAt` INTEGER NOT NULL, PRIMARY KEY(`unitId`))"
+                )
+            }
+        }
+
+        // 单元内多关：词汇 / 句型 / 综合
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `unit_level_progress` (" +
+                        "`unitId` TEXT NOT NULL, `level` INTEGER NOT NULL, `completedAt` INTEGER NOT NULL, " +
+                        "PRIMARY KEY(`unitId`, `level`))"
+                )
+            }
+        }
+
         fun get(context: Context): ProgressDatabase = instance ?: synchronized(this) {
             instance ?: Room
                 .databaseBuilder(context.applicationContext, ProgressDatabase::class.java, "ogden-progress.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+                .addMigrations(
+                    MIGRATION_1_2,
+                    MIGRATION_2_3,
+                    MIGRATION_3_4,
+                    MIGRATION_4_5,
+                    MIGRATION_5_6,
+                    MIGRATION_6_7,
+                    MIGRATION_7_8
+                )
                 .build()
                 .also { instance = it }
         }

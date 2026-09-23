@@ -183,6 +183,8 @@ fun PracticeScreen(
     examCount: Int = 0,
     wordKeys: List<String> = emptyList(),
     sessionTitle: String = "",
+    /** 非空表示课本单元练习：走 60% 过关门槛，通过后由调用方写单元进度 */
+    unitId: String = "",
     speakLevel: SpeakLevel,
     rewards: Map<Difficulty, String>,
     onSpeak: (String) -> Unit,
@@ -193,6 +195,8 @@ fun PracticeScreen(
 ) {
     val custom = wordKeys.isNotEmpty()
     val exam = level == 0 && !custom
+    // 自选词表（错词/收藏/智能复习）本来不设门槛；课本单元要解锁下一单元，必须过 60%
+    val gated = !exam && (!custom || unitId.isNotBlank())
     // 每次进入关卡（或重练）生成一个种子：决定题型顺序与干扰项，考试还会重抽词
     var attemptSeed by remember(allWords, category, level, examCount, wordKeys) { mutableStateOf(Random.nextInt()) }
     val source = remember(allWords, category, level, examCount, wordKeys, attemptSeed) {
@@ -525,7 +529,7 @@ fun PracticeScreen(
                                 }
                             }
                             Text(word.exampleZh, color = InkSoft, fontSize = 13.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                            if (lastQuestion && passed && !exam && !custom) {
+                            if (lastQuestion && passed && gated && !custom) {
                                 val prize = rewards[currentDifficulty].orEmpty().trim()
                                 if (prize.isNotEmpty()) {
                                     AppText("闯关奖励：$prize", color = currentDifficulty.tint, fontWeight = FontWeight.Bold, fontSize = 16.sp)
@@ -534,17 +538,24 @@ fun PracticeScreen(
                             if (lastQuestion && exam) {
                                 AppText("考试结束，答对 $correctCount / ${source.size}", color = InkSoft, fontSize = 14.sp)
                             }
-                            if (lastQuestion && custom) {
+                            if (lastQuestion && custom && unitId.isBlank()) {
                                 AppText(
                                     "本轮结束，答对 $correctCount / ${source.size}。进度已记入掌握度。",
                                     color = InkSoft,
                                     fontSize = 14.sp
                                 )
                             }
-                            if (lastQuestion && !passed && !exam && !custom) {
+                            if (lastQuestion && passed && unitId.isNotBlank()) {
+                                AppText(
+                                    "本单元过关，答对 $correctCount / ${source.size}，下一单元已解锁。",
+                                    color = InkSoft,
+                                    fontSize = 14.sp
+                                )
+                            }
+                            if (lastQuestion && !passed && gated) {
                                 // 正确率不足 60%：不解锁下一关，只给返回或重练
                                 AppText(
-                                    "这一关答对 $correctCount / ${source.size}，答对 $needed 个就能解锁下一关。再练一次会换新题目，慢慢来。",
+                                    "这一轮答对 $correctCount / ${source.size}，答对 $needed 个就能解锁下一${if (unitId.isNotBlank()) "单元" else "关"}。再练一次会换新题目，慢慢来。",
                                     color = InkSoft,
                                     fontSize = 14.sp,
                                     lineHeight = 21.sp
@@ -587,7 +598,9 @@ fun PracticeScreen(
                                 Button(
                                     onClick = {
                                         if (lastQuestion) {
-                                            onComplete(currentDifficulty)
+                                            // 只在过关时上报：未达 60% 的分支不会走到这里（gated），
+                                            // 非 gated（考试/自选复习）保持原样照常上报
+                                            if (!gated || passed) onComplete(currentDifficulty)
                                             onBack()
                                         } else {
                                             index++

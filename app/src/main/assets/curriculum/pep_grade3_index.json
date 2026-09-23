@@ -1,0 +1,31 @@
+{
+  "grade": 3,
+  "volumes": [
+    {
+      "volume": 1,
+      "titleZh": "三年级上册",
+      "unitIds": [
+        "pep.g3.vol1.u1",
+        "pep.g3.vol1.u2",
+        "pep.g3.vol1.u3",
+        "pep.g3.vol1.u4",
+        "pep.g3.vol1.u5",
+        "pep.g3.vol1.u6",
+        "pep.g3.vol1.rev"
+      ]
+    },
+    {
+      "volume": 2,
+      "titleZh": "三年级下册",
+      "unitIds": [
+        "pep.g3.vol2.u1",
+        "pep.g3.vol2.u2",
+        "pep.g3.vol2.u3",
+        "pep.g3.vol2.u4",
+        "pep.g3.vol2.u5",
+        "pep.g3.vol2.u6",
+        "pep.g3.vol2.rev"
+      ]
+    }
+  ]
+}

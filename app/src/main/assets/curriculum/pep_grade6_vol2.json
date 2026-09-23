@@ -1,0 +1,295 @@
+[
+  {
+    "id": "pep.g6.vol2.u1",
+    "grade": 6,
+    "volume": 2,
+    "unit": 1,
+    "titleEn": "How tall are you?",
+    "titleZh": "你有多高？",
+    "goalsZh": [
+      "会用比较级描述外貌",
+      "会询问身高与特征"
+    ],
+    "words": [
+      "tall",
+      "short",
+      "long",
+      "big",
+      "small",
+      "high",
+      "old",
+      "young",
+      "than",
+      "more",
+      "both",
+      "compare"
+    ],
+    "phrases": [
+      {
+        "en": "How tall are you?",
+        "zh": "你有多高？"
+      },
+      {
+        "en": "I am taller than my brother.",
+        "zh": "我比弟弟高。"
+      },
+      {
+        "en": "Her hair is longer than mine.",
+        "zh": "她的头发比我的长。"
+      },
+      {
+        "en": "Both of us are young and strong.",
+        "zh": "我们俩都年轻又强壮。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "比一比",
+        "bodyZh": "两人比身高/手臂，用 taller/longer/than 说两句。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "全家比一比",
+        "bodyZh": "用 than 比较家中两人的一个特征。"
+      }
+    ],
+    "weeksHint": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": "pep.g6.vol2.u2",
+    "grade": 6,
+    "volume": 2,
+    "unit": 2,
+    "titleEn": "Last weekend",
+    "titleZh": "上个周末",
+    "goalsZh": [
+      "会用过去时描述周末活动",
+      "会询问别人上周末做了什么"
+    ],
+    "words": [
+      "weekend",
+      "yesterday",
+      "last",
+      "day",
+      "week",
+      "park",
+      "book",
+      "game",
+      "friend",
+      "family",
+      "film",
+      "house"
+    ],
+    "phrases": [
+      {
+        "en": "What did you do last weekend?",
+        "zh": "你上个周末做了什么？"
+      },
+      {
+        "en": "I played games with my friends.",
+        "zh": "我和朋友们玩游戏了。"
+      },
+      {
+        "en": "Yesterday I read a book at home.",
+        "zh": "昨天我在家读了一本书。"
+      },
+      {
+        "en": "We visited the park last Sunday.",
+        "zh": "上周日我们去了公园。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "周末回忆",
+        "bodyZh": "一人问 What did you do...? 一人用过去时回答两件。"
+      }
+    ],
+    "weeksHint": [
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "id": "pep.g6.vol2.u3",
+    "grade": 6,
+    "volume": 2,
+    "unit": 3,
+    "titleEn": "Where did you go?",
+    "titleZh": "你去了哪里？",
+    "goalsZh": [
+      "会用过去时谈论旅行经历",
+      "会询问去向与见闻"
+    ],
+    "words": [
+      "go",
+      "see",
+      "visit",
+      "train",
+      "bus",
+      "plane",
+      "hotel",
+      "beach",
+      "mountain",
+      "city",
+      "day",
+      "week"
+    ],
+    "phrases": [
+      {
+        "en": "Where did you go?",
+        "zh": "你去了哪里？"
+      },
+      {
+        "en": "I went to the beach last week.",
+        "zh": "上周我去了海边。"
+      },
+      {
+        "en": "We saw a beautiful mountain.",
+        "zh": "我们看见了一座美丽的山。"
+      },
+      {
+        "en": "Did you visit the city museum?",
+        "zh": "你参观了城市博物馆吗？"
+      }
+    ],
+    "activities": [
+      {
+        "type": "parent",
+        "titleZh": "旅行相册",
+        "bodyZh": "指着照片用 I went... / I saw... 说两句。"
+      },
+      {
+        "type": "listen",
+        "titleZh": "去向猜猜",
+        "bodyZh": "家长说交通工具，孩子猜 Where did you go?"
+      }
+    ],
+    "weeksHint": [
+      7,
+      8
+    ]
+  },
+  {
+    "id": "pep.g6.vol2.u4",
+    "grade": 6,
+    "volume": 2,
+    "unit": 4,
+    "titleEn": "Then and now",
+    "titleZh": "那时与现在",
+    "goalsZh": [
+      "会对比过去与现在",
+      "会谈论成长变化"
+    ],
+    "words": [
+      "then",
+      "now",
+      "before",
+      "after",
+      "change",
+      "same",
+      "different",
+      "old",
+      "new",
+      "school",
+      "house",
+      "year"
+    ],
+    "phrases": [
+      {
+        "en": "I was short then. I am taller now.",
+        "zh": "那时我很矮。现在我更高了。"
+      },
+      {
+        "en": "Before, I lived in a small house.",
+        "zh": "以前，我住在一所小房子里。"
+      },
+      {
+        "en": "Things change year after year.",
+        "zh": "事物年复一年地变化。"
+      },
+      {
+        "en": "Some things are the same; some are different.",
+        "zh": "有些一样，有些不同。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "成长对照",
+        "bodyZh": "拿小时候照片，用 then/now 说两句对比。"
+      }
+    ],
+    "weeksHint": [
+      10,
+      11,
+      12
+    ]
+  },
+  {
+    "id": "pep.g6.vol2.rev",
+    "grade": 6,
+    "volume": 2,
+    "unit": 5,
+    "titleEn": "Mike's happy days",
+    "titleZh": "迈克快乐的日子",
+    "goalsZh": [
+      "综合复习比较级与过去经历",
+      "能完成小学收官口头分享"
+    ],
+    "words": [
+      "happy",
+      "day",
+      "friend",
+      "family",
+      "school",
+      "weekend",
+      "trip",
+      "change",
+      "tall",
+      "now",
+      "then",
+      "hope"
+    ],
+    "phrases": [
+      {
+        "en": "These are Mike's happy days.",
+        "zh": "这些是迈克快乐的日子。"
+      },
+      {
+        "en": "He was younger then, but he is taller now.",
+        "zh": "那时他更小，但现在他更高了。"
+      },
+      {
+        "en": "Last weekend he visited his friends.",
+        "zh": "上个周末他拜访了朋友。"
+      },
+      {
+        "en": "Where did he go on his trip?",
+        "zh": "他旅行去了哪里？"
+      },
+      {
+        "en": "I hope every day can be happy.",
+        "zh": "我希望每天都能快乐。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "parent",
+        "titleZh": "我的快乐日子",
+        "bodyZh": "孩子用过去时讲两件快乐事，再用 now 说一个愿望。"
+      }
+    ],
+    "weeksHint": [
+      13,
+      14,
+      15
+    ]
+  }
+]

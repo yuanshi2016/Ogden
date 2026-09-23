@@ -155,6 +155,9 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import com.example.ogdenkids.ai.DeepSeekClient
+import com.example.ogdenkids.curriculum.CurriculumBundle
+import com.example.ogdenkids.curriculum.LearningTrack
+import com.example.ogdenkids.curriculum.curriculumUnitItems
 import com.example.ogdenkids.data.DailyActivityEntity
 import com.example.ogdenkids.data.EarnedRewardEntity
 import com.example.ogdenkids.data.decodeProgressSnapshot
@@ -256,14 +259,20 @@ fun proverbs() = listOf(
 fun ChallengeScreen(
     words: List<OgdenWord>,
     store: ProgressStore,
+    curriculum: CurriculumBundle,
     padding: PaddingValues,
     onContinue: () -> Unit,
     onCategory: (Category) -> Unit,
+    onOpenCurriculumUnit: (String) -> Unit,
+    onPepGrade: (Int) -> Unit = {},
     onOpenLibrary: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenStats: () -> Unit,
     onStartDueReview: () -> Unit
 ) {
+    var track by rememberSaveable { mutableStateOf(store.learningTrack()) }
+    var pepGrade by rememberSaveable { mutableStateOf(store.pepLastGrade()) }
+    var volume by rememberSaveable { mutableStateOf(store.pepLastVolume()) }
     // 谚语从原首页移到闯关页顶部，只取一句，避免把学习内容挤到折叠线以下
     val proverb = remember { proverbs().shuffled().first() }
     // 统计只在进度状态变化时重算，不随每次重组遍历 1203 词
@@ -315,6 +324,27 @@ fun ChallengeScreen(
                     }
                     IconButton(onClick = onOpenSettings, modifier = Modifier.size(48.dp)) {
                         Icon(Icons.Default.Info, contentDescription = "设置与关于软件", tint = InkSoft)
+                    }
+                }
+            }
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .reveal(entrance, 0),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    LearningTrack.values().forEach { t ->
+                        TogglePill(
+                            t.label,
+                            track == t,
+                            {
+                                track = t
+                                store.saveLearningTrack(t)
+                            },
+                            Modifier.weight(1f)
+                        )
                     }
                 }
             }
@@ -411,21 +441,47 @@ fun ChallengeScreen(
                     }
                 }
             }
-            item {
-                Box(Modifier.reveal(entrance, 6)) {
-                    SectionTitle("分类闯关", "每 10 个词一关，先短跑，再复习")
+            if (track == LearningTrack.Ogden) {
+                item {
+                    Box(Modifier.reveal(entrance, 6)) {
+                        SectionTitle("分类闯关", "每 10 个词一关，先短跑，再复习")
+                    }
                 }
-            }
-            items(Category.values()) { category ->
-                val (learned, total) = categoryStats.getValue(category)
-                Box(Modifier.reveal(entrance, 6)) {
-                    CategoryProgressCard(
-                        category = category,
-                        learned = learned,
-                        total = total,
-                        onClick = { onCategory(category) }
-                    )
+                items(Category.values()) { category ->
+                    val (learned, total) = categoryStats.getValue(category)
+                    Box(Modifier.reveal(entrance, 6)) {
+                        CategoryProgressCard(
+                            category = category,
+                            learned = learned,
+                            total = total,
+                            onClick = { onCategory(category) }
+                        )
+                    }
                 }
+            } else {
+                curriculumUnitItems(
+                    bundle = curriculum,
+                    store = store,
+                    grade = pepGrade,
+                    onGrade = { g ->
+                        if (g != pepGrade) {
+                            pepGrade = g
+                            volume = 1
+                            store.savePepLastVolume(1)
+                            onPepGrade(g)
+                        }
+                    },
+                    volume = volume,
+                    onVolume = {
+                        volume = it
+                        store.savePepLastVolume(it)
+                    },
+                    onOpenUnit = { unitId ->
+                        store.saveLearningTrack(LearningTrack.Pep)
+                        store.savePepLastVolume(volume)
+                        onOpenCurriculumUnit(unitId)
+                    }
+                )
             }
             item {
                 Box(Modifier.reveal(entrance, 7)) {

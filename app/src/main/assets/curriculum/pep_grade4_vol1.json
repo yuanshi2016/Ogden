@@ -1,0 +1,147 @@
+[
+  {
+    "id": "pep.g4.vol1.u1",
+    "grade": 4,
+    "volume": 1,
+    "unit": 1,
+    "titleEn": "Helping at home",
+    "titleZh": "在家帮忙",
+    "goalsZh": ["会说常见家务动作", "会主动提出帮忙"],
+    "words": ["clean", "wash", "cook", "help", "floor", "room", "bed", "window", "table", "kitchen", "water", "put"],
+    "phrases": [
+      { "en": "I can help at home.", "zh": "我可以在家帮忙。" },
+      { "en": "Please wash the table.", "zh": "请擦一下桌子。" },
+      { "en": "Let's clean the floor.", "zh": "我们来打扫地板吧。" },
+      { "en": "Can you put the books away?", "zh": "你能把书收好吗？" }
+    ],
+    "activities": [
+      { "type": "roleplay", "titleZh": "家务小帮手", "bodyZh": "家长说一件家务，孩子用 I can... 或 Let's... 回答，做对给一颗星。" },
+      { "type": "parent", "titleZh": "今晚十分钟", "bodyZh": "一起收拾餐桌，边做边说 clean / wash / put。" }
+    ],
+    "weeksHint": [1, 2]
+  },
+  {
+    "id": "pep.g4.vol1.u2",
+    "grade": 4,
+    "volume": 1,
+    "unit": 2,
+    "titleEn": "My friends",
+    "titleZh": "我的朋友",
+    "goalsZh": ["会用形容词描述朋友", "会介绍一位朋友"],
+    "words": ["friend", "kind", "tall", "short", "funny", "happy", "good", "nice", "play", "share", "name", "meet"],
+    "phrases": [
+      { "en": "This is my friend.", "zh": "这是我的朋友。" },
+      { "en": "He is kind and funny.", "zh": "他既善良又有趣。" },
+      { "en": "She is tall and happy.", "zh": "她个子高，很开心。" },
+      { "en": "We like to play and share.", "zh": "我们喜欢一起玩、一起分享。" }
+    ],
+    "activities": [
+      { "type": "chant", "titleZh": "朋友歌", "bodyZh": "拍手念 Kind friends, happy friends, we play and share. 两遍。" },
+      { "type": "parent", "titleZh": "画一位朋友", "bodyZh": "画一个朋友，用 He/She is... 说两个形容词。" }
+    ],
+    "weeksHint": [3, 4]
+  },
+  {
+    "id": "pep.g4.vol1.u3",
+    "grade": 4,
+    "volume": 1,
+    "unit": 3,
+    "titleEn": "Places we live in",
+    "titleZh": "我们住的地方",
+    "goalsZh": ["会说居住与场所词", "会简单介绍自己住哪里"],
+    "words": ["live", "city", "town", "street", "park", "building", "house", "road", "bridge", "garden", "school", "shop"],
+    "phrases": [
+      { "en": "I live in a big city.", "zh": "我住在一座大城市。" },
+      { "en": "There is a park near my house.", "zh": "我家附近有一个公园。" },
+      { "en": "Our school is on this street.", "zh": "我们的学校在这条街上。" },
+      { "en": "Let's go across the bridge.", "zh": "我们过桥吧。" }
+    ],
+    "activities": [
+      { "type": "roleplay", "titleZh": "画地图介绍", "bodyZh": "画家、学校、公园，指着说 I live... / There is..." }
+    ],
+    "weeksHint": [5, 6]
+  },
+  {
+    "id": "pep.g4.vol1.u4",
+    "grade": 4,
+    "volume": 1,
+    "unit": 4,
+    "titleEn": "Helping in the community",
+    "titleZh": "在社区帮忙",
+    "goalsZh": ["会说社区职业与场所", "会表达愿意帮助他人"],
+    "words": ["help", "police", "doctor", "nurse", "fire", "teacher", "hospital", "station", "market", "street", "old", "give"],
+    "phrases": [
+      { "en": "I want to help people.", "zh": "我想帮助别人。" },
+      { "en": "The doctor works in a hospital.", "zh": "医生在医院工作。" },
+      { "en": "Can you help the old man?", "zh": "你能帮助那位老人吗？" },
+      { "en": "Let's give him a hand.", "zh": "我们帮他一把吧。" }
+    ],
+    "activities": [
+      { "type": "roleplay", "titleZh": "小小志愿者", "bodyZh": "一人扮演老人，一人说 Can I help you? / Here you are." },
+      { "type": "parent", "titleZh": "社区观察", "bodyZh": "出门时指认 police / hospital / market，用英文说一遍。" }
+    ],
+    "weeksHint": [8, 9]
+  },
+  {
+    "id": "pep.g4.vol1.u5",
+    "grade": 4,
+    "volume": 1,
+    "unit": 5,
+    "titleEn": "The weather and us",
+    "titleZh": "天气和我们",
+    "goalsZh": ["会描述天气", "会根据天气说穿着建议"],
+    "words": ["weather", "rain", "snow", "sun", "wind", "cloud", "hot", "cold", "warm", "cool", "sky", "day"],
+    "phrases": [
+      { "en": "How is the weather today?", "zh": "今天天气怎么样？" },
+      { "en": "It's sunny and warm.", "zh": "天气晴朗又暖和。" },
+      { "en": "It's cold and windy.", "zh": "天气又冷又有风。" },
+      { "en": "Take a coat when it rains.", "zh": "下雨时带件外套。" }
+    ],
+    "activities": [
+      { "type": "listen", "titleZh": "天气预报员", "bodyZh": "家长说 hot/cold/rain/snow，孩子做动作并说 It's..." },
+      { "type": "chant", "titleZh": "天气歌", "bodyZh": "念 Sun, rain, wind and snow — look at the sky and go!" }
+    ],
+    "weeksHint": [10, 11]
+  },
+  {
+    "id": "pep.g4.vol1.u6",
+    "grade": 4,
+    "volume": 1,
+    "unit": 6,
+    "titleEn": "Changing for the seasons",
+    "titleZh": "随季节而变",
+    "goalsZh": ["会说四季与衣物", "会对比不同季节"],
+    "words": ["spring", "summer", "winter", "leaf", "tree", "flower", "coat", "hat", "glove", "boot", "clothes", "change"],
+    "phrases": [
+      { "en": "In spring, flowers come out.", "zh": "春天花开了。" },
+      { "en": "Summer is hot. I wear a hat.", "zh": "夏天很热。我戴帽子。" },
+      { "en": "In winter, I put on a coat.", "zh": "冬天我穿上外套。" },
+      { "en": "Leaves change in autumn.", "zh": "秋天叶子会变色。" }
+    ],
+    "activities": [
+      { "type": "roleplay", "titleZh": "四季衣橱", "bodyZh": "拿出帽子/手套/靴子，说 In winter I wear..." }
+    ],
+    "weeksHint": [12, 13]
+  },
+  {
+    "id": "pep.g4.vol1.rev",
+    "grade": 4,
+    "volume": 1,
+    "unit": 7,
+    "titleEn": "A helpful week",
+    "titleZh": "乐于助人的一周",
+    "goalsZh": ["综合复习上册家务、朋友、场所与天气", "能完成一次口头小汇报"],
+    "words": ["help", "friend", "live", "house", "weather", "spring", "clean", "cook", "park", "school", "family", "give"],
+    "phrases": [
+      { "en": "I help at home every day.", "zh": "我每天在家帮忙。" },
+      { "en": "My friend is kind.", "zh": "我的朋友很善良。" },
+      { "en": "We live near a park.", "zh": "我们住在公园附近。" },
+      { "en": "The weather is cool today.", "zh": "今天天气凉爽。" },
+      { "en": "Let's help our family.", "zh": "我们来帮家人吧。" }
+    ],
+    "activities": [
+      { "type": "parent", "titleZh": "一周回顾", "bodyZh": "孩子用三句英文说说本周做过的帮忙、见过的朋友和天气。" }
+    ],
+    "weeksHint": [14, 15]
+  }
+]

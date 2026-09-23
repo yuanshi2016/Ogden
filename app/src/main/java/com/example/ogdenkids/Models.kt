@@ -129,20 +129,27 @@ sealed class Screen {
         val level: Int,
         val examCount: Int = 0,
         val wordKeys: List<String> = emptyList(),
-        val title: String = ""
+        val title: String = "",
+        /** 非空表示这是课本单元练习 */
+        val unitId: String = "",
+        /** 0=非多关(复习快捷)；1 词汇 / 2 句型(通常不走本屏) / 3 综合；仅 3 过关才 markUnitComplete */
+        val unitLevel: Int = 0
     ) : Screen() {
         constructor(
             category: Category,
             level: Int,
             examCount: Int = 0,
             wordKeys: List<String> = emptyList(),
-            title: String = ""
-        ) : this(category.code, level, examCount, wordKeys, title)
+            title: String = "",
+            unitId: String = "",
+            unitLevel: Int = 0
+        ) : this(category.code, level, examCount, wordKeys, title, unitId, unitLevel)
 
         val category: Category get() = Category.from(categoryCode)
     }
 
     data class WordCollection(val title: String, val kind: String) : Screen()
+    data class CurriculumUnit(val unitId: String) : Screen()
     object Stats : Screen()
     object Settings : Screen()
     object Privacy : Screen()
@@ -162,9 +169,12 @@ sealed class Screen {
                             screen.level,
                             screen.examCount,
                             screen.title,
+                            screen.unitId,
+                            screen.unitLevel,
                             screen.wordKeys.size
                         ) + screen.wordKeys
                         is WordCollection -> listOf("collection", screen.title, screen.kind)
+                        is CurriculumUnit -> listOf("curriculumUnit", screen.unitId)
                         Stats -> listOf("stats")
                         Settings -> listOf("settings")
                         Privacy -> listOf("privacy")
@@ -189,13 +199,24 @@ sealed class Screen {
                             val level = (list.getOrNull(2) as? Number)?.toInt() ?: 0
                             val examCount = (list.getOrNull(3) as? Number)?.toInt() ?: 0
                             val title = list.getOrNull(4) as? String ?: ""
-                            val keyCount = (list.getOrNull(5) as? Number)?.toInt() ?: 0
-                            val keys = list.drop(6).take(keyCount).mapNotNull { it as? String }
-                            Practice(code, level, examCount, keys, title)
+                            val unitId = list.getOrNull(5) as? String ?: ""
+                            // 兼容旧 Saver：第 6 位曾是 keyCount；新版是 unitLevel，第 7 位 keyCount
+                            val maybeUnitLevelOrKeyCount = (list.getOrNull(6) as? Number)?.toInt() ?: 0
+                            val seventh = list.getOrNull(7)
+                            val (unitLevel, keyCount, keysOffset) = if (seventh is Number) {
+                                Triple(maybeUnitLevelOrKeyCount, seventh.toInt(), 8)
+                            } else {
+                                Triple(0, maybeUnitLevelOrKeyCount, 7)
+                            }
+                            val keys = list.drop(keysOffset).take(keyCount).mapNotNull { it as? String }
+                            Practice(code, level, examCount, keys, title, unitId, unitLevel)
                         }
                         "collection" -> WordCollection(
                             title = list.getOrNull(1) as? String ?: "",
                             kind = list.getOrNull(2) as? String ?: ""
+                        )
+                        "curriculumUnit" -> CurriculumUnit(
+                            unitId = list.getOrNull(1) as? String ?: return@listSaver Main
                         )
                         "stats" -> Stats
                         "settings" -> Settings
@@ -206,6 +227,25 @@ sealed class Screen {
                 }
             )
     }
+}
+
+/**
+ * 单一 Screen 无栈时的「上一层」：练习/难度页回单元或关卡列表，而不是一律 Main。
+ * - 课本练习（含选难度）→ CurriculumUnit
+ * - 分类闯关 / 分类考试 → Levels
+ * - 智能复习、错词本等自定义词表 → Main
+ */
+fun Screen.backTarget(): Screen = when (this) {
+    is Screen.Practice -> when {
+        unitId.isNotBlank() -> Screen.CurriculumUnit(unitId)
+        // level>0 闯关；level==0 且无 wordKeys = 分类考试
+        wordKeys.isEmpty() -> Screen.Levels(category)
+        else -> Screen.Main
+    }
+    is Screen.Levels, is Screen.CurriculumUnit -> Screen.Main
+    is Screen.Detail, is Screen.WordCollection,
+    Screen.Stats, Screen.Settings, Screen.Privacy, Screen.About -> Screen.Main
+    Screen.Main -> Screen.Main
 }
 
 fun loadWords(context: Context): List<OgdenWord> {

@@ -1,0 +1,442 @@
+[
+  {
+    "w": "ruler",
+    "c": "th",
+    "zh": "尺子",
+    "en": "a straight tool for measuring and drawing lines",
+    "ex": "May I use your ruler?",
+    "exz": "我可以用你的尺子吗？",
+    "s": [
+      "measure"
+    ]
+  },
+  {
+    "w": "tomato",
+    "c": "th",
+    "zh": "西红柿",
+    "en": "a soft red fruit eaten as a vegetable",
+    "ex": "I like tomato soup.",
+    "exz": "我喜欢西红柿汤。",
+    "s": [
+      "vegetable"
+    ]
+  },
+  {
+    "w": "hobby",
+    "c": "th",
+    "zh": "爱好",
+    "en": "something you like to do in free time",
+    "ex": "My hobby is reading.",
+    "exz": "我的爱好是阅读。",
+    "s": [
+      "interest"
+    ]
+  },
+  {
+    "w": "collect",
+    "c": "th",
+    "zh": "收集",
+    "en": "to bring things together as a set",
+    "ex": "I collect stamps.",
+    "exz": "我收集邮票。",
+    "s": [
+      "gather"
+    ]
+  },
+  {
+    "w": "stamp",
+    "c": "th",
+    "zh": "邮票",
+    "en": "a small paper for posting a letter",
+    "ex": "This stamp is old.",
+    "exz": "这枚邮票很旧。",
+    "s": []
+  },
+  {
+    "w": "photo",
+    "c": "th",
+    "zh": "照片",
+    "en": "a picture made with a camera",
+    "ex": "Look at this photo.",
+    "exz": "看看这张照片。",
+    "s": [
+      "picture"
+    ]
+  },
+  {
+    "w": "bell",
+    "c": "th",
+    "zh": "铃；铃声",
+    "en": "a thing that makes a ringing sound",
+    "ex": "The bell rings at noon.",
+    "exz": "中午铃声响了。",
+    "s": []
+  },
+  {
+    "w": "trip",
+    "c": "th",
+    "zh": "旅行；短途出行",
+    "en": "a short journey",
+    "ex": "We plan a trip.",
+    "exz": "我们计划一次旅行。",
+    "s": [
+      "journey"
+    ]
+  },
+  {
+    "w": "travel",
+    "c": "th",
+    "zh": "旅行",
+    "en": "to go from one place to another",
+    "ex": "I like to travel.",
+    "exz": "我喜欢旅行。",
+    "s": [
+      "trip"
+    ]
+  },
+  {
+    "w": "ticket",
+    "c": "th",
+    "zh": "票",
+    "en": "a paper that lets you enter or ride",
+    "ex": "Don't forget your ticket.",
+    "exz": "别忘了你的票。",
+    "s": []
+  },
+  {
+    "w": "pet",
+    "c": "th",
+    "zh": "宠物",
+    "en": "an animal kept at home",
+    "ex": "I have a pet cat.",
+    "exz": "我有一只宠物猫。",
+    "s": []
+  },
+  {
+    "w": "feed",
+    "c": "th",
+    "zh": "喂养",
+    "en": "to give food to a person or animal",
+    "ex": "Please feed the dog.",
+    "exz": "请喂狗。",
+    "s": []
+  },
+  {
+    "w": "wild",
+    "c": "th",
+    "zh": "野生的",
+    "en": "living in nature, not at home",
+    "ex": "Wild animals need care.",
+    "exz": "野生动物需要呵护。",
+    "s": []
+  },
+  {
+    "w": "story",
+    "c": "th",
+    "zh": "故事",
+    "en": "a tale you tell or read",
+    "ex": "Tell me a story.",
+    "exz": "给我讲个故事。",
+    "s": [
+      "tale"
+    ]
+  },
+  {
+    "w": "page",
+    "c": "th",
+    "zh": "页",
+    "en": "one side of a sheet in a book",
+    "ex": "Turn to page ten.",
+    "exz": "翻到第十页。",
+    "s": []
+  },
+  {
+    "w": "hero",
+    "c": "th",
+    "zh": "英雄",
+    "en": "a brave person in a story",
+    "ex": "The hero is kind.",
+    "exz": "这位英雄很善良。",
+    "s": []
+  },
+  {
+    "w": "magic",
+    "c": "th",
+    "zh": "魔法；神奇的",
+    "en": "special power in stories",
+    "ex": "It looks like magic.",
+    "exz": "这看起来像魔法。",
+    "s": []
+  },
+  {
+    "w": "festival",
+    "c": "th",
+    "zh": "节日；庆典",
+    "en": "a special day of celebration",
+    "ex": "We love the summer festival.",
+    "exz": "我们喜欢夏日嘉年华。",
+    "s": [
+      "party"
+    ]
+  },
+  {
+    "w": "exercise",
+    "c": "th",
+    "zh": "锻炼；运动",
+    "en": "activity to keep the body strong",
+    "ex": "Exercise every day.",
+    "exz": "每天锻炼。",
+    "s": [
+      "sport"
+    ]
+  },
+  {
+    "w": "vegetable",
+    "c": "th",
+    "zh": "蔬菜",
+    "en": "a plant grown for food",
+    "ex": "Eat more vegetables.",
+    "exz": "多吃蔬菜。",
+    "s": []
+  },
+  {
+    "w": "cheap",
+    "c": "th",
+    "zh": "便宜的",
+    "en": "costing little money",
+    "ex": "This bag is cheap.",
+    "exz": "这个包很便宜。",
+    "s": []
+  },
+  {
+    "w": "expensive",
+    "c": "th",
+    "zh": "昂贵的",
+    "en": "costing a lot of money",
+    "ex": "That watch is expensive.",
+    "exz": "那块表很贵。",
+    "s": []
+  },
+  {
+    "w": "careful",
+    "c": "th",
+    "zh": "小心的",
+    "en": "taking care to avoid mistakes",
+    "ex": "Be careful with money.",
+    "exz": "用钱要小心。",
+    "s": []
+  },
+  {
+    "w": "energy",
+    "c": "th",
+    "zh": "能量；能源",
+    "en": "power to do work or make things go",
+    "ex": "Save energy at home.",
+    "exz": "在家节约能源。",
+    "s": [
+      "power"
+    ]
+  },
+  {
+    "w": "power",
+    "c": "th",
+    "zh": "动力；电力",
+    "en": "energy that makes machines work",
+    "ex": "Wind can make power.",
+    "exz": "风可以发电。",
+    "s": [
+      "energy"
+    ]
+  },
+  {
+    "w": "history",
+    "c": "th",
+    "zh": "历史",
+    "en": "things that happened in the past",
+    "ex": "I like history.",
+    "exz": "我喜欢历史。",
+    "s": []
+  },
+  {
+    "w": "art",
+    "c": "th",
+    "zh": "艺术",
+    "en": "painting, music and other creative work",
+    "ex": "Art is fun.",
+    "exz": "艺术很有趣。",
+    "s": []
+  },
+  {
+    "w": "science",
+    "c": "th",
+    "zh": "科学",
+    "en": "study of nature and how things work",
+    "ex": "Science is amazing.",
+    "exz": "科学很奇妙。",
+    "s": []
+  },
+  {
+    "w": "guide",
+    "c": "th",
+    "zh": "导游；讲解员",
+    "en": "a person who shows and explains places",
+    "ex": "The guide helps us.",
+    "exz": "讲解员帮助我们。",
+    "s": []
+  },
+  {
+    "w": "compare",
+    "c": "th",
+    "zh": "比较",
+    "en": "to look at how things are alike or different",
+    "ex": "Let's compare the two.",
+    "exz": "我们来比较这两个。",
+    "s": []
+  },
+  {
+    "w": "than",
+    "c": "th",
+    "zh": "比",
+    "en": "used when comparing two things",
+    "ex": "She is taller than me.",
+    "exz": "她比我高。",
+    "s": []
+  },
+  {
+    "w": "both",
+    "c": "th",
+    "zh": "两者都",
+    "en": "the two together",
+    "ex": "Both are my friends.",
+    "exz": "两个都是我的朋友。",
+    "s": []
+  },
+  {
+    "w": "film",
+    "c": "th",
+    "zh": "电影",
+    "en": "a moving picture story",
+    "ex": "We watched a film.",
+    "exz": "我们看了一部电影。",
+    "s": [
+      "movie"
+    ]
+  },
+  {
+    "w": "spaceship",
+    "c": "th",
+    "zh": "宇宙飞船",
+    "en": "a vehicle that flies in space",
+    "ex": "The spaceship flies far.",
+    "exz": "宇宙飞船飞得很远。",
+    "s": [
+      "ship"
+    ]
+  },
+  {
+    "w": "went",
+    "c": "th",
+    "zh": "去（过去式）",
+    "en": "past form of go",
+    "ex": "I went to the park.",
+    "exz": "我去了公园。",
+    "s": [
+      "go"
+    ]
+  },
+  {
+    "w": "saw",
+    "c": "th",
+    "zh": "看见（过去式）",
+    "en": "past form of see",
+    "ex": "I saw a bird.",
+    "exz": "我看见一只鸟。",
+    "s": [
+      "see"
+    ]
+  },
+  {
+    "w": "played",
+    "c": "th",
+    "zh": "玩（过去式）",
+    "en": "past form of play",
+    "ex": "We played games.",
+    "exz": "我们玩游戏了。",
+    "s": [
+      "play"
+    ]
+  },
+  {
+    "w": "visited",
+    "c": "th",
+    "zh": "参观；拜访（过去式）",
+    "en": "past form of visit",
+    "ex": "They visited a museum.",
+    "exz": "他们参观了博物馆。",
+    "s": [
+      "visit"
+    ]
+  },
+  {
+    "w": "taller",
+    "c": "th",
+    "zh": "更高的",
+    "en": "more tall",
+    "ex": "I am taller now.",
+    "exz": "我现在更高了。",
+    "s": [
+      "tall"
+    ]
+  },
+  {
+    "w": "community",
+    "c": "th",
+    "zh": "社区",
+    "en": "the people and places near where you live",
+    "ex": "Our community has a park.",
+    "exz": "我们社区有一座公园。",
+    "s": [
+      "neighborhood"
+    ]
+  },
+  {
+    "w": "volunteer",
+    "c": "th",
+    "zh": "志愿者；志愿做",
+    "en": "a person who helps without pay",
+    "ex": "I am a volunteer at school.",
+    "exz": "我是学校的志愿者。",
+    "s": [
+      "helper"
+    ]
+  },
+  {
+    "w": "season",
+    "c": "th",
+    "zh": "季节",
+    "en": "one of the four parts of the year",
+    "ex": "Spring is my favourite season.",
+    "exz": "春天是我最喜欢的季节。",
+    "s": []
+  },
+  {
+    "w": "hometown",
+    "c": "th",
+    "zh": "家乡",
+    "en": "the town or city where you grew up",
+    "ex": "My hometown is beautiful.",
+    "exz": "我的家乡很美。",
+    "s": [
+      "home"
+    ]
+  },
+  {
+    "w": "pack",
+    "c": "th",
+    "zh": "打包；收拾行李",
+    "en": "to put things into a bag for a trip",
+    "ex": "Please pack your bag.",
+    "exz": "请收拾好你的包。",
+    "s": []
+  }
+]

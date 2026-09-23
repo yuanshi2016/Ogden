@@ -13,6 +13,8 @@ import com.example.ogdenkids.data.LevelProgressEntity
 import com.example.ogdenkids.data.ProgressDatabase
 import com.example.ogdenkids.data.ProgressSnapshot
 import com.example.ogdenkids.data.RewardEntity
+import com.example.ogdenkids.data.UnitLevelProgressEntity
+import com.example.ogdenkids.data.UnitProgressEntity
 import com.example.ogdenkids.data.WordProgressEntity
 import com.example.ogdenkids.data.decodeProgressSnapshot
 import com.example.ogdenkids.data.encodeProgressSnapshot
@@ -27,6 +29,12 @@ import com.example.ogdenkids.data.selectDueForReview
 import com.example.ogdenkids.data.summarizeQuality
 import com.example.ogdenkids.data.selectWeakWords
 import com.example.ogdenkids.data.Sm2State
+import com.example.ogdenkids.curriculum.LearningTrack
+import com.example.ogdenkids.curriculum.isUnitLevelUnlocked as isUnitLevelUnlockedRule
+import com.example.ogdenkids.curriculum.isUnitUnlocked as isUnitUnlockedRule
+import com.example.ogdenkids.curriculum.PEP_SUPPORTED_GRADES
+import com.example.ogdenkids.curriculum.PEP_WEEK_MAX
+import com.example.ogdenkids.curriculum.resolveSuggestedWeek
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -45,6 +53,12 @@ class ProgressStore(context: Context) {
     // 组合期间只读这份内存快照；数据库读写一律在协程里，写入是「先改快照再落库」
     private val entries = mutableStateMapOf<String, WordProgress>()
     private val levels = mutableStateMapOf<String, Boolean>()
+    // 课本单元完成快照：unitId -> true
+    private val units = mutableStateMapOf<String, Boolean>()
+    // 单元内多关："unitId.level" -> true
+    private val unitLevels = mutableStateMapOf<String, Boolean>()
+    // daycheck 勾选：key = "unitId.day" -> itemIds；写 prefs，读时懒加载
+    private val dayChecks = mutableStateMapOf<String, Set<String>>()
     // lastAnsweredAt 界面不显示，只在整行覆盖写时要带上，放普通 map 不参与重组
     // SM-2 字段（intervalDays/easeFactor/dueAt）随 WordProgress 进 entries 快照
     private val answeredAt = mutableMapOf<String, Long>()
@@ -53,6 +67,20 @@ class ProgressStore(context: Context) {
     private val rewards = mutableStateMapOf<String, String>()
     private val earned = mutableStateMapOf<String, EarnedRewardEntity>()
     private var streak by mutableStateOf(prefs.getInt("streak", 0))
+    // 周次建议存 prefs，但要触发列表重排，故在内存里做快照
+    private var pepWeek by mutableStateOf(prefs.getInt(PEP_CURRENT_WEEK, 0))
+    private var pepTermStart by mutableStateOf(prefs.getLong(PEP_TERM_START_DAY, 0L))
+    private var pepGrade by mutableStateOf(
+        prefs.getInt(PEP_LAST_GRADE, 3).let { g -> if (g in PEP_SUPPORTED_GRADES) g else 3 }
+    )
+    private var pepTrack by mutableStateOf(
+        runCatching {
+            LearningTrack.valueOf(prefs.getString(PEP_LAST_TRACK, LearningTrack.Ogden.name)!!)
+        }.getOrDefault(LearningTrack.Ogden)
+    )
+    private var pepVolume by mutableStateOf(
+        prefs.getInt(PEP_LAST_VOLUME, 1).let { v -> if (v == 2) 2 else 1 }
+    )
     // 首帧数据库还没读完，界面先等这个标志，避免统计闪一次 0
     var ready by mutableStateOf(false)
         private set
@@ -61,6 +89,8 @@ class ProgressStore(context: Context) {
         scope.launch {
             var words = emptyList<WordProgressEntity>()
             var completed = emptyList<LevelProgressEntity>()
+            var unitRows = emptyList<UnitProgressEntity>()
+            var unitLevelRows = emptyList<UnitLevelProgressEntity>()
             var dailyRows = emptyList<DailyActivityEntity>()
             var rewardRows = emptyList<RewardEntity>()
             var earnedRows = emptyList<EarnedRewardEntity>()
@@ -70,6 +100,8 @@ class ProgressStore(context: Context) {
                 dao.pruneDailyActivity(localEpochDay(System.currentTimeMillis()) - 365)
                 words = dao.allWordProgress()
                 completed = dao.allLevelProgress()
+                unitRows = dao.allUnitProgress()
+                unitLevelRows = dao.allUnitLevelProgress()
                 dailyRows = dao.allDailyActivity()
                 rewardRows = dao.allRewards()
                 earnedRows = dao.allEarnedRewards()
@@ -79,6 +111,8 @@ class ProgressStore(context: Context) {
                 answeredAt[it.word] = it.lastAnsweredAt
             }
             completed.forEach { levels[levelKey(it.category, it.level)] = true }
+            unitRows.forEach { units[it.unitId] = true }
+            unitLevelRows.forEach { unitLevels[unitLevelKey(it.unitId, it.level)] = true }
             dailyRows.forEach { daily[it.day] = it }
             rewardRows.forEach { rewards[rewardKey(it.category, it.difficulty)] = it.text }
             earnedRows.forEach { earned[rewardKey(it.category, it.difficulty)] = it }
@@ -379,18 +413,147 @@ class ProgressStore(context: Context) {
         scope.launch(Dispatchers.IO) { dao.saveLevelProgress(entity) }
     }
 
+    fun isUnitComplete(unitId: String): Boolean = units[unitId] == true
+
+    /** @param orderedUnitIds 来自 index.json 的全册单元顺序 */
+    fun isUnitUnlocked(orderedUnitIds: List<String>, unitId: String): Boolean =
+        isUnitUnlockedRule(orderedUnitIds, units.keys.toSet(), unitId)
+
+    fun markUnitComplete(unitId: String) {
+        if (units[unitId] == true) return
+        units[unitId] = true
+        val entity = UnitProgressEntity(unitId, System.currentTimeMillis())
+        scope.launch(Dispatchers.IO) { dao.saveUnitProgress(entity) }
+    }
+
+    fun completedUnitLevels(unitId: String): Set<Int> =
+        unitLevels.keys.mapNotNull { key ->
+            val parts = key.split('.')
+            if (parts.size < 2) return@mapNotNull null
+            val id = parts.dropLast(1).joinToString(".")
+            val level = parts.last().toIntOrNull() ?: return@mapNotNull null
+            if (id == unitId) level else null
+        }.toSet()
+
+    fun isUnitLevelComplete(unitId: String, level: Int): Boolean =
+        unitLevels[unitLevelKey(unitId, level)] == true
+
+    fun isUnitLevelUnlocked(unitId: String, level: Int): Boolean =
+        isUnitLevelUnlockedRule(level, completedUnitLevels(unitId))
+
+    fun markUnitLevelComplete(unitId: String, level: Int) {
+        if (unitId.isBlank() || level < 1) return
+        val key = unitLevelKey(unitId, level)
+        if (unitLevels[key] == true) return
+        unitLevels[key] = true
+        val entity = UnitLevelProgressEntity(unitId, level, System.currentTimeMillis())
+        scope.launch(Dispatchers.IO) { dao.saveUnitLevelProgress(entity) }
+    }
+
+    fun pepLastUnitId(): String = prefs.getString(PEP_LAST_UNIT_ID, "").orEmpty()
+
+    fun savePepLastUnitId(unitId: String) {
+        prefs.edit().putString(PEP_LAST_UNIT_ID, unitId).apply()
+    }
+
+    /** 课本轨上次选择的年级（3–6）；默认 3。年级间不强制通关解锁。 */
+    fun pepLastGrade(): Int = pepGrade
+
+    fun savePepLastGrade(grade: Int) {
+        val next = if (grade in PEP_SUPPORTED_GRADES) grade else 3
+        if (pepGrade == next) return
+        pepGrade = next
+        prefs.edit().putInt(PEP_LAST_GRADE, pepGrade).apply()
+    }
+
+    /** 闯关页「基础词 | 课本」轨道；从单元返回主页后应仍停在课本。 */
+    fun learningTrack(): LearningTrack = pepTrack
+
+    fun saveLearningTrack(track: LearningTrack) {
+        if (pepTrack == track) return
+        pepTrack = track
+        prefs.edit().putString(PEP_LAST_TRACK, track.name).apply()
+    }
+
+    /** 课本上/下册（1 或 2）；默认 1。 */
+    fun pepLastVolume(): Int = pepVolume
+
+    fun savePepLastVolume(volume: Int) {
+        val next = if (volume == 2) 2 else 1
+        if (pepVolume == next) return
+        pepVolume = next
+        prefs.edit().putInt(PEP_LAST_VOLUME, pepVolume).apply()
+    }
+
+    /** 手动「当前第 N 周」；0 表示未设置，回落到开学日推算。 */
+    fun pepCurrentWeek(): Int = pepWeek
+
+    fun savePepCurrentWeek(week: Int) {
+        pepWeek = week.coerceIn(0, PEP_WEEK_MAX)
+        prefs.edit().putInt(PEP_CURRENT_WEEK, pepWeek).apply()
+    }
+
+    /** 开学日（本地纪元日）；0 表示未设置。 */
+    fun pepTermStartDay(): Long = pepTermStart
+
+    fun savePepTermStartDay(day: Long) {
+        pepTermStart = day.coerceAtLeast(0L)
+        prefs.edit().putLong(PEP_TERM_START_DAY, pepTermStart).apply()
+    }
+
+    /** 供 UI：解析出的建议周（手动优先，否则开学日）。 */
+    fun pepSuggestedWeek(today: Long = localEpochDay(System.currentTimeMillis())): Int? {
+        val manual = pepWeek.takeIf { it > 0 }
+        val start = pepTermStart.takeIf { it > 0L }
+        return resolveSuggestedWeek(manual, start, today)
+    }
+
+    fun dayCheckItems(unitId: String, day: Long = localEpochDay(System.currentTimeMillis())): Set<String> {
+        val key = dayCheckKey(unitId, day)
+        // 读 map 槽位以订阅重组；未写入时回落 prefs（不在组合期写 map）
+        dayChecks[key]?.let { return it }
+        return prefs.getStringSet(dayCheckPrefKey(unitId, day), emptySet()).orEmpty().toSet()
+    }
+
+    fun isDayCheckDone(
+        unitId: String,
+        itemId: String,
+        day: Long = localEpochDay(System.currentTimeMillis())
+    ): Boolean = itemId in dayCheckItems(unitId, day)
+
+    fun setDayCheckDone(
+        unitId: String,
+        itemId: String,
+        done: Boolean,
+        day: Long = localEpochDay(System.currentTimeMillis())
+    ) {
+        if (unitId.isBlank() || itemId.isBlank()) return
+        val key = dayCheckKey(unitId, day)
+        val cur = dayCheckItems(unitId, day).toMutableSet()
+        if (done) cur += itemId else cur -= itemId
+        dayChecks[key] = cur
+        prefs.edit().putStringSet(dayCheckPrefKey(unitId, day), HashSet(cur)).apply()
+    }
+
     // 清空学习进度：内存快照立即归零（界面无需重启），数据库与标量随后清
     fun resetProgress() {
         entries.clear()
         levels.clear()
+        units.clear()
+        unitLevels.clear()
+        dayChecks.clear()
         answeredAt.clear()
         daily.clear()
         earned.clear()
         streak = 0
+        pepWeek = 0
+        pepTermStart = 0L
         // 先清库再清偏好：反过来若中途进程被杀，导入标志还在而库里旧行会复活
         scope.launch(Dispatchers.IO) {
             dao.clearWordProgress()
             dao.clearLevelProgress()
+            dao.clearUnitProgress()
+            dao.clearUnitLevelProgress()
             dao.clearDailyActivity()
             dao.clearEarnedRewards()
             dao.clearAnswerEvents()
@@ -404,6 +567,8 @@ class ProgressStore(context: Context) {
     suspend fun exportProgressJson(): String = withContext(Dispatchers.IO) {
         // 关卡 completedAt 只在库里完整，内存 levels 只有布尔；导出时以库为准
         val levelRows = dao.allLevelProgress()
+        val unitRows = dao.allUnitProgress()
+        val unitLevelRows = dao.allUnitLevelProgress()
         val snapshot = ProgressSnapshot(
             words = entries.map { (word, p) -> p.toEntity(word, answeredAt[word] ?: 0L) },
             levels = levelRows.ifEmpty {
@@ -419,7 +584,19 @@ class ProgressStore(context: Context) {
             streak = streak,
             lastStudyDay = prefs.getLong("lastStudyDay", 0L),
             lastCategory = prefs.getString("lastCategory", Category.Operations.code) ?: Category.Operations.code,
-            lastLevel = prefs.getInt("lastLevel", 1)
+            lastLevel = prefs.getInt("lastLevel", 1),
+            units = unitRows.ifEmpty {
+                units.keys.map { UnitProgressEntity(it, 0L) }
+            },
+            unitLevels = unitLevelRows.ifEmpty {
+                unitLevels.keys.mapNotNull { key ->
+                    val parts = key.split('.')
+                    if (parts.size < 2) return@mapNotNull null
+                    val level = parts.last().toIntOrNull() ?: return@mapNotNull null
+                    val id = parts.dropLast(1).joinToString(".")
+                    UnitLevelProgressEntity(id, level, 0L)
+                }
+            }
         )
         encodeProgressSnapshot(snapshot)
     }
@@ -427,17 +604,22 @@ class ProgressStore(context: Context) {
     /**
      * 用备份覆盖学习进度。成功后刷新内存快照。
      * 不改 accent / themeMode / speakLevel / aiKey / parentPin。
+     * v1 备份无 units/unitLevels → 清空后写入空（与旧行为一致，避免残留）。
      */
     suspend fun importProgressJson(json: String) {
         val snapshot = decodeProgressSnapshot(json)
         withContext(Dispatchers.IO) {
             dao.clearWordProgress()
             dao.clearLevelProgress()
+            dao.clearUnitProgress()
+            dao.clearUnitLevelProgress()
             dao.clearDailyActivity()
             dao.clearEarnedRewards()
             dao.clearAnswerEvents()
             if (snapshot.words.isNotEmpty()) dao.saveWordProgress(snapshot.words)
             if (snapshot.levels.isNotEmpty()) dao.saveLevelProgress(snapshot.levels)
+            if (snapshot.units.isNotEmpty()) dao.saveUnitProgress(snapshot.units)
+            if (snapshot.unitLevels.isNotEmpty()) dao.saveUnitLevelProgress(snapshot.unitLevels)
             snapshot.daily.forEach { dao.saveDailyActivity(it) }
             snapshot.earned.forEach { dao.saveEarnedReward(it) }
             prefs.edit()
@@ -449,6 +631,8 @@ class ProgressStore(context: Context) {
         }
         entries.clear()
         levels.clear()
+        units.clear()
+        unitLevels.clear()
         answeredAt.clear()
         daily.clear()
         earned.clear()
@@ -457,12 +641,20 @@ class ProgressStore(context: Context) {
             answeredAt[it.word] = it.lastAnsweredAt
         }
         snapshot.levels.forEach { levels[levelKey(it.category, it.level)] = true }
+        snapshot.units.forEach { units[it.unitId] = true }
+        snapshot.unitLevels.forEach { unitLevels[unitLevelKey(it.unitId, it.level)] = true }
         snapshot.daily.forEach { daily[it.day] = it }
         snapshot.earned.forEach { earned[rewardKey(it.category, it.difficulty)] = it }
         streak = snapshot.streak
     }
 
     private fun levelKey(categoryCode: String, level: Int) = "$categoryCode.$level"
+
+    private fun unitLevelKey(unitId: String, level: Int) = "$unitId.$level"
+
+    private fun dayCheckKey(unitId: String, day: Long) = "$unitId.$day"
+
+    private fun dayCheckPrefKey(unitId: String, day: Long) = "pep.daycheck.$unitId.$day"
 
     private fun rewardKey(categoryCode: String, difficulty: String) = "$categoryCode.$difficulty"
 
@@ -483,6 +675,12 @@ class ProgressStore(context: Context) {
 
     private companion object {
         const val IMPORTED_KEY = "roomImported"
+        const val PEP_LAST_UNIT_ID = "pep.lastUnitId"
+        const val PEP_LAST_GRADE = "pep.lastGrade"
+        const val PEP_LAST_TRACK = "pep.lastTrack"
+        const val PEP_LAST_VOLUME = "pep.lastVolume"
+        const val PEP_CURRENT_WEEK = "pep.currentWeek"
+        const val PEP_TERM_START_DAY = "pep.termStartDay"
         val Blank = WordProgress(
             favorite = false,
             mistake = false,
@@ -537,11 +735,17 @@ private val PRESERVED_PREF_KEYS = setOf(
     SpeakCalibrationStore.THRESHOLDS_KEY,
     ReviewReminderPrefs.ENABLED_KEY,
     ReviewReminderPrefs.HOUR_KEY,
-    "reminderDueCount"
+    "reminderDueCount",
+    "pep.lastGrade", // 年级选择是偏好；pep.lastUnitId / pep.daycheck.* 仍随进度清掉
+    "pep.lastTrack",
+    "pep.lastVolume"
 )
 
 fun resettableProgressKeys(keys: Set<String>): Set<String> =
     keys.filterTo(mutableSetOf()) { key -> key !in PRESERVED_PREF_KEYS }
+
+/** 供单测与 curriculum UI：本地纪元日（当天 0 点为界） */
+fun localEpochDayNow(millis: Long = System.currentTimeMillis()): Long = localEpochDay(millis)
 
 // 答题后的熟练度/错词流转：答对 +1 上限 3，答错 -1 下限 0，掌握度归零也计入错词
 fun nextProgress(current: WordProgress, correct: Boolean): WordProgress {
@@ -571,7 +775,7 @@ fun nextStreak(lastDay: Long, today: Long, streak: Int): Int = when {
 }
 
 // 本地时区的「纪元日」：以当天 0 点为界，日图表按天分桶时避免 UTC 凌晨 8 点切天
-private fun localEpochDay(millis: Long): Long {
+internal fun localEpochDay(millis: Long): Long {
     val now = Calendar.getInstance().apply { timeInMillis = millis }
     val start = Calendar.getInstance().apply {
         clear()

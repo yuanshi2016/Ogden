@@ -253,40 +253,67 @@ fun rememberSpeaker(accent: Accent): (String) -> Unit {
                 }.onFailure { fallbackTts() }
             }
 
-            val localPath = localAudioPath(text, accent)
-            if (localPath == null) {
+            // 句型：phrases → examples → 在线/TTS；单词：audio/{us,uk} → 在线/TTS
+            val candidates = listOfNotNull(
+                localAudioPath(text, accent),
+                localExampleAudioPath(text, accent)
+            )
+            if (candidates.isEmpty()) {
                 playOnline()
             } else {
-                runCatching {
-                    if (!OgdenAudioHub.isWordPlayCurrent(gen)) return@runCatching
-                    val fd = context.assets.openFd(localPath)
-                    val mediaPlayer = MediaPlayer()
-                    bindPlayer(mediaPlayer)
-                    mediaPlayer.setOnErrorListener { mp, _, _ ->
-                        runCatching { mp.release() }
-                        OgdenAudioHub.clearWordPlayerIfSame(mp)
+                fun tryAt(i: Int) {
+                    if (i >= candidates.size) {
                         playOnline()
-                        true
+                        return
                     }
-                    mediaPlayer.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
-                    fd.close()
-                    mediaPlayer.prepareAsync()
-                }.onFailure { playOnline() }
+                    runCatching {
+                        if (!OgdenAudioHub.isWordPlayCurrent(gen)) return@runCatching
+                        val fd = context.assets.openFd(candidates[i])
+                        val mediaPlayer = MediaPlayer()
+                        bindPlayer(mediaPlayer)
+                        mediaPlayer.setOnErrorListener { mp, _, _ ->
+                            runCatching { mp.release() }
+                            OgdenAudioHub.clearWordPlayerIfSame(mp)
+                            tryAt(i + 1)
+                            true
+                        }
+                        mediaPlayer.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
+                        fd.close()
+                        mediaPlayer.prepareAsync()
+                    }.onFailure { tryAt(i + 1) }
+                }
+                tryAt(0)
             }
         }
     }
 }
 
+internal fun audioSlug(text: String): String =
+    text.lowercase(Locale.US).replace(Regex("[^a-z0-9]+"), "_").trim('_')
+
+/**
+ * 本地发音路径：
+ * - 单词 → audio/{us,uk}/<slug>.mp3
+ * - 非单词（句型/例句）→ 优先 audio/phrases/…（课本句型），再 audio/examples/…（词库例句）
+ * openFd 失败时上层会回退在线/TTS。
+ */
 internal fun localAudioPath(text: String, accent: Accent): String? {
     val dir = if (accent == Accent.US) "us" else "uk"
+    val slug = audioSlug(text)
+    if (slug.isBlank()) return null
     // 单个单词：audio/{us,uk}/<word>.mp3
     if (text.matches(Regex("[A-Za-z][A-Za-z0-9-]*"))) {
-        val file = text.lowercase(Locale.US).replace(Regex("[^a-z0-9]+"), "_").trim('_')
-        if (file.isBlank()) return null
-        return "audio/$dir/$file.mp3"
+        return "audio/$dir/$slug.mp3"
     }
-    // 例句整句：audio/examples/{us,uk}/<slug>.mp3
-    val slug = text.lowercase(Locale.US).replace(Regex("[^a-z0-9]+"), "_").trim('_')
+    // 课本句型优先；词库例句次之（播放层 openFd 失败会回退）
+    return "audio/phrases/$dir/$slug.mp3"
+}
+
+/** 句型路径失败时的例句回退路径（与 [localAudioPath] 同 slug）。 */
+internal fun localExampleAudioPath(text: String, accent: Accent): String? {
+    if (text.matches(Regex("[A-Za-z][A-Za-z0-9-]*"))) return null
+    val dir = if (accent == Accent.US) "us" else "uk"
+    val slug = audioSlug(text)
     if (slug.isBlank()) return null
     return "audio/examples/$dir/$slug.mp3"
 }

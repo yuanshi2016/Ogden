@@ -65,6 +65,8 @@ CREATE INDEX IF NOT EXISTS `index_word_progress_dueAt` ON `word_progress` (`dueA
 
 相关偏好键（重置进度时保留）：`speakLevel`、`speakCalibrationSamples` / `speakThresholds`（U1）、`reviewReminderEnabled` / `reviewReminderHour` / `reminderDueCount`（U2，默认关、本地 19:00）。
 
+课本周次（进度侧，**重置时清掉**）：`pep.currentWeek`（手动第 N 周，0=未设）、`pep.termStartDay`（开学日本地纪元日，0=未设）。与 `pep.lastUnitId` / `pep.daycheck.*` 同类。
+
 ## 从 SharedPreferences 迁移
 
 老用户的进度全在偏好里，不能丢。`ProgressStore` 初始化时在 IO 线程执行 `importLegacyPrefsIfNeeded()`：
@@ -87,7 +89,7 @@ Room 不能在主线程碰；组合期间不做 I/O。模式仍是「内存快�
 
 ## 备份
 
-`ProgressBackup.kt`：`encodeProgressSnapshot` / `decodeProgressSnapshot`（`PROGRESS_BACKUP_VERSION = 1`）。
+`ProgressBackup.kt`：`encodeProgressSnapshot` / `decodeProgressSnapshot`（`PROGRESS_BACKUP_VERSION = 2`；兼容读 v1，含 `units` / `unitLevels`）。
 
 - 每个词 JSON 含 `intervalDays` / `easeFactor` / `dueAt`
 - 旧备份缺字段：`optDouble` / `optLong` 回落到默认（0.0 / 2.5 / 0）

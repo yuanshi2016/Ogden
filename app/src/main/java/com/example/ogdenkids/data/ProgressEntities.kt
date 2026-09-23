@@ -57,6 +57,21 @@ data class LevelProgressEntity(
     val completedAt: Long = 0L
 )
 
+// 课本单元完成记录：unitId 形如 pep.g3.vol1.u1；有行即视为已通关，解锁看前一单元
+@Entity(tableName = "unit_progress")
+data class UnitProgressEntity(
+    @PrimaryKey val unitId: String,
+    val completedAt: Long = 0L
+)
+
+/** 单元内多关：level 1 词汇 / 2 句型 / 3 综合；仅综合关通过才写 unit_progress */
+@Entity(tableName = "unit_level_progress", primaryKeys = ["unitId", "level"])
+data class UnitLevelProgressEntity(
+    val unitId: String,
+    val level: Int,
+    val completedAt: Long = 0L
+)
+
 // 每日学习统计：day 是本地时区的纪元日（0 点为界），供日图表使用
 @Entity(tableName = "daily_activity")
 data class DailyActivityEntity(

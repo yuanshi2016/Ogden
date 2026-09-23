@@ -1,0 +1,414 @@
+[
+  {
+    "id": "pep.g5.vol1.u1",
+    "grade": 5,
+    "volume": 1,
+    "unit": 1,
+    "titleEn": "Different friends",
+    "titleZh": "不同的朋友",
+    "goalsZh": [
+      "会用形容词描述朋友外貌与性格",
+      "会介绍一位朋友"
+    ],
+    "words": [
+      "friend",
+      "tall",
+      "short",
+      "kind",
+      "funny",
+      "quiet",
+      "hair",
+      "eye",
+      "face",
+      "smile",
+      "strong",
+      "nice"
+    ],
+    "phrases": [
+      {
+        "en": "This is my friend.",
+        "zh": "这是我的朋友。"
+      },
+      {
+        "en": "He is tall and kind.",
+        "zh": "他又高又善良。"
+      },
+      {
+        "en": "She has long hair and a big smile.",
+        "zh": "她有长头发，笑容很灿烂。"
+      },
+      {
+        "en": "My friends are different, but we like each other.",
+        "zh": "我的朋友们各不相同，但我们彼此喜欢。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "介绍朋友",
+        "bodyZh": "指着照片用 He/She is... 和 has... 说两句。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "朋友画像",
+        "bodyZh": "画一位朋友，标出 tall/short/kind 等词。"
+      }
+    ],
+    "weeksHint": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": "pep.g5.vol1.u2",
+    "grade": 5,
+    "volume": 1,
+    "unit": 2,
+    "titleEn": "My feelings",
+    "titleZh": "我的感受",
+    "goalsZh": [
+      "会表达常见情绪",
+      "会询问别人的感受"
+    ],
+    "words": [
+      "feel",
+      "feeling",
+      "happy",
+      "sad",
+      "angry",
+      "tired",
+      "cry",
+      "laugh",
+      "smile",
+      "excited",
+      "love",
+      "hope"
+    ],
+    "phrases": [
+      {
+        "en": "How do you feel today?",
+        "zh": "你今天感觉怎么样？"
+      },
+      {
+        "en": "I feel happy and excited.",
+        "zh": "我感到开心又兴奋。"
+      },
+      {
+        "en": "Don't be sad. I am here.",
+        "zh": "别难过。我在这儿。"
+      },
+      {
+        "en": "She looks tired after school.",
+        "zh": "放学后她看起来很累。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "listen",
+        "titleZh": "情绪表情包",
+        "bodyZh": "家长说 happy/sad/angry/tired，孩子做表情并说 I feel..."
+      },
+      {
+        "type": "chant",
+        "titleZh": "感受歌",
+        "bodyZh": "念 Happy, sad, angry, tired — tell me how you feel!"
+      }
+    ],
+    "weeksHint": [
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "id": "pep.g5.vol1.u3",
+    "grade": 5,
+    "volume": 1,
+    "unit": 3,
+    "titleEn": "Work and play",
+    "titleZh": "学习与玩耍",
+    "goalsZh": [
+      "会说学习与休闲活动",
+      "会简单安排一天的事"
+    ],
+    "words": [
+      "work",
+      "play",
+      "study",
+      "rest",
+      "read",
+      "write",
+      "draw",
+      "sing",
+      "dance",
+      "music",
+      "game",
+      "ball"
+    ],
+    "phrases": [
+      {
+        "en": "I study in the morning.",
+        "zh": "我早上学习。"
+      },
+      {
+        "en": "After school, I play ball.",
+        "zh": "放学后我打球。"
+      },
+      {
+        "en": "Work first, then play.",
+        "zh": "先工作，再玩耍。"
+      },
+      {
+        "en": "Let's sing and dance together.",
+        "zh": "我们一起唱歌跳舞吧。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "我的一天",
+        "bodyZh": "用 First... Then... 说学习和玩耍各一件事。"
+      }
+    ],
+    "weeksHint": [
+      7,
+      8
+    ]
+  },
+  {
+    "id": "pep.g5.vol1.u4",
+    "grade": 5,
+    "volume": 1,
+    "unit": 4,
+    "titleEn": "Healthy habits",
+    "titleZh": "健康习惯",
+    "goalsZh": [
+      "会说健康生活习惯",
+      "会给出简单建议"
+    ],
+    "words": [
+      "healthy",
+      "sleep",
+      "early",
+      "late",
+      "wash",
+      "clean",
+      "hand",
+      "body",
+      "walk",
+      "run",
+      "drink",
+      "water"
+    ],
+    "phrases": [
+      {
+        "en": "You should sleep early.",
+        "zh": "你应该早睡。"
+      },
+      {
+        "en": "Wash your hands before meals.",
+        "zh": "饭前要洗手。"
+      },
+      {
+        "en": "Drink more water every day.",
+        "zh": "每天多喝水。"
+      },
+      {
+        "en": "Walking is a healthy habit.",
+        "zh": "走路是一种健康习惯。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "parent",
+        "titleZh": "健康小约定",
+        "bodyZh": "和孩子定两条习惯，用 You should... 互相提醒。"
+      },
+      {
+        "type": "chant",
+        "titleZh": "习惯歌",
+        "bodyZh": "念 Sleep early, wash hands, drink water — stay healthy!"
+      }
+    ],
+    "weeksHint": [
+      10,
+      11,
+      12
+    ]
+  },
+  {
+    "id": "pep.g5.vol1.u5",
+    "grade": 5,
+    "volume": 1,
+    "unit": 5,
+    "titleEn": "Food we eat",
+    "titleZh": "我们吃的食物",
+    "goalsZh": [
+      "会说常见食物与喜好",
+      "会简单点餐对话"
+    ],
+    "words": [
+      "food",
+      "eat",
+      "drink",
+      "fruit",
+      "rice",
+      "meat",
+      "soup",
+      "bread",
+      "milk",
+      "apple",
+      "fish",
+      "cake"
+    ],
+    "phrases": [
+      {
+        "en": "What would you like to eat?",
+        "zh": "你想吃什么？"
+      },
+      {
+        "en": "I like fruit and milk.",
+        "zh": "我喜欢水果和牛奶。"
+      },
+      {
+        "en": "Can I have some rice and soup?",
+        "zh": "我可以要一些米饭和汤吗？"
+      },
+      {
+        "en": "Please pass the bread.",
+        "zh": "请把面包递给我。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "小小餐馆",
+        "bodyZh": "一人点餐，一人说 Here you are. / Enjoy your food."
+      }
+    ],
+    "weeksHint": [
+      13,
+      14,
+      15
+    ]
+  },
+  {
+    "id": "pep.g5.vol1.u6",
+    "grade": 5,
+    "volume": 1,
+    "unit": 6,
+    "titleEn": "Nature and us",
+    "titleZh": "自然与我们",
+    "goalsZh": [
+      "会说自然事物",
+      "会表达爱护环境"
+    ],
+    "words": [
+      "tree",
+      "flower",
+      "river",
+      "bird",
+      "animal",
+      "earth",
+      "water",
+      "sun",
+      "wind",
+      "sky",
+      "grass",
+      "plant"
+    ],
+    "phrases": [
+      {
+        "en": "Nature is beautiful.",
+        "zh": "大自然很美。"
+      },
+      {
+        "en": "We should keep the river clean.",
+        "zh": "我们应该保持河流干净。"
+      },
+      {
+        "en": "Don't hurt animals.",
+        "zh": "不要伤害动物。"
+      },
+      {
+        "en": "Let's plant more trees.",
+        "zh": "我们多种树吧。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "parent",
+        "titleZh": "自然散步",
+        "bodyZh": "出门指认 tree/flower/bird，用英文说 We care for nature."
+      },
+      {
+        "type": "roleplay",
+        "titleZh": "小小环保员",
+        "bodyZh": "一人乱丢垃圾，一人说 Please keep... clean."
+      }
+    ],
+    "weeksHint": [
+      16,
+      17
+    ]
+  },
+  {
+    "id": "pep.g5.vol1.rev",
+    "grade": 5,
+    "volume": 1,
+    "unit": 7,
+    "titleEn": "New Year's party",
+    "titleZh": "新年聚会",
+    "goalsZh": [
+      "综合复习朋友、感受、习惯与自然",
+      "能完成一次新年口头分享"
+    ],
+    "words": [
+      "friend",
+      "happy",
+      "party",
+      "song",
+      "dance",
+      "food",
+      "family",
+      "year",
+      "hope",
+      "love",
+      "together",
+      "smile"
+    ],
+    "phrases": [
+      {
+        "en": "Happy New Year!",
+        "zh": "新年快乐！"
+      },
+      {
+        "en": "Let's have a party together.",
+        "zh": "我们一起开个聚会吧。"
+      },
+      {
+        "en": "I feel happy with my family.",
+        "zh": "和家人在一起我很开心。"
+      },
+      {
+        "en": "We sing and dance at the party.",
+        "zh": "我们在聚会上唱歌跳舞。"
+      },
+      {
+        "en": "I hope you have a good year.",
+        "zh": "我希望你有美好的一年。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "parent",
+        "titleZh": "新年三句话",
+        "bodyZh": "孩子用英文说朋友、感受、新年愿望各一句。"
+      }
+    ],
+    "weeksHint": [
+      18
+    ]
+  }
+]

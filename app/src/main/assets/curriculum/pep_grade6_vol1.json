@@ -1,0 +1,409 @@
+[
+  {
+    "id": "pep.g6.vol1.u1",
+    "grade": 6,
+    "volume": 1,
+    "unit": 1,
+    "titleEn": "Amazing places",
+    "titleZh": "奇妙的地方",
+    "goalsZh": [
+      "会描述景点与地方",
+      "会比较两个地方"
+    ],
+    "words": [
+      "place",
+      "city",
+      "park",
+      "mountain",
+      "river",
+      "museum",
+      "bridge",
+      "beach",
+      "island",
+      "beautiful",
+      "amazing",
+      "visit"
+    ],
+    "phrases": [
+      {
+        "en": "This place is amazing!",
+        "zh": "这个地方太奇妙了！"
+      },
+      {
+        "en": "The mountain is higher than the hill.",
+        "zh": "这座山比小山更高。"
+      },
+      {
+        "en": "There is a beautiful bridge over the river.",
+        "zh": "河上有一座美丽的桥。"
+      },
+      {
+        "en": "Let's visit the museum tomorrow.",
+        "zh": "我们明天去参观博物馆吧。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "景点介绍员",
+        "bodyZh": "选一个地方，用 beautiful/amazing 说两句。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "向往之地",
+        "bodyZh": "孩子说 I want to visit... because..."
+      }
+    ],
+    "weeksHint": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": "pep.g6.vol1.u2",
+    "grade": 6,
+    "volume": 1,
+    "unit": 2,
+    "titleEn": "Getting together",
+    "titleZh": "相聚时刻",
+    "goalsZh": [
+      "会发出聚会邀请",
+      "会谈论聚会活动"
+    ],
+    "words": [
+      "together",
+      "party",
+      "invite",
+      "join",
+      "share",
+      "song",
+      "dance",
+      "cake",
+      "friend",
+      "family",
+      "come",
+      "happy"
+    ],
+    "phrases": [
+      {
+        "en": "Would you like to join our party?",
+        "zh": "你愿意参加我们的聚会吗？"
+      },
+      {
+        "en": "Please come and get together with us.",
+        "zh": "请来和我们相聚吧。"
+      },
+      {
+        "en": "We share cake and songs.",
+        "zh": "我们分享蛋糕和歌曲。"
+      },
+      {
+        "en": "Getting together makes me happy.",
+        "zh": "相聚让我开心。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "邀请函",
+        "bodyZh": "一人邀请，一人接受或礼貌拒绝并说明原因。"
+      }
+    ],
+    "weeksHint": [
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "id": "pep.g6.vol1.u3",
+    "grade": 6,
+    "volume": 1,
+    "unit": 3,
+    "titleEn": "Healthy life",
+    "titleZh": "健康生活",
+    "goalsZh": [
+      "会说健康生活方式",
+      "会给出健康建议"
+    ],
+    "words": [
+      "healthy",
+      "day",
+      "body",
+      "heart",
+      "sleep",
+      "exercise",
+      "walk",
+      "run",
+      "fruit",
+      "vegetable",
+      "rest",
+      "strong"
+    ],
+    "phrases": [
+      {
+        "en": "A healthy life starts with good habits.",
+        "zh": "健康生活从好习惯开始。"
+      },
+      {
+        "en": "You should eat more fruit and vegetables.",
+        "zh": "你应该多吃水果和蔬菜。"
+      },
+      {
+        "en": "Exercise makes your body strong.",
+        "zh": "运动让你的身体强壮。"
+      },
+      {
+        "en": "Don't stay up too late.",
+        "zh": "不要熬夜太晚。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "parent",
+        "titleZh": "健康打卡",
+        "bodyZh": "今天完成 walk/fruit/sleep 任两项，用英文汇报。"
+      },
+      {
+        "type": "chant",
+        "titleZh": "健康歌",
+        "bodyZh": "念 Eat well, sleep well, walk and run — healthy life is fun!"
+      }
+    ],
+    "weeksHint": [
+      7,
+      8
+    ]
+  },
+  {
+    "id": "pep.g6.vol1.u4",
+    "grade": 6,
+    "volume": 1,
+    "unit": 4,
+    "titleEn": "Managing money well",
+    "titleZh": "管好钱",
+    "goalsZh": [
+      "会说存钱与消费",
+      "会表达需要与想要"
+    ],
+    "words": [
+      "money",
+      "save",
+      "spend",
+      "buy",
+      "sell",
+      "bank",
+      "price",
+      "cheap",
+      "expensive",
+      "need",
+      "want",
+      "careful"
+    ],
+    "phrases": [
+      {
+        "en": "I want to save my money.",
+        "zh": "我想把钱存起来。"
+      },
+      {
+        "en": "Don't spend too much.",
+        "zh": "不要花太多钱。"
+      },
+      {
+        "en": "Is this cheap or expensive?",
+        "zh": "这个便宜还是贵？"
+      },
+      {
+        "en": "I need a book, but I want a toy.",
+        "zh": "我需要一本书，但我想要一个玩具。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "小小银行",
+        "bodyZh": "用纸币练习 I save... / How much is...?"
+      }
+    ],
+    "weeksHint": [
+      10,
+      11,
+      12
+    ]
+  },
+  {
+    "id": "pep.g6.vol1.u5",
+    "grade": 6,
+    "volume": 1,
+    "unit": 5,
+    "titleEn": "Exploring space",
+    "titleZh": "探索太空",
+    "goalsZh": [
+      "会说太空相关词",
+      "会表达探索兴趣"
+    ],
+    "words": [
+      "space",
+      "star",
+      "moon",
+      "sun",
+      "earth",
+      "sky",
+      "fly",
+      "ship",
+      "light",
+      "dark",
+      "far",
+      "near"
+    ],
+    "phrases": [
+      {
+        "en": "I want to explore space.",
+        "zh": "我想探索太空。"
+      },
+      {
+        "en": "The moon is far from the earth.",
+        "zh": "月亮离地球很远。"
+      },
+      {
+        "en": "Stars shine in the dark sky.",
+        "zh": "星星在黑暗的天空中闪耀。"
+      },
+      {
+        "en": "A spaceship can fly to the moon.",
+        "zh": "宇宙飞船能飞到月球。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "listen",
+        "titleZh": "星空想象",
+        "bodyZh": "闭眼听家长说 star/moon/earth，孩子重复并造句。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "我的太空梦",
+        "bodyZh": "用 I want to... 说一句太空愿望。"
+      }
+    ],
+    "weeksHint": [
+      13,
+      14,
+      15
+    ]
+  },
+  {
+    "id": "pep.g6.vol1.u6",
+    "grade": 6,
+    "volume": 1,
+    "unit": 6,
+    "titleEn": "Energy, nature and us",
+    "titleZh": "能源、自然与我们",
+    "goalsZh": [
+      "会说能源与自然",
+      "会表达节约与保护"
+    ],
+    "words": [
+      "energy",
+      "wind",
+      "water",
+      "sun",
+      "light",
+      "power",
+      "earth",
+      "plant",
+      "care",
+      "save",
+      "use",
+      "clean"
+    ],
+    "phrases": [
+      {
+        "en": "The sun gives us light and energy.",
+        "zh": "太阳给我们光和能量。"
+      },
+      {
+        "en": "We can use wind and water for power.",
+        "zh": "我们可以用风和水发电。"
+      },
+      {
+        "en": "Please save energy at home.",
+        "zh": "请在家节约能源。"
+      },
+      {
+        "en": "Nature needs our care.",
+        "zh": "自然需要我们的呵护。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "节能小卫士",
+        "bodyZh": "检查灯/水，用 Please save... / Turn off..."
+      }
+    ],
+    "weeksHint": [
+      16,
+      17
+    ]
+  },
+  {
+    "id": "pep.g6.vol1.rev",
+    "grade": 6,
+    "volume": 1,
+    "unit": 7,
+    "titleEn": "Learning in museums",
+    "titleZh": "在博物馆学习",
+    "goalsZh": [
+      "综合复习景点、健康、金钱与太空",
+      "能完成一次博物馆主题口头汇报"
+    ],
+    "words": [
+      "museum",
+      "learn",
+      "place",
+      "history",
+      "art",
+      "science",
+      "guide",
+      "look",
+      "ask",
+      "quiet",
+      "photo",
+      "visit"
+    ],
+    "phrases": [
+      {
+        "en": "We learn a lot in museums.",
+        "zh": "我们在博物馆学到很多。"
+      },
+      {
+        "en": "Please be quiet and look carefully.",
+        "zh": "请保持安静，仔细观看。"
+      },
+      {
+        "en": "Can I take a photo here?",
+        "zh": "我可以在这里拍照吗？"
+      },
+      {
+        "en": "The guide tells us about history and art.",
+        "zh": "讲解员给我们讲历史和艺术。"
+      },
+      {
+        "en": "I want to visit the science museum again.",
+        "zh": "我想再去一次科学博物馆。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "parent",
+        "titleZh": "博物馆一日",
+        "bodyZh": "假装参观，用三句英文说说看到了什么、学到了什么。"
+      }
+    ],
+    "weeksHint": [
+      18
+    ]
+  }
+]

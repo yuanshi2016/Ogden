@@ -1,0 +1,147 @@
+[
+  {
+    "id": "pep.g3.vol1.u1",
+    "grade": 3,
+    "volume": 1,
+    "unit": 1,
+    "titleEn": "Making friends",
+    "titleZh": "交朋友",
+    "goalsZh": ["会用 Hello/Hi 问候", "会说出自己的名字"],
+    "words": ["hello", "hi", "name", "friend", "morning", "nice", "meet", "goodbye", "please", "thanks", "I", "you"],
+    "phrases": [
+      { "en": "Hello! What's your name?", "zh": "你好！你叫什么名字？" },
+      { "en": "My name is Li Ming.", "zh": "我叫李明。" },
+      { "en": "Nice to meet you!", "zh": "很高兴认识你！" },
+      { "en": "Good morning, Miss Wang.", "zh": "早上好，王老师。" },
+      { "en": "Goodbye! See you.", "zh": "再见！回头见。" }
+    ],
+    "activities": [
+      { "type": "chant", "titleZh": "问候歌", "bodyZh": "拍手念 Hello, hello, what's your name? 两遍，第二遍换成自己的名字。" },
+      { "type": "parent", "titleZh": "家长十分钟", "bodyZh": "晚饭前互相用英文打招呼，孩子回答 My name is...，答对给一颗星。" }
+    ],
+    "weeksHint": [1, 2]
+  },
+  {
+    "id": "pep.g3.vol1.u2",
+    "grade": 3,
+    "volume": 1,
+    "unit": 2,
+    "titleEn": "Different families",
+    "titleZh": "不同的家庭",
+    "goalsZh": ["会说家庭成员", "会介绍一张全家照"],
+    "words": ["family", "father", "mother", "brother", "sister", "grandmother", "grandfather", "uncle", "aunt", "baby", "house", "photo"],
+    "phrases": [
+      { "en": "This is my family.", "zh": "这是我的家人。" },
+      { "en": "Who is he? He is my father.", "zh": "他是谁？他是我爸爸。" },
+      { "en": "I have a little sister.", "zh": "我有一个妹妹。" },
+      { "en": "We live in a big house.", "zh": "我们住在一栋大房子里。" }
+    ],
+    "activities": [
+      { "type": "roleplay", "titleZh": "全家照介绍", "bodyZh": "拿一张家庭照片，指着人说 This is my mother/father，说三个人即可。" }
+    ],
+    "weeksHint": [3, 4]
+  },
+  {
+    "id": "pep.g3.vol1.u3",
+    "grade": 3,
+    "volume": 1,
+    "unit": 3,
+    "titleEn": "Our animal friends",
+    "titleZh": "我们的动物朋友",
+    "goalsZh": ["会问 What's this?", "会说常见动物名"],
+    "words": ["animal", "dog", "cat", "bird", "fish", "duck", "rabbit", "panda", "monkey", "tiger", "elephant", "zoo"],
+    "phrases": [
+      { "en": "What's this? It's a cat.", "zh": "这是什么？这是一只猫。" },
+      { "en": "Look at the big elephant!", "zh": "看那头大象！" },
+      { "en": "I like pandas very much.", "zh": "我非常喜欢熊猫。" },
+      { "en": "Let's go to the zoo.", "zh": "我们去动物园吧。" }
+    ],
+    "activities": [
+      { "type": "listen", "titleZh": "动物叫声猜词", "bodyZh": "家长学动物叫，孩子说出英文单词，连对五个换一次贴纸。" },
+      { "type": "chant", "titleZh": "Animal chant", "bodyZh": "念 dog, cat, bird, fish，每个词配一个动作。" }
+    ],
+    "weeksHint": [5, 6]
+  },
+  {
+    "id": "pep.g3.vol1.u4",
+    "grade": 3,
+    "volume": 1,
+    "unit": 4,
+    "titleEn": "Plants around us",
+    "titleZh": "身边的植物",
+    "goalsZh": ["会说植物的部分", "会描述种植过程"],
+    "words": ["plant", "tree", "flower", "leaf", "root", "seed", "grass", "garden", "water", "sun", "green", "tall"],
+    "phrases": [
+      { "en": "This is a tall tree.", "zh": "这是一棵高大的树。" },
+      { "en": "The flower is red.", "zh": "这朵花是红色的。" },
+      { "en": "Plants need water and sun.", "zh": "植物需要水和阳光。" },
+      { "en": "Let's plant a seed today.", "zh": "我们今天种一颗种子吧。" }
+    ],
+    "activities": [
+      { "type": "parent", "titleZh": "阳台观察", "bodyZh": "看一盆植物，用英文说出 leaf / root / flower 三个部位。" }
+    ],
+    "weeksHint": [7, 8]
+  },
+  {
+    "id": "pep.g3.vol1.u5",
+    "grade": 3,
+    "volume": 1,
+    "unit": 5,
+    "titleEn": "The colourful world",
+    "titleZh": "色彩世界",
+    "goalsZh": ["会说基本颜色", "会问 What colour is it?"],
+    "words": ["color", "red", "blue", "yellow", "green", "black", "white", "brown", "orange", "grey", "paint", "pretty"],
+    "phrases": [
+      { "en": "What colour is it? It's blue.", "zh": "它是什么颜色？是蓝色的。" },
+      { "en": "I like the yellow bag.", "zh": "我喜欢那个黄色的书包。" },
+      { "en": "Show me something white.", "zh": "给我看一个白色的东西。" },
+      { "en": "The picture is very pretty.", "zh": "这幅画很好看。" }
+    ],
+    "activities": [
+      { "type": "roleplay", "titleZh": "找颜色", "bodyZh": "家长说一个颜色，孩子在房间里找到实物并说 It's red." }
+    ],
+    "weeksHint": [9, 10]
+  },
+  {
+    "id": "pep.g3.vol1.u6",
+    "grade": 3,
+    "volume": 1,
+    "unit": 6,
+    "titleEn": "Useful numbers",
+    "titleZh": "有用的数字",
+    "goalsZh": ["会数 1-10", "会说自己的年龄和电话号码"],
+    "words": ["number", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "count", "phone", "age"],
+    "phrases": [
+      { "en": "How many books? Five books.", "zh": "多少本书？五本书。" },
+      { "en": "I am nine years old.", "zh": "我九岁了。" },
+      { "en": "Let's count from one to ten.", "zh": "我们从一数到十。" },
+      { "en": "What's your phone number?", "zh": "你的电话号码是多少？" }
+    ],
+    "activities": [
+      { "type": "chant", "titleZh": "Ten little fingers", "bodyZh": "伸手指数 one 到 ten，数完再倒着数一遍。" },
+      { "type": "parent", "titleZh": "数家里的东西", "bodyZh": "数桌上的杯子、苹果，用 How many...? 提问。" }
+    ],
+    "weeksHint": [11, 12]
+  },
+  {
+    "id": "pep.g3.vol1.rev",
+    "grade": 3,
+    "volume": 1,
+    "unit": 7,
+    "titleEn": "Being a good guest",
+    "titleZh": "做个好客人",
+    "goalsZh": ["会用礼貌用语做客", "能综合复习上册词句"],
+    "words": ["welcome", "polite", "please", "thanks", "sorry", "door", "cake", "juice", "tea", "help", "friend", "family"],
+    "phrases": [
+      { "en": "Welcome to my home!", "zh": "欢迎来我家！" },
+      { "en": "Would you like some juice?", "zh": "你想喝点果汁吗？" },
+      { "en": "Thank you very much.", "zh": "非常感谢。" },
+      { "en": "Sorry, may I help you?", "zh": "抱歉，需要我帮忙吗？" },
+      { "en": "Goodbye, see you tomorrow.", "zh": "再见，明天见。" }
+    ],
+    "activities": [
+      { "type": "roleplay", "titleZh": "小客人来了", "bodyZh": "一人当主人一人当客人，用 Welcome / Thanks / Goodbye 演一遍。" }
+    ],
+    "weeksHint": [13, 14]
+  }
+]

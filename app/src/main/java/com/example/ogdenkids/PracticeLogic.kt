@@ -18,8 +18,13 @@ fun practiceWords(
     if (wordKeys.isNotEmpty()) {
         val byWord = allWords.associateBy { it.word }
         val ordered = wordKeys.mapNotNull { byWord[it] }
-        // 自定义队列按种子洗牌，重练可换顺序；题量保持全量（最多 50，与考试上限一致）
-        return ordered.shuffled(Random(seed)).take(minOf(50, ordered.size.coerceAtLeast(1)))
+        // 自定义队列按种子洗牌；examCount>0 时按考试题量截断（Revision 综合测评），否则最多 50
+        val cap = if (examCount > 0) {
+            clampExamCount(examCount, ordered.size.coerceAtLeast(1))
+        } else {
+            minOf(50, ordered.size.coerceAtLeast(1))
+        }
+        return ordered.shuffled(Random(seed)).take(cap)
     }
     val pool = allWords.filter { it.category == category }
     return if (level <= 0) {

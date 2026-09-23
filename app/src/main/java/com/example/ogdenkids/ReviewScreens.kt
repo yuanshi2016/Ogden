@@ -72,6 +72,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Download
@@ -182,7 +183,10 @@ fun ReviewScreen(
     onMistakes: () -> Unit,
     onFavorites: () -> Unit,
     onStartDueReview: () -> Unit,
-    onBrowseDue: () -> Unit
+    onBrowseDue: () -> Unit,
+    lastPepUnitId: String = "",
+    lastPepUnitTitle: String = "",
+    onStartPepUnit: (() -> Unit)? = null
 ) {
     val mistakes by remember(words, store) { derivedStateOf { store.mistakeWords(words) } }
     val favorites by remember(words, store) { derivedStateOf { store.favoriteWords(words) } }
@@ -196,6 +200,18 @@ fun ReviewScreen(
     ) {
         item {
             SectionTitle("复习中心", "智能队列 · 错词 · 收藏")
+        }
+        if (lastPepUnitId.isNotBlank() && onStartPepUnit != null) {
+            item {
+                ReviewEntryCard(
+                    title = "当前单元",
+                    subtitle = lastPepUnitTitle.ifBlank { "课本同步快捷练" },
+                    count = 0,
+                    tint = Primary,
+                    icon = Icons.Default.Book,
+                    onClick = onStartPepUnit
+                )
+            }
         }
         item {
             ReviewEntryCard(

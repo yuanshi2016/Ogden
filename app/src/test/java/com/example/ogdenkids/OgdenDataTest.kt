@@ -5,6 +5,8 @@ import com.example.ogdenkids.data.DailyActivityEntity
 import com.example.ogdenkids.data.EarnedRewardEntity
 import com.example.ogdenkids.data.LevelProgressEntity
 import com.example.ogdenkids.data.ProgressSnapshot
+import com.example.ogdenkids.data.UnitLevelProgressEntity
+import com.example.ogdenkids.data.UnitProgressEntity
 import com.example.ogdenkids.data.WordProgressEntity
 import com.example.ogdenkids.data.decodeProgressSnapshot
 import com.example.ogdenkids.data.encodeProgressSnapshot
@@ -367,7 +369,8 @@ class OgdenDataTest {
             level = 2,
             examCount = 0,
             wordKeys = listOf("cat", "dog"),
-            title = "收藏夹"
+            title = "收藏夹",
+            unitId = "pep.g3.vol1.u1"
         )
         val saved = with(Screen.Saver) { scope.save(practice) }!!
         val restored = Screen.Saver.restore(saved) as Screen.Practice
@@ -375,6 +378,11 @@ class OgdenDataTest {
         assertEquals(2, restored.level)
         assertEquals(listOf("cat", "dog"), restored.wordKeys)
         assertEquals("收藏夹", restored.title)
+        assertEquals("pep.g3.vol1.u1", restored.unitId)
+
+        val unit = Screen.CurriculumUnit("pep.g3.vol2.u3")
+        val unitSaved = with(Screen.Saver) { scope.save(unit) }!!
+        assertEquals(unit, Screen.Saver.restore(unitSaved))
 
         val detail = Screen.Detail("cat", listOf("cat", "dog", "fish"))
         val detailSaved = with(Screen.Saver) { scope.save(detail) }!!
@@ -573,7 +581,12 @@ class OgdenDataTest {
             streak = 3,
             lastStudyDay = 10L,
             lastCategory = "gt",
-            lastLevel = 2
+            lastLevel = 2,
+            units = listOf(UnitProgressEntity("pep.g3.vol1.u1", 55L)),
+            unitLevels = listOf(
+                UnitLevelProgressEntity("pep.g3.vol1.u1", 1, 50L),
+                UnitLevelProgressEntity("pep.g3.vol1.u1", 2, 52L)
+            )
         )
         val json = encodeProgressSnapshot(snapshot, exportedAt = 1_700_000_000_000L)
         val back = decodeProgressSnapshot(json)
@@ -592,6 +605,12 @@ class OgdenDataTest {
         assertEquals(3, back.streak)
         assertEquals("gt", back.lastCategory)
         assertEquals(2, back.lastLevel)
+        assertEquals("pep.g3.vol1.u1", back.units.single().unitId)
+        assertEquals(55L, back.units.single().completedAt)
+        assertEquals(2, back.unitLevels.size)
+        assertEquals(1, back.unitLevels.first().level)
+        assertTrue(json.contains("\"units\""))
+        assertTrue(json.contains("\"unitLevels\""))
         assertFalse(json.contains("aiKey"))
         assertFalse(json.contains("parentPin"))
     }
@@ -608,6 +627,20 @@ class OgdenDataTest {
         assertEquals(0.0, dog.intervalDays, 1e-9)
         assertEquals(Sm2State.DEFAULT_EASE, dog.easeFactor, 1e-9)
         assertEquals(0L, dog.dueAt)
+        assertTrue(back.units.isEmpty())
+        assertTrue(back.unitLevels.isEmpty())
+    }
+
+    @Test
+    fun progressBackupV1WithoutUnitsImportsEmptyUnits() {
+        val json = """
+            {"version":1,"words":[],"levels":[],"daily":[],"earned":[],
+            "streak":1,"lastStudyDay":2,"lastCategory":"op","lastLevel":1}
+        """.trimIndent()
+        val back = decodeProgressSnapshot(json)
+        assertEquals(1, back.streak)
+        assertTrue(back.units.isEmpty())
+        assertTrue(back.unitLevels.isEmpty())
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -634,5 +667,21 @@ class OgdenDataTest {
         assertEquals(5, a.size)
         assertEquals(keys.toSet(), a.map { it.word }.toSet())
         assertNotEquals(a.map { it.word }, b.map { it.word })
+    }
+
+    @Test
+    fun customPracticeWordsHonorsExamCount() {
+        val keys = parsed.take(12).map { it.word }
+        val exam = practiceWords(
+            parsed, Category.Operations, 0, seed = 7,
+            examCount = 5, wordKeys = keys
+        )
+        assertEquals(5, exam.size)
+        assertTrue(exam.map { it.word }.toSet().all { it in keys })
+        // examCount 超过词数时夹到词数
+        assertEquals(
+            12,
+            practiceWords(parsed, Category.Operations, 0, seed = 1, examCount = 50, wordKeys = keys).size
+        )
     }
 }

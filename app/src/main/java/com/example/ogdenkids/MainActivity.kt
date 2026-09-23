@@ -36,6 +36,11 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.core.view.WindowCompat
 import com.example.ogdenkids.speech.WhisperEngine
+import com.example.ogdenkids.curriculum.CurriculumBundle
+import com.example.ogdenkids.curriculum.CurriculumUnitScreen
+import com.example.ogdenkids.curriculum.LearningTrack
+import com.example.ogdenkids.curriculum.loadPepCurriculum
+import com.example.ogdenkids.curriculum.resolveUnitWords
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -54,14 +59,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun OgdenKidsApp() {
     val context = LocalContext.current
+    val progressStore = remember { ProgressStore(context) }
+    // 课本年级可切换；prefs 同步可读，不依赖 ready
+    var pepGrade by rememberSaveable { mutableStateOf(progressStore.pepLastGrade()) }
     // 词库 JSON 约 380 KB，放到 IO 线程解析，首帧只显示加载态
     val loadedWords by produceState<List<OgdenWord>?>(initialValue = null) {
         value = withContext(Dispatchers.IO) { loadWords(context) }
     }
+    // 切年级时保留上一份 bundle，避免整页闪 Loading
+    var curriculum by remember { mutableStateOf<CurriculumBundle?>(null) }
+    LaunchedEffect(pepGrade) {
+        curriculum = withContext(Dispatchers.IO) { loadPepCurriculum(context, pepGrade) }
+    }
     val words = loadedWords
-    val progressStore = remember { ProgressStore(context) }
+    val curriculumBundle = curriculum
     // 词库解析与数据库首次读取都是异步的，两者都就绪后才渲染，避免统计先闪一次 0
-    if (words == null || !progressStore.ready) {
+    if (words == null || curriculumBundle == null || !progressStore.ready) {
         LoadingScreen()
         return
     }
@@ -74,6 +87,9 @@ fun OgdenKidsApp() {
     var screen by rememberSaveable(stateSaver = Screen.Saver) { mutableStateOf<Screen>(Screen.Main) }
     var selectedTab by rememberSaveable { mutableStateOf(Tab.Challenge) }
     val wordsByKey = remember(words) { words.associateBy { it.word } }
+    // words 只含 Ogden，供词库/分类闯关；课本专有词只并进练习词表与词典
+    val practiceWordsAll = remember(words, curriculumBundle) { words + curriculumBundle.extraWords }
+    val practiceWordsByKey = remember(practiceWordsAll) { practiceWordsAll.associateBy { it.word } }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
     var themeMode by remember { mutableStateOf(progressStore.savedThemeMode()) }
     var speakLevel by remember { mutableStateOf(progressStore.savedSpeakLevel()) }
@@ -100,9 +116,9 @@ fun OgdenKidsApp() {
         }
     }
 
-    // 二级页面先回主页；主页非闯关 tab 先回闯关；闯关 tab 不拦截，交给系统退出
+    // 二级页按 backTarget 回上一层（练习→单元/关卡列表）；主页非闯关 tab 先回闯关
     BackHandler(enabled = screen != Screen.Main || selectedTab != Tab.Challenge) {
-        if (screen != Screen.Main) screen = Screen.Main else selectedTab = Tab.Challenge
+        if (screen != Screen.Main) screen = screen.backTarget() else selectedTab = Tab.Challenge
     }
 
     val colorScheme = if (dark) {
@@ -172,11 +188,17 @@ fun OgdenKidsApp() {
                                     Tab.Challenge -> ChallengeScreen(
                                 words = words,
                                 store = progressStore,
+                                curriculum = curriculumBundle,
                                 padding = padding,
                                 onContinue = {
                                     screen = Screen.Practice(progressStore.lastCategory(), progressStore.lastLevel())
                                 },
                                 onCategory = { category -> screen = Screen.Levels(category) },
+                                onOpenCurriculumUnit = { unitId -> screen = Screen.CurriculumUnit(unitId) },
+                                onPepGrade = { g ->
+                                    progressStore.savePepLastGrade(g)
+                                    pepGrade = g
+                                },
                                 onOpenLibrary = { selectedTab = Tab.Library },
                                 onOpenSettings = { screen = Screen.Settings },
                                 onOpenStats = { screen = Screen.Stats },
@@ -219,6 +241,25 @@ fun OgdenKidsApp() {
                                 },
                                 onBrowseDue = {
                                     screen = Screen.WordCollection("智能复习", "due")
+                                },
+                                lastPepUnitId = progressStore.pepLastUnitId(),
+                                lastPepUnitTitle = curriculumBundle.unitsById[progressStore.pepLastUnitId()]
+                                    ?.let { it.titleZh.ifBlank { it.titleEn } }
+                                    .orEmpty(),
+                                onStartPepUnit = {
+                                    val unitId = progressStore.pepLastUnitId()
+                                    val unit = curriculumBundle.unitsById[unitId] ?: return@ReviewScreen
+                                    val keys = resolveUnitWords(unit, practiceWordsByKey).words.map { it.word }
+                                    if (keys.isNotEmpty()) {
+                                        screen = Screen.Practice(
+                                            category = Category.Operations,
+                                            level = 0,
+                                            wordKeys = keys,
+                                            title = "课本 · ${unit.titleZh.ifBlank { unit.titleEn }}",
+                                            unitId = unit.id,
+                                            unitLevel = 0
+                                        )
+                                    }
                                 }
                             )
                             Tab.Ai -> AiTab(
@@ -257,7 +298,7 @@ fun OgdenKidsApp() {
                     words = words,
                     store = progressStore,
                     category = current.category,
-                    onBack = { screen = Screen.Main },
+                    onBack = { screen = current.backTarget() },
                     onStart = { level -> screen = Screen.Practice(current.category, level) },
                     onExam = { count -> screen = Screen.Practice(current.category, 0, count) }
                 )
@@ -268,17 +309,28 @@ fun OgdenKidsApp() {
                         if (!exam && !custom) progressStore.saveLastLevel(current.category, current.level)
                     }
                     PracticeScreen(
-                        allWords = words,
+                        allWords = practiceWordsAll,
                         category = current.category,
                         level = current.level,
                         examCount = current.examCount,
                         wordKeys = current.wordKeys,
                         sessionTitle = current.title,
+                        unitId = current.unitId,
                         speakLevel = speakLevel,
                         rewards = if (exam || custom) emptyMap() else progressStore.rewardsOf(current.category),
                         onSpeak = speak,
-                        onBack = { screen = Screen.Main },
+                        onBack = { screen = current.backTarget() },
                         onComplete = { difficulty ->
+                            // 课本多关：记关卡；仅综合关（unitLevel==3）才 markUnitComplete
+                            // Revision 测评（unitLevel==10）只记关，不 markUnitComplete
+                            if (current.unitId.isNotBlank() &&
+                                (current.unitLevel in 1..3 || current.unitLevel == 10)
+                            ) {
+                                progressStore.markUnitLevelComplete(current.unitId, current.unitLevel)
+                                if (current.unitLevel == 3) {
+                                    progressStore.markUnitComplete(current.unitId)
+                                }
+                            }
                             if (!exam && !custom) {
                                 progressStore.markLevelComplete(current.category, current.level)
                                 progressStore.markRewardEarned(current.category, difficulty)
@@ -313,6 +365,41 @@ fun OgdenKidsApp() {
                             }
                         } else null
                     )
+                }
+                is Screen.CurriculumUnit -> {
+                    val unit = curriculumBundle.unitsById[current.unitId]
+                    if (unit == null) {
+                        LaunchedEffect(current.unitId) { screen = Screen.Main }
+                        Box(Modifier.fillMaxSize())
+                    } else {
+                        CurriculumUnitScreen(
+                            unit = unit,
+                            resolved = resolveUnitWords(unit, practiceWordsByKey),
+                            store = progressStore,
+                            speakLevel = speakLevel,
+                            onBack = {
+                                progressStore.saveLearningTrack(LearningTrack.Pep)
+                                progressStore.savePepLastVolume(
+                                    if (unit.volume == 2) 2 else 1
+                                )
+                                screen = current.backTarget()
+                            },
+                            onSpeak = speak,
+                            onStartLevelPractice = { unitLevel, keys, title, examCount ->
+                                if (keys.isNotEmpty()) {
+                                    screen = Screen.Practice(
+                                        category = Category.Operations,
+                                        level = 0,
+                                        examCount = examCount,
+                                        wordKeys = keys,
+                                        title = title,
+                                        unitId = unit.id,
+                                        unitLevel = unitLevel
+                                    )
+                                }
+                            }
+                        )
+                    }
                 }
                 Screen.Stats -> StatsScreen(
                     words = words,

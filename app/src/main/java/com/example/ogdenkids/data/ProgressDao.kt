@@ -31,6 +31,30 @@ interface ProgressDao {
     @Query("DELETE FROM level_progress")
     suspend fun clearLevelProgress()
 
+    @Query("SELECT * FROM unit_progress")
+    suspend fun allUnitProgress(): List<UnitProgressEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveUnitProgress(item: UnitProgressEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveUnitProgress(items: List<UnitProgressEntity>)
+
+    @Query("DELETE FROM unit_progress")
+    suspend fun clearUnitProgress()
+
+    @Query("SELECT * FROM unit_level_progress")
+    suspend fun allUnitLevelProgress(): List<UnitLevelProgressEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveUnitLevelProgress(item: UnitLevelProgressEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveUnitLevelProgress(items: List<UnitLevelProgressEntity>)
+
+    @Query("DELETE FROM unit_level_progress")
+    suspend fun clearUnitLevelProgress()
+
     @Query("SELECT * FROM daily_activity")
     suspend fun allDailyActivity(): List<DailyActivityEntity>
 

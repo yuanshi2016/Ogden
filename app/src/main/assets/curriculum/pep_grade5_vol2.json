@@ -1,0 +1,399 @@
+[
+  {
+    "id": "pep.g5.vol2.u1",
+    "grade": 5,
+    "volume": 2,
+    "unit": 1,
+    "titleEn": "Following the rules",
+    "titleZh": "遵守规则",
+    "goalsZh": [
+      "会用 must/should 表达规则",
+      "会提醒他人遵守安全规则"
+    ],
+    "words": [
+      "rule",
+      "must",
+      "should",
+      "safe",
+      "road",
+      "stop",
+      "wait",
+      "sign",
+      "careful",
+      "walk",
+      "line",
+      "quiet"
+    ],
+    "phrases": [
+      {
+        "en": "We must follow the rules.",
+        "zh": "我们必须遵守规则。"
+      },
+      {
+        "en": "You should be careful on the road.",
+        "zh": "你在路上应该小心。"
+      },
+      {
+        "en": "Stop and wait for the green light.",
+        "zh": "停下，等绿灯。"
+      },
+      {
+        "en": "Please keep quiet in line.",
+        "zh": "请在排队时保持安静。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "校园小交警",
+        "bodyZh": "一人说 We must... / You should...，一人用动作遵守或纠正。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "我家三条规则",
+        "bodyZh": "写出三条家规或路规，用 must/should 读给家长听。"
+      }
+    ],
+    "weeksHint": [1, 2, 3]
+  },
+  {
+    "id": "pep.g5.vol2.u2",
+    "grade": 5,
+    "volume": 2,
+    "unit": 2,
+    "titleEn": "Our community",
+    "titleZh": "我们的社区",
+    "goalsZh": [
+      "会说社区常见场所",
+      "会表达帮助与志愿服务"
+    ],
+    "words": [
+      "community",
+      "park",
+      "library",
+      "hospital",
+      "museum",
+      "shop",
+      "station",
+      "help",
+      "volunteer",
+      "place",
+      "doctor",
+      "worker"
+    ],
+    "phrases": [
+      {
+        "en": "There is a park in our community.",
+        "zh": "我们社区里有一座公园。"
+      },
+      {
+        "en": "I like reading in the library.",
+        "zh": "我喜欢在图书馆看书。"
+      },
+      {
+        "en": "We can help as volunteers.",
+        "zh": "我们可以做志愿者帮忙。"
+      },
+      {
+        "en": "Where is the hospital?",
+        "zh": "医院在哪里？"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "社区地图",
+        "bodyZh": "画出 park/library/shop，用 There is... / Where is... 介绍。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "志愿者一天",
+        "bodyZh": "说说今天可以怎样帮助社区，用 We can help..."
+      }
+    ],
+    "weeksHint": [4, 5, 6]
+  },
+  {
+    "id": "pep.g5.vol2.u3",
+    "grade": 5,
+    "volume": 2,
+    "unit": 3,
+    "titleEn": "Life in different seasons",
+    "titleZh": "不同季节的生活",
+    "goalsZh": [
+      "会描述四季天气与活动",
+      "会对比不同季节的生活"
+    ],
+    "words": [
+      "season",
+      "spring",
+      "summer",
+      "fall",
+      "winter",
+      "warm",
+      "cool",
+      "hot",
+      "cold",
+      "snow",
+      "rain",
+      "weather"
+    ],
+    "phrases": [
+      {
+        "en": "Life is different in each season.",
+        "zh": "每个季节的生活都不一样。"
+      },
+      {
+        "en": "In spring, the weather is warm.",
+        "zh": "春天天气温暖。"
+      },
+      {
+        "en": "Summer is hot. We can swim.",
+        "zh": "夏天很热。我们可以游泳。"
+      },
+      {
+        "en": "In winter, it often snows.",
+        "zh": "冬天经常下雪。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "listen",
+        "titleZh": "季节天气卡",
+        "bodyZh": "家长说季节，孩子说天气词和一项活动。"
+      },
+      {
+        "type": "chant",
+        "titleZh": "四季歌",
+        "bodyZh": "念 Spring, summer, fall and winter — life changes with the weather!"
+      }
+    ],
+    "weeksHint": [7, 8]
+  },
+  {
+    "id": "pep.g5.vol2.u4",
+    "grade": 5,
+    "volume": 2,
+    "unit": 4,
+    "titleEn": "My hometown",
+    "titleZh": "我的家乡",
+    "goalsZh": [
+      "会描述家乡与方位",
+      "会介绍家乡的美景或特点"
+    ],
+    "words": [
+      "hometown",
+      "city",
+      "town",
+      "river",
+      "mountain",
+      "beautiful",
+      "famous",
+      "near",
+      "far",
+      "street",
+      "building",
+      "live"
+    ],
+    "phrases": [
+      {
+        "en": "This is my hometown.",
+        "zh": "这是我的家乡。"
+      },
+      {
+        "en": "My hometown is a small town.",
+        "zh": "我的家乡是一座小镇。"
+      },
+      {
+        "en": "There is a beautiful river near us.",
+        "zh": "我们附近有一条美丽的河。"
+      },
+      {
+        "en": "The mountain is far from the city.",
+        "zh": "那座山离城市很远。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "家乡小导游",
+        "bodyZh": "指着地图用 near/far 和 There is... 介绍两处地点。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "家乡三句话",
+        "bodyZh": "用英文说家乡名字、一处风景、一句喜欢的理由。"
+      }
+    ],
+    "weeksHint": [10, 11, 12]
+  },
+  {
+    "id": "pep.g5.vol2.u5",
+    "grade": 5,
+    "volume": 2,
+    "unit": 5,
+    "titleEn": "Travelling around",
+    "titleZh": "四处旅行",
+    "goalsZh": [
+      "会说交通方式与旅行地点",
+      "会简单谈论旅行安排"
+    ],
+    "words": [
+      "travel",
+      "trip",
+      "train",
+      "bus",
+      "plane",
+      "hotel",
+      "ticket",
+      "map",
+      "beach",
+      "visit",
+      "bag",
+      "country"
+    ],
+    "phrases": [
+      {
+        "en": "I like travelling around.",
+        "zh": "我喜欢四处旅行。"
+      },
+      {
+        "en": "We can take a train to the city.",
+        "zh": "我们可以坐火车去城市。"
+      },
+      {
+        "en": "Don't forget your ticket and map.",
+        "zh": "别忘了车票和地图。"
+      },
+      {
+        "en": "Let's visit the beach this weekend.",
+        "zh": "这个周末我们去海边吧。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "出行小助手",
+        "bodyZh": "选 train/bus/plane，说目的地和要带的东西。"
+      },
+      {
+        "type": "parent",
+        "titleZh": "理想一日游",
+        "bodyZh": "和家长定一个近处目的地，用 We can take... 说交通。"
+      }
+    ],
+    "weeksHint": [13, 14, 15]
+  },
+  {
+    "id": "pep.g5.vol2.u6",
+    "grade": 5,
+    "volume": 2,
+    "unit": 6,
+    "titleEn": "Making a travel plan",
+    "titleZh": "制定旅行计划",
+    "goalsZh": [
+      "会用 First/Then/Next 制定计划",
+      "会简单表达将要做的事"
+    ],
+    "words": [
+      "plan",
+      "will",
+      "first",
+      "then",
+      "next",
+      "ready",
+      "need",
+      "want",
+      "together",
+      "go",
+      "take",
+      "pack"
+    ],
+    "phrases": [
+      {
+        "en": "Let's make a travel plan.",
+        "zh": "我们来制定一个旅行计划吧。"
+      },
+      {
+        "en": "First, we will pack our bags.",
+        "zh": "首先，我们将收拾行李。"
+      },
+      {
+        "en": "Then we will take a bus.",
+        "zh": "然后我们将坐公共汽车。"
+      },
+      {
+        "en": "Next, we want to visit the park together.",
+        "zh": "接下来，我们想一起去公园。"
+      },
+      {
+        "en": "Are you ready for the trip?",
+        "zh": "你为这次旅行准备好了吗？"
+      }
+    ],
+    "activities": [
+      {
+        "type": "roleplay",
+        "titleZh": "三日行程卡",
+        "bodyZh": "写出 First / Then / Next 三步，轮流读给同伴听。"
+      }
+    ],
+    "weeksHint": [16, 17]
+  },
+  {
+    "id": "pep.g5.vol2.rev",
+    "grade": 5,
+    "volume": 2,
+    "unit": 7,
+    "titleEn": "Our travel show",
+    "titleZh": "我们的旅行秀",
+    "goalsZh": [
+      "综合复习规则、社区、季节、家乡与旅行",
+      "能完成一次期末口头展示"
+    ],
+    "words": [
+      "rule",
+      "community",
+      "season",
+      "hometown",
+      "travel",
+      "plan",
+      "show",
+      "share",
+      "friend",
+      "happy",
+      "together",
+      "festival"
+    ],
+    "phrases": [
+      {
+        "en": "Welcome to our travel show!",
+        "zh": "欢迎来到我们的旅行秀！"
+      },
+      {
+        "en": "We must follow the rules when we travel.",
+        "zh": "旅行时我们必须遵守规则。"
+      },
+      {
+        "en": "I can share my hometown with you.",
+        "zh": "我可以和你分享我的家乡。"
+      },
+      {
+        "en": "Let's make a plan together.",
+        "zh": "我们一起制定一个计划吧。"
+      },
+      {
+        "en": "Thank you for coming to our show.",
+        "zh": "谢谢你来参加我们的演出。"
+      }
+    ],
+    "activities": [
+      {
+        "type": "parent",
+        "titleZh": "期末旅行秀",
+        "bodyZh": "孩子选规则/家乡/旅行计划之一，用三句英文上台展示。"
+      }
+    ],
+    "weeksHint": [18]
+  }
+]

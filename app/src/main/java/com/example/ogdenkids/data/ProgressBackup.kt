@@ -6,6 +6,9 @@ import org.json.JSONObject
 /**
  * 学习进度 JSON 备份（不含 API Key / 家长 PIN / 发音等偏好）。
  * 纯数据变换，便于单测；读写文件由调用方负责。
+ *
+ * v1：无 units / unitLevels
+ * v2：含 unit_progress 与 unit_level_progress
  */
 data class ProgressSnapshot(
     val words: List<WordProgressEntity>,
@@ -15,10 +18,13 @@ data class ProgressSnapshot(
     val streak: Int,
     val lastStudyDay: Long,
     val lastCategory: String,
-    val lastLevel: Int
+    val lastLevel: Int,
+    val units: List<UnitProgressEntity> = emptyList(),
+    val unitLevels: List<UnitLevelProgressEntity> = emptyList()
 )
 
-const val PROGRESS_BACKUP_VERSION = 1
+const val PROGRESS_BACKUP_VERSION = 2
+private val SUPPORTED_BACKUP_VERSIONS = setOf(1, 2)
 
 fun encodeProgressSnapshot(snapshot: ProgressSnapshot, exportedAt: Long = System.currentTimeMillis()): String {
     val root = JSONObject()
@@ -77,13 +83,32 @@ fun encodeProgressSnapshot(snapshot: ProgressSnapshot, exportedAt: Long = System
             )
         }
     })
+    root.put("units", JSONArray().apply {
+        snapshot.units.forEach { u ->
+            put(
+                JSONObject()
+                    .put("id", u.unitId)
+                    .put("at", u.completedAt)
+            )
+        }
+    })
+    root.put("unitLevels", JSONArray().apply {
+        snapshot.unitLevels.forEach { ul ->
+            put(
+                JSONObject()
+                    .put("id", ul.unitId)
+                    .put("l", ul.level)
+                    .put("at", ul.completedAt)
+            )
+        }
+    })
     return root.toString()
 }
 
 fun decodeProgressSnapshot(json: String): ProgressSnapshot {
     val root = JSONObject(json.trimStart('\uFEFF'))
     val version = root.optInt("version", 0)
-    require(version == PROGRESS_BACKUP_VERSION) { "不支持的备份版本：$version" }
+    require(version in SUPPORTED_BACKUP_VERSIONS) { "不支持的备份版本：$version" }
 
     val words = root.optJSONArray("words").orEmpty().mapObjects { obj ->
         WordProgressEntity(
@@ -126,6 +151,22 @@ fun decodeProgressSnapshot(json: String): ProgressSnapshot {
         )
     }.filter { it.category.isNotBlank() && it.difficulty.isNotBlank() }
 
+    // v1 无 units / unitLevels → 空列表
+    val units = root.optJSONArray("units").orEmpty().mapObjects { obj ->
+        UnitProgressEntity(
+            unitId = obj.optString("id", "").ifBlank { obj.optString("unitId", "") },
+            completedAt = obj.optLong("at", 0L)
+        )
+    }.filter { it.unitId.isNotBlank() }
+
+    val unitLevels = root.optJSONArray("unitLevels").orEmpty().mapObjects { obj ->
+        UnitLevelProgressEntity(
+            unitId = obj.optString("id", "").ifBlank { obj.optString("unitId", "") },
+            level = obj.optInt("l", 0),
+            completedAt = obj.optLong("at", 0L)
+        )
+    }.filter { it.unitId.isNotBlank() && it.level >= 1 }
+
     return ProgressSnapshot(
         words = words,
         levels = levels,
@@ -134,7 +175,9 @@ fun decodeProgressSnapshot(json: String): ProgressSnapshot {
         streak = root.optInt("streak", 0).coerceAtLeast(0),
         lastStudyDay = root.optLong("lastStudyDay", 0L),
         lastCategory = root.optString("lastCategory", "op").ifBlank { "op" },
-        lastLevel = root.optInt("lastLevel", 1).coerceAtLeast(1)
+        lastLevel = root.optInt("lastLevel", 1).coerceAtLeast(1),
+        units = units,
+        unitLevels = unitLevels
     )
 }
 
