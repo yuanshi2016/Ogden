@@ -204,8 +204,8 @@ fun ReviewScreen(
         if (lastPepUnitId.isNotBlank() && onStartPepUnit != null) {
             item {
                 ReviewEntryCard(
-                    title = "当前单元",
-                    subtitle = lastPepUnitTitle.ifBlank { "课本同步快捷练" },
+                    title = "继续课本",
+                    subtitle = lastPepUnitTitle.ifBlank { "打开上次学的单元" },
                     count = 0,
                     tint = Primary,
                     icon = Icons.Default.Book,

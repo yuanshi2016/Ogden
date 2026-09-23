@@ -40,6 +40,7 @@ import com.example.ogdenkids.speech.WhisperEngine
 import com.example.ogdenkids.curriculum.CurriculumBundle
 import com.example.ogdenkids.curriculum.CurriculumUnitScreen
 import com.example.ogdenkids.curriculum.LearningTrack
+import com.example.ogdenkids.curriculum.defaultDifficultyForCurriculum
 import com.example.ogdenkids.curriculum.loadPepCurriculum
 import com.example.ogdenkids.curriculum.mergePracticeDictionary
 import com.example.ogdenkids.curriculum.resolveUnitWords
@@ -231,46 +232,40 @@ fun OgdenKidsApp() {
                                 onSpeak = speak,
                                 onOpen = { word, siblings -> screen = Screen.Detail(word, siblings) }
                             )
-                            Tab.Review -> ReviewScreen(
-                                words = words,
-                                store = progressStore,
-                                padding = padding,
-                                onMistakes = { screen = Screen.WordCollection("错词本", "mistakes") },
-                                onFavorites = { screen = Screen.WordCollection("收藏夹", "favorites") },
-                                onStartDueReview = {
-                                    val due = progressStore.dueForReview(words)
-                                    if (due.isNotEmpty()) {
-                                        screen = Screen.Practice(
-                                            category = Category.Operations,
-                                            level = 0,
-                                            wordKeys = due.map { it.word },
-                                            title = "智能复习"
-                                        )
-                                    }
-                                },
-                                onBrowseDue = {
-                                    screen = Screen.WordCollection("智能复习", "due")
-                                },
-                                lastPepUnitId = progressStore.pepLastUnitId(),
-                                lastPepUnitTitle = curriculumBundle.unitsById[progressStore.pepLastUnitId()]
-                                    ?.let { it.titleZh.ifBlank { it.titleEn } }
-                                    .orEmpty(),
-                                onStartPepUnit = {
-                                    val unitId = progressStore.pepLastUnitId()
-                                    val unit = curriculumBundle.unitsById[unitId] ?: return@ReviewScreen
-                                    val keys = resolveUnitWords(unit, practiceWordsByKey).words.map { it.word }
-                                    if (keys.isNotEmpty()) {
-                                        screen = Screen.Practice(
-                                            category = Category.Operations,
-                                            level = 0,
-                                            wordKeys = keys,
-                                            title = "课本 · ${unit.titleZh.ifBlank { unit.titleEn }}",
-                                            unitId = unit.id,
-                                            unitLevel = 0
-                                        )
-                                    }
-                                }
-                            )
+                            Tab.Review -> {
+                                val lastUnitId = progressStore.pepLastUnitId()
+                                    .takeIf { it in curriculumBundle.unitsById }
+                                    .orEmpty()
+                                val lastUnit = curriculumBundle.unitsById[lastUnitId]
+                                ReviewScreen(
+                                    words = words,
+                                    store = progressStore,
+                                    padding = padding,
+                                    onMistakes = { screen = Screen.WordCollection("错词本", "mistakes") },
+                                    onFavorites = { screen = Screen.WordCollection("收藏夹", "favorites") },
+                                    onStartDueReview = {
+                                        val due = progressStore.dueForReview(words)
+                                        if (due.isNotEmpty()) {
+                                            screen = Screen.Practice(
+                                                category = Category.Operations,
+                                                level = 0,
+                                                wordKeys = due.map { it.word },
+                                                title = "智能复习"
+                                            )
+                                        }
+                                    },
+                                    onBrowseDue = {
+                                        screen = Screen.WordCollection("智能复习", "due")
+                                    },
+                                    lastPepUnitId = lastUnitId,
+                                    lastPepUnitTitle = lastUnit
+                                        ?.let { it.titleZh.ifBlank { it.titleEn } }
+                                        .orEmpty(),
+                                    onStartPepUnit = if (lastUnit != null) {
+                                        { screen = Screen.CurriculumUnit(lastUnit.id) }
+                                    } else null
+                                )
+                            }
                             Tab.Ai -> AiTab(
                                 apiKey = aiKey,
                                 focusWords = progressStore.focusWordsForAi(words),
@@ -314,6 +309,9 @@ fun OgdenKidsApp() {
                 is Screen.Practice -> {
                     val custom = current.wordKeys.isNotEmpty()
                     val exam = current.level == 0 && !custom
+                    val recommended = if (current.unitId.isNotBlank() && current.unitLevel > 0) {
+                        defaultDifficultyForCurriculum(progressStore.pepLastGrade(), current.unitLevel)
+                    } else null
                     LaunchedEffect(current.category, current.level, custom) {
                         if (!exam && !custom) progressStore.saveLastLevel(current.category, current.level)
                     }
@@ -327,6 +325,7 @@ fun OgdenKidsApp() {
                         unitId = current.unitId,
                         speakLevel = speakLevel,
                         rewards = if (exam || custom) emptyMap() else progressStore.rewardsOf(current.category),
+                        recommendedDifficulty = recommended,
                         onSpeak = speak,
                         onBack = { screen = current.backTarget() },
                         onComplete = { difficulty ->
@@ -389,6 +388,7 @@ fun OgdenKidsApp() {
                             resolved = resolveUnitWords(unit, practiceWordsByKey),
                             store = progressStore,
                             speakLevel = speakLevel,
+                            bundle = curriculumBundle,
                             listState = unitListState,
                             onBack = {
                                 progressStore.saveLearningTrack(LearningTrack.Pep)

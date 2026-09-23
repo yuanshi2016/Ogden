@@ -187,6 +187,8 @@ fun PracticeScreen(
     unitId: String = "",
     speakLevel: SpeakLevel,
     rewards: Map<Difficulty, String>,
+    /** 课本关卡推荐难度（选择器高亮；不强制跳过选择） */
+    recommendedDifficulty: Difficulty? = null,
     onSpeak: (String) -> Unit,
     onBack: () -> Unit,
     onComplete: (Difficulty) -> Unit,
@@ -258,7 +260,8 @@ fun PracticeScreen(
             DifficultyPicker(
                 rewards = rewards,
                 onSelect = { difficulty = it },
-                modifier = Modifier.fillMaxSize().padding(padding)
+                modifier = Modifier.fillMaxSize().padding(padding),
+                recommended = recommendedDifficulty
             )
             return@Scaffold
         }
@@ -963,7 +966,12 @@ private fun CompactSpeakChip(
 }
 
 @Composable
-internal fun DifficultyPicker(rewards: Map<Difficulty, String>, onSelect: (Difficulty) -> Unit, modifier: Modifier = Modifier) {
+internal fun DifficultyPicker(
+    rewards: Map<Difficulty, String>,
+    onSelect: (Difficulty) -> Unit,
+    modifier: Modifier = Modifier,
+    recommended: Difficulty? = null
+) {
     Column(
         modifier = modifier.padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -977,24 +985,43 @@ internal fun DifficultyPicker(rewards: Map<Difficulty, String>, onSelect: (Diffi
         ) {
             Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 AppText("选择难度", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 24.sp)
-                AppText("简单认词，困难要拼写，跟读练发音", color = InkFaint, fontSize = 13.sp)
+                AppText(
+                    if (recommended != null) {
+                        "建议选「${recommended.title}」· 简单认词，困难要拼写，跟读练发音"
+                    } else {
+                        "简单认词，困难要拼写，跟读练发音"
+                    },
+                    color = InkFaint,
+                    fontSize = 13.sp
+                )
             }
         }
         Difficulty.values().forEach { d ->
             val (interaction, indication, press) = rememberPressScale()
+            val isRec = d == recommended
             Card(
                 colors = CardDefaults.cardColors(containerColor = PaperElevated),
                 shape = RoundedCornerShape(16.dp),
                 modifier = press
                     .fillMaxWidth()
                     .clickable(interactionSource = interaction, indication = indication, onClick = { onSelect(d) })
-                    .border(1.dp, Line, RoundedCornerShape(16.dp))
+                    .border(
+                        width = if (isRec) 2.dp else 1.dp,
+                        color = if (isRec) d.tint else Line,
+                        shape = RoundedCornerShape(16.dp)
+                    )
             ) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(14.dp).clip(CircleShape).background(d.tint))
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        AppText(d.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            AppText(d.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                            if (isRec) {
+                                Spacer(Modifier.width(8.dp))
+                                AppText("推荐", color = d.tint, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
                         AppText(d.types.joinToString(" · ") { it.title }, color = InkFaint, fontSize = 12.sp)
                         val prize = rewards[d].orEmpty().trim()
                         if (prize.isNotEmpty()) {

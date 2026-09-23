@@ -34,6 +34,7 @@ import com.example.ogdenkids.curriculum.isUnitLevelUnlocked as isUnitLevelUnlock
 import com.example.ogdenkids.curriculum.isUnitUnlocked as isUnitUnlockedRule
 import com.example.ogdenkids.curriculum.PEP_SUPPORTED_GRADES
 import com.example.ogdenkids.curriculum.PEP_WEEK_MAX
+import com.example.ogdenkids.curriculum.phrasePassId
 import com.example.ogdenkids.curriculum.resolveSuggestedWeek
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +60,8 @@ class ProgressStore(context: Context) {
     private val unitLevels = mutableStateMapOf<String, Boolean>()
     // daycheck 勾选：key = "unitId.day" -> itemIds；写 prefs，读时懒加载
     private val dayChecks = mutableStateMapOf<String, Set<String>>()
+    // 句型关跟读通过（不跟日期）：unitId -> phrasePass ids；写 prefs
+    private val phrasePasses = mutableStateMapOf<String, Set<String>>()
     // lastAnsweredAt 界面不显示，只在整行覆盖写时要带上，放普通 map 不参与重组
     // SM-2 字段（intervalDays/easeFactor/dueAt）随 WordProgress 进 entries 快照
     private val answeredAt = mutableMapOf<String, Long>()
@@ -450,10 +453,15 @@ class ProgressStore(context: Context) {
         scope.launch(Dispatchers.IO) { dao.saveUnitLevelProgress(entity) }
     }
 
-    fun pepLastUnitId(): String = prefs.getString(PEP_LAST_UNIT_ID, "").orEmpty()
+    /** 兼容旧调用：当前年级的上次单元；无年级键时回落全局 pep.lastUnitId */
+    fun pepLastUnitId(): String {
+        val scoped = pepLastUnitIdForGrade(pepGrade)
+        if (scoped.isNotBlank()) return scoped
+        return prefs.getString(PEP_LAST_UNIT_ID, "").orEmpty()
+    }
 
     fun savePepLastUnitId(unitId: String) {
-        prefs.edit().putString(PEP_LAST_UNIT_ID, unitId).apply()
+        savePepLastUnitIdForGrade(pepGrade, unitId)
     }
 
     /** 课本轨上次选择的年级（3–6）；默认 3。年级间不强制通关解锁。 */
@@ -535,6 +543,38 @@ class ProgressStore(context: Context) {
         prefs.edit().putStringSet(dayCheckPrefKey(unitId, day), HashSet(cur)).apply()
     }
 
+    /** 句型关已跟读通过的句型 id（持久，跨日保留） */
+    fun phrasePassItems(unitId: String): Set<String> {
+        phrasePasses[unitId]?.let { return it }
+        return prefs.getStringSet(phrasePassPrefKey(unitId), emptySet()).orEmpty().toSet()
+    }
+
+    fun isPhrasePassed(unitId: String, index: Int): Boolean =
+        phrasePassId(index) in phrasePassItems(unitId)
+
+    fun setPhrasePassed(unitId: String, index: Int, done: Boolean = true) {
+        if (unitId.isBlank() || index < 0) return
+        val itemId = phrasePassId(index)
+        val cur = phrasePassItems(unitId).toMutableSet()
+        if (done) cur += itemId else cur -= itemId
+        phrasePasses[unitId] = cur
+        prefs.edit().putStringSet(phrasePassPrefKey(unitId), HashSet(cur)).apply()
+    }
+
+    fun allPhrasesPassed(unitId: String, phraseCount: Int): Boolean =
+        phraseCount > 0 && (0 until phraseCount).all { isPhrasePassed(unitId, it) }
+
+    fun pepLastUnitIdForGrade(grade: Int): String =
+        prefs.getString(pepLastUnitIdKey(grade), "").orEmpty()
+
+    fun savePepLastUnitIdForGrade(grade: Int, unitId: String) {
+        if (grade !in PEP_SUPPORTED_GRADES) return
+        val editor = prefs.edit().putString(pepLastUnitIdKey(grade), unitId)
+        // 兼容旧全局键：当前年级同步写入
+        if (grade == pepGrade) editor.putString(PEP_LAST_UNIT_ID, unitId)
+        editor.apply()
+    }
+
     // 清空学习进度：内存快照立即归零（界面无需重启），数据库与标量随后清
     fun resetProgress() {
         entries.clear()
@@ -542,6 +582,7 @@ class ProgressStore(context: Context) {
         units.clear()
         unitLevels.clear()
         dayChecks.clear()
+        phrasePasses.clear()
         answeredAt.clear()
         daily.clear()
         earned.clear()
@@ -655,6 +696,10 @@ class ProgressStore(context: Context) {
     private fun dayCheckKey(unitId: String, day: Long) = "$unitId.$day"
 
     private fun dayCheckPrefKey(unitId: String, day: Long) = "pep.daycheck.$unitId.$day"
+
+    private fun phrasePassPrefKey(unitId: String) = "pep.phrasepass.$unitId"
+
+    private fun pepLastUnitIdKey(grade: Int) = "pep.lastUnitId.g$grade"
 
     private fun rewardKey(categoryCode: String, difficulty: String) = "$categoryCode.$difficulty"
 

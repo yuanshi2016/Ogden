@@ -3,11 +3,16 @@ package com.example.ogdenkids
 import com.example.ogdenkids.Accent
 import com.example.ogdenkids.audioSlug
 import com.example.ogdenkids.curriculum.CurriculumUnit
+import com.example.ogdenkids.Difficulty
+import com.example.ogdenkids.curriculum.CurriculumBundle
 import com.example.ogdenkids.curriculum.UNIT_LEVEL_MIXED
 import com.example.ogdenkids.curriculum.UNIT_LEVEL_PHRASES
+import com.example.ogdenkids.curriculum.UNIT_LEVEL_REVISION_EXAM
 import com.example.ogdenkids.curriculum.UNIT_LEVEL_WORDS
 import com.example.ogdenkids.curriculum.buildParentReport
 import com.example.ogdenkids.curriculum.dayCheckSpeakPhraseId
+import com.example.ogdenkids.curriculum.defaultDifficultyForCurriculum
+import com.example.ogdenkids.curriculum.gradeFromUnitId
 import com.example.ogdenkids.curriculum.isRevisionUnit
 import com.example.ogdenkids.curriculum.isUnitLevelUnlocked
 import com.example.ogdenkids.curriculum.isUnitUnlocked
@@ -15,8 +20,10 @@ import com.example.ogdenkids.curriculum.parseCurriculumIndex
 import com.example.ogdenkids.curriculum.parseCurriculumVolume
 import com.example.ogdenkids.curriculum.mergePracticeDictionary
 import com.example.ogdenkids.curriculum.parsePepExtraWords
+import com.example.ogdenkids.curriculum.phrasePassId
 import com.example.ogdenkids.curriculum.resolveSuggestedWeek
 import com.example.ogdenkids.curriculum.resolveUnitWords
+import com.example.ogdenkids.curriculum.revisionExamWordKeys
 import com.example.ogdenkids.curriculum.suggestedUnitIds
 import com.example.ogdenkids.curriculum.unitMatchesWeek
 import com.example.ogdenkids.localAudioPath
@@ -181,7 +188,8 @@ class CurriculumTest {
                 dayCheckSpeakPhraseId(0),
                 dayCheckSpeakPhraseId(1),
                 "activity.0"
-            )
+            ),
+            phrasePassItems = setOf(phrasePassId(0), phrasePassId(1), phrasePassId(2))
         )
         assertEquals(2, report.levelsDoneCount)
         assertTrue(report.wordsLevelDone)
@@ -189,10 +197,45 @@ class CurriculumTest {
         assertFalse(report.mixedLevelDone)
         assertTrue(report.listenWordsDone)
         assertEquals(2, report.speakPassedCount)
+        assertEquals(3, report.phraseGatePassedCount)
         assertEquals(unit.phrases.size, report.phraseTotal)
         assertEquals(1, report.activityDoneCount)
         assertTrue(report.levelsLine.contains("①词汇✓"))
-        assertTrue(report.speakLine.contains("2/"))
+        assertTrue(report.speakLine.contains("句型关 3/"))
+        assertTrue(report.speakLine.contains("今日跟读 2/"))
+    }
+
+    @Test
+    fun defaultDifficultyByGradeAndLevel() {
+        assertEquals(Difficulty.Easy, defaultDifficultyForCurriculum(3, UNIT_LEVEL_WORDS))
+        assertEquals(Difficulty.Medium, defaultDifficultyForCurriculum(3, UNIT_LEVEL_MIXED))
+        assertEquals(Difficulty.Hard, defaultDifficultyForCurriculum(3, UNIT_LEVEL_REVISION_EXAM))
+        assertEquals(Difficulty.Medium, defaultDifficultyForCurriculum(5, UNIT_LEVEL_WORDS))
+        assertEquals(Difficulty.Hard, defaultDifficultyForCurriculum(6, UNIT_LEVEL_MIXED))
+        assertNull(defaultDifficultyForCurriculum(3, UNIT_LEVEL_PHRASES))
+        assertNull(defaultDifficultyForCurriculum(3, 0))
+    }
+
+    @Test
+    fun revisionExamWordKeysMergesVolume() {
+        val bundle = CurriculumBundle(index, units, emptyList())
+        val rev = units.first { isRevisionUnit(it.id) && it.volume == 1 }
+        val keys = revisionExamWordKeys(bundle, rev)
+        val fromUnits = units.filter { it.volume == 1 && !isRevisionUnit(it.id) }
+            .flatMap { it.words }.toSet()
+        assertTrue(keys.size >= fromUnits.size)
+        assertTrue(keys.containsAll(fromUnits))
+        assertEquals(keys, keys.distinct())
+        // 普通单元原样
+        val u1 = units.first { it.id == "pep.g3.vol1.u1" }
+        assertEquals(u1.words, revisionExamWordKeys(bundle, u1))
+    }
+
+    @Test
+    fun gradeFromUnitIdParses() {
+        assertEquals(3, gradeFromUnitId("pep.g3.vol1.u1"))
+        assertEquals(6, gradeFromUnitId("pep.g6.vol2.rev"))
+        assertNull(gradeFromUnitId("bogus"))
     }
 
     @Test
@@ -340,6 +383,23 @@ class CurriculumTest {
             localExampleAudioPath("Hello! What's your name?", Accent.UK)
         )
         assertNull(localExampleAudioPath("tomato", Accent.US))
+    }
+
+    @Test
+    fun pepPhraseAudioAssetsExist() {
+        fun assetFile(rel: String) = File("src/main/assets/$rel")
+        val allUnits = units + units4 + units5 + units6
+        val missing = mutableListOf<String>()
+        allUnits.flatMap { it.phrases }.map { it.en }.distinct().forEach { en ->
+            val us = localAudioPath(en, Accent.US) ?: return@forEach
+            val uk = localAudioPath(en, Accent.UK) ?: return@forEach
+            if (!assetFile(us).isFile) missing += us
+            if (!assetFile(uk).isFile) missing += uk
+        }
+        assertTrue(
+            "missing phrase mp3 (${missing.size}): ${missing.take(8)}",
+            missing.isEmpty()
+        )
     }
 
     @Test

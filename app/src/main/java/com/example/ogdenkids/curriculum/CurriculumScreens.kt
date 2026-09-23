@@ -286,6 +286,10 @@ private fun UnitCard(
                 AppText(
                     when {
                         complete -> "已通关 · 可重复练习"
+                        unlocked && unit.id.endsWith(".rev") -> {
+                            val label = revisionLabel(unit)
+                            "总复习 · 综合关通关才解锁下一册 · $label"
+                        }
                         unlocked -> {
                             val hint = weekHintLabel(unit.weeksHint)
                             val base = "${unit.words.size} 词 · ${unit.phrases.size} 个句型"
@@ -308,6 +312,8 @@ fun CurriculumUnitScreen(
     resolved: ResolvedUnitWords,
     store: ProgressStore,
     speakLevel: SpeakLevel,
+    /** 用于 Revision 测评合并本册词池；普通单元可空 */
+    bundle: CurriculumBundle? = null,
     listState: LazyListState = rememberLazyListState(),
     onBack: () -> Unit,
     onSpeak: (String) -> Unit,
@@ -320,7 +326,7 @@ fun CurriculumUnitScreen(
     var phraseGateOpen by remember { mutableStateOf(false) }
     var parentReportOpen by remember { mutableStateOf(false) }
 
-    // unitLevels / dayChecks 为 SnapshotStateMap，读方法会订阅重组
+    // unitLevels / dayChecks / phrasePasses 为 SnapshotStateMap，读方法会订阅重组
     val wordsDone = store.isUnitLevelComplete(unit.id, UNIT_LEVEL_WORDS)
     val phrasesDone = store.isUnitLevelComplete(unit.id, UNIT_LEVEL_PHRASES)
     val mixedDone = store.isUnitLevelComplete(unit.id, UNIT_LEVEL_MIXED)
@@ -333,15 +339,41 @@ fun CurriculumUnitScreen(
 
     val listenDone = store.isDayCheckDone(unit.id, DAYCHECK_LISTEN_WORDS)
     val speakCheckDone = store.isDayCheckDone(unit.id, DAYCHECK_SPEAK_PHRASES)
-    val passedPhraseCount = unit.phrases.indices.count { i ->
+    val todayPhraseCount = unit.phrases.indices.count { i ->
         store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(i))
+    }
+    val gatePhraseCount = unit.phrases.indices.count { i ->
+        store.isPhrasePassed(unit.id, i)
     }
     val parentReport = remember(
         unit.id, wordsDone, phrasesDone, mixedDone,
-        listenDone, speakCheckDone, passedPhraseCount,
-        store.dayCheckItems(unit.id)
+        listenDone, speakCheckDone, todayPhraseCount, gatePhraseCount,
+        store.dayCheckItems(unit.id),
+        store.phrasePassItems(unit.id)
     ) {
-        buildParentReport(unit, store.completedUnitLevels(unit.id), store.dayCheckItems(unit.id))
+        buildParentReport(
+            unit,
+            store.completedUnitLevels(unit.id),
+            store.dayCheckItems(unit.id),
+            store.phrasePassItems(unit.id)
+        )
+    }
+
+    fun onPhraseGatePassed(idx: Int) {
+        if (idx < 0) return
+        // 句型关进度：持久
+        store.setPhrasePassed(unit.id, idx, true)
+        // 今日听读：同日双写，便于勾选「跟读 2 个句型」
+        store.setDayCheckDone(unit.id, dayCheckSpeakPhraseId(idx), true)
+        val todayPassed = unit.phrases.indices.count {
+            store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(it))
+        }
+        if (todayPassed >= 2) {
+            store.setDayCheckDone(unit.id, DAYCHECK_SPEAK_PHRASES, true)
+        }
+        if (store.allPhrasesPassed(unit.id, unit.phrases.size)) {
+            store.markUnitLevelComplete(unit.id, UNIT_LEVEL_PHRASES)
+        }
     }
 
     speakTarget?.let { phrase ->
@@ -351,21 +383,7 @@ fun CurriculumUnitScreen(
             speakLevel = speakLevel,
             onSpeak = onSpeak,
             onDismiss = { speakTarget = null },
-            onPassed = {
-                if (idx >= 0) {
-                    store.setDayCheckDone(unit.id, dayCheckSpeakPhraseId(idx), true)
-                    val passed = unit.phrases.indices.count { store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(it)) }
-                    if (passed >= 2) {
-                        store.setDayCheckDone(unit.id, DAYCHECK_SPEAK_PHRASES, true)
-                    }
-                    // 句型关：全部句型跟读通过 → 记关
-                    if (unit.phrases.isNotEmpty() &&
-                        unit.phrases.indices.all { store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(it)) }
-                    ) {
-                        store.markUnitLevelComplete(unit.id, UNIT_LEVEL_PHRASES)
-                    }
-                }
-            }
+            onPassed = { onPhraseGatePassed(idx) }
         )
     }
 
@@ -451,10 +469,10 @@ fun CurriculumUnitScreen(
                         }
                     )
                     DayCheckRow(
-                        label = "跟读 2 个句型（已过 $passedPhraseCount）",
-                        done = speakCheckDone || passedPhraseCount >= 2,
+                        label = "跟读 2 个句型（今日 $todayPhraseCount）",
+                        done = speakCheckDone || todayPhraseCount >= 2,
                         onToggle = {
-                            val next = !(speakCheckDone || passedPhraseCount >= 2)
+                            val next = !(speakCheckDone || todayPhraseCount >= 2)
                             store.setDayCheckDone(unit.id, DAYCHECK_SPEAK_PHRASES, next)
                         }
                     )
@@ -496,7 +514,8 @@ fun CurriculumUnitScreen(
                 item {
                     UnitSection("关键句型") {
                         unit.phrases.forEachIndexed { index, phrase ->
-                            val phrasePassed = store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(index))
+                            val gatePassed = store.isPhrasePassed(unit.id, index)
+                            val todayPassed = store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(index))
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
@@ -509,12 +528,17 @@ fun CurriculumUnitScreen(
                                 ) {
                                     Text(phrase.en, fontFamily = FontFamily.Serif, fontSize = 17.sp, color = Ink)
                                     AppText(phrase.zh, color = InkSoft, fontSize = 14.sp)
-                                    if (phrasePassed) {
-                                        AppText("今日已跟读 ✓", color = Success, fontSize = 12.sp)
+                                    when {
+                                        gatePassed -> AppText("句型关已过 ✓", color = Success, fontSize = 12.sp)
+                                        todayPassed -> AppText("今日已跟读 ✓", color = Success, fontSize = 12.sp)
                                     }
                                 }
                                 TextButton(onClick = { speakTarget = phrase }) {
-                                    AppText("跟读", color = Primary, fontWeight = FontWeight.Bold)
+                                    AppText(
+                                        if (gatePassed) "再读" else "跟读",
+                                        color = Primary,
+                                        fontWeight = FontWeight.Bold
+                                    )
                                 }
                             }
                         }
@@ -554,7 +578,15 @@ fun CurriculumUnitScreen(
             }
             item {
                 UnitSection("单元闯关") {
-                    AppText("过词汇关 → 句型关 → 综合关，综合关通过才算通关", color = InkFaint, fontSize = 12.sp)
+                    AppText(
+                        if (isRevision) {
+                            "过词汇关 → 句型关 → 综合关才算通关并解锁下一册；综合测评不计通关"
+                        } else {
+                            "过词汇关 → 句型关 → 综合关，综合关通过才算通关"
+                        },
+                        color = InkFaint,
+                        fontSize = 12.sp
+                    )
                     LevelGateRow(
                         title = "① 词汇关",
                         subtitle = "听音选词 · 看中文选英文",
@@ -617,12 +649,17 @@ fun CurriculumUnitScreen(
                     if (isRevision) {
                         LevelGateRow(
                             title = "综合测评",
-                            subtitle = "固定 $REVISION_EXAM_COUNT 题 · 不计入单元通关",
+                            subtitle = "本册词池约 $REVISION_EXAM_COUNT 题 · 不计通关（通关请过综合关）",
                             unlocked = true,
                             complete = revisionExamDone,
                             button = if (revisionExamDone) "再测" else "开始",
                             onClick = {
-                                val keys = resolved.words.map { it.word }
+                                // 本册 U1–Un 词去重合并；练习层按词典解析缺失词
+                                val keys = if (bundle != null) {
+                                    revisionExamWordKeys(bundle, unit)
+                                } else {
+                                    unit.words
+                                }
                                 if (keys.isNotEmpty()) {
                                     onStartLevelPractice(
                                         UNIT_LEVEL_REVISION_EXAM,
@@ -771,11 +808,18 @@ private fun PhraseLevelSheet(
             onDismiss = { speakTarget = null },
             onPassed = {
                 if (idx >= 0) {
+                    store.setPhrasePassed(unit.id, idx, true)
                     store.setDayCheckDone(unit.id, dayCheckSpeakPhraseId(idx), true)
-                    val all = unit.phrases.indices.all { store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(it)) }
-                    if (all) {
+                    if (store.allPhrasesPassed(unit.id, unit.phrases.size)) {
                         store.markUnitLevelComplete(unit.id, UNIT_LEVEL_PHRASES)
                         store.setDayCheckDone(unit.id, DAYCHECK_SPEAK_PHRASES, true)
+                    } else {
+                        val today = unit.phrases.indices.count {
+                            store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(it))
+                        }
+                        if (today >= 2) {
+                            store.setDayCheckDone(unit.id, DAYCHECK_SPEAK_PHRASES, true)
+                        }
                     }
                     onBump()
                 }
@@ -788,7 +832,7 @@ private fun PhraseLevelSheet(
         title = "句型关 · 跟读全部句子",
         content = {
             unit.phrases.forEachIndexed { index, phrase ->
-                val done = store.isDayCheckDone(unit.id, dayCheckSpeakPhraseId(index))
+                val done = store.isPhrasePassed(unit.id, index)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically

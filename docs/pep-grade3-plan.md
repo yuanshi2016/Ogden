@@ -206,11 +206,12 @@ Practice(
 )
 ```
 
-三年级默认难度：
+课本练习默认难度（`defaultDifficultyForCurriculum`，选择器高亮「推荐」，仍可改选）：
 
-- 第一关：Easy + Speak
-- 第二关：Medium（加例句填空）
-- Revision 单元：Hard 可选
+- 词汇关（level 1）：年级 ≤4 → Easy；≥5 → Medium
+- 句型关（level 2）：跟读 UI，不走 Practice 难度选择
+- 综合关（level 3）：年级 ≤4 → Medium；≥5 → Hard
+- Revision/Recycle 综合测评（level 10）：Hard
 
 近义词题：若词无 synonyms，练习生成时自动跳过该题型（现有逻辑需确认并补强）。
 

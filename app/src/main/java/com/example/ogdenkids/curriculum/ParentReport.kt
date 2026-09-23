@@ -1,7 +1,7 @@
 package com.example.ogdenkids.curriculum
 
 /**
- * 家长报告汇总：本单元三关、今日听读勾选、跟读通过次数。
+ * 家长报告汇总：本单元三关、今日听读勾选、句型关跟读（持久）与今日跟读。
  * 纯数据，UI 只负责展示。
  */
 data class ParentReportSummary(
@@ -16,7 +16,9 @@ data class ParentReportSummary(
     val speakPhrasesChecklistDone: Boolean,
     val activityDoneCount: Int,
     val activityTotal: Int,
-    /** 今日已跟读通过的句型数 */
+    /** 句型关已跟读通过（跨日保留） */
+    val phraseGatePassedCount: Int,
+    /** 今日已跟读通过的句型数（daycheck） */
     val speakPassedCount: Int,
     val phraseTotal: Int
 ) {
@@ -36,20 +38,25 @@ data class ParentReportSummary(
         append(" · 活动 $activityDoneCount/$activityTotal")
     }
 
-    val speakLine: String = "今日跟读通过 $speakPassedCount/$phraseTotal 句"
+    val speakLine: String = buildString {
+        append("句型关 $phraseGatePassedCount/$phraseTotal")
+        append(" · 今日跟读 $speakPassedCount/$phraseTotal 句")
+    }
 }
 
 fun buildParentReport(
     unit: CurriculumUnit,
     completedLevels: Set<Int>,
-    dayCheckItems: Set<String>
+    dayCheckItems: Set<String>,
+    phrasePassItems: Set<String> = emptySet()
 ): ParentReportSummary {
     val wordsDone = UNIT_LEVEL_WORDS in completedLevels
     val phrasesDone = UNIT_LEVEL_PHRASES in completedLevels
     val mixedDone = UNIT_LEVEL_MIXED in completedLevels
     val activityTotal = unit.activities.size
     val activityDone = unit.activities.indices.count { dayCheckActivityId(it) in dayCheckItems }
-    val speakPassed = unit.phrases.indices.count { dayCheckSpeakPhraseId(it) in dayCheckItems }
+    val speakToday = unit.phrases.indices.count { dayCheckSpeakPhraseId(it) in dayCheckItems }
+    val gatePassed = unit.phrases.indices.count { phrasePassId(it) in phrasePassItems }
     return ParentReportSummary(
         unitTitleZh = unit.titleZh.ifBlank { unit.titleEn },
         unitTitleEn = unit.titleEn,
@@ -61,7 +68,8 @@ fun buildParentReport(
         speakPhrasesChecklistDone = DAYCHECK_SPEAK_PHRASES in dayCheckItems,
         activityDoneCount = activityDone,
         activityTotal = activityTotal,
-        speakPassedCount = speakPassed,
+        phraseGatePassedCount = gatePassed,
+        speakPassedCount = speakToday,
         phraseTotal = unit.phrases.size
     )
 }

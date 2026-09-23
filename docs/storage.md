@@ -65,7 +65,11 @@ CREATE INDEX IF NOT EXISTS `index_word_progress_dueAt` ON `word_progress` (`dueA
 
 相关偏好键（重置进度时保留）：`speakLevel`、`speakCalibrationSamples` / `speakThresholds`（U1）、`reviewReminderEnabled` / `reviewReminderHour` / `reminderDueCount`（U2，默认关、本地 19:00）。
 
-课本周次（进度侧，**重置时清掉**）：`pep.currentWeek`（手动第 N 周，0=未设）、`pep.termStartDay`（开学日本地纪元日，0=未设）。与 `pep.lastUnitId` / `pep.daycheck.*` 同类。
+课本周次（进度侧，**重置时清掉**）：`pep.currentWeek`（手动第 N 周，0=未设）、`pep.termStartDay`（开学日本地纪元日，0=未设）。与 `pep.lastUnitId` / `pep.lastUnitId.g{N}` / `pep.daycheck.*` / `pep.phrasepass.*` 同类。
+
+课本句型关跟读（**跨日保留**，重置时清掉）：`pep.phrasepass.{unitId}` → `StringSet`，元素为 `phrase.0` / `phrase.1` …（见 `phrasePassId`）。与按日重置的 `pep.daycheck.{unitId}.{epochDay}`（含 `speak_phrase.N`、今日听读勾选）分开：句型关完成依赖前者；「今日跟读」勾选仍用后者。跟读通过时双写两套，便于同一天既推进句型关又勾选听读清单。
+
+上次单元（复习入口）：优先 `pep.lastUnitId.g{grade}`；兼容旧全局 `pep.lastUnitId`。复习 Tab 仅当该 id 属于**当前年级**课本 bundle 时才展示入口，并打开单元页而非直接练习。
 
 ## 从 SharedPreferences 迁移
 
