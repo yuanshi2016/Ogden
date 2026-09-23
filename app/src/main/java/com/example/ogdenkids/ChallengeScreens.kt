@@ -261,6 +261,7 @@ fun ChallengeScreen(
     store: ProgressStore,
     curriculum: CurriculumBundle,
     padding: PaddingValues,
+    listState: androidx.compose.foundation.lazy.LazyListState = rememberLazyListState(),
     onContinue: () -> Unit,
     onCategory: (Category) -> Unit,
     onOpenCurriculumUnit: (String) -> Unit,
@@ -297,6 +298,7 @@ fun ChallengeScreen(
     ) {
         TechGlow(Primary, Modifier.fillMaxSize())
         LazyColumn(
+            state = listState,
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(18.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)

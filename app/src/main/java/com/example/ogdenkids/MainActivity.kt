@@ -15,6 +15,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
@@ -86,6 +87,9 @@ fun OgdenKidsApp() {
     // 导航只存可序列化 route；进程被杀/旋转后恢复，Detail 用 word key 回查
     var screen by rememberSaveable(stateSaver = Screen.Saver) { mutableStateOf<Screen>(Screen.Main) }
     var selectedTab by rememberSaveable { mutableStateOf(Tab.Challenge) }
+    // 闯关列表滚动提到 App 层：AnimatedContent 切到单元页会卸掉 ChallengeScreen，
+    // 若 listState 只在子页 remember，返回后会回到顶部
+    val challengeListState = rememberLazyListState()
     val wordsByKey = remember(words) { words.associateBy { it.word } }
     // words 只含 Ogden，供词库/分类闯关；课本专有词只并进练习词表与词典
     val practiceWordsAll = remember(words, curriculumBundle) { words + curriculumBundle.extraWords }
@@ -190,6 +194,7 @@ fun OgdenKidsApp() {
                                 store = progressStore,
                                 curriculum = curriculumBundle,
                                 padding = padding,
+                                listState = challengeListState,
                                 onContinue = {
                                     screen = Screen.Practice(progressStore.lastCategory(), progressStore.lastLevel())
                                 },
