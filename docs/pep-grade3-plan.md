@@ -299,6 +299,20 @@ Practice(
 - [ ] ~~五六年级增加「读写任务」类型~~ **暂缓**（短写提示、语篇阅读——新 PracticeType 再议）
 - [ ] ~~六年级下语法专项（过去时）~~ **暂缓**（六下用词句 + 活动提示表达过去经历即可，无独立语法引擎）
 
+### P4 — 课本词数据补齐 ✅ 2026-09-23
+
+评估结论：单元 `words[]` 仅存 key；质量取决于 `pep_extra_words.json` + Ogden 合并。
+
+| 缺口 | 处理 |
+|------|------|
+| 22/44 extra 空近义词 → Synonym 题退化 | 全部补 ≥1 儿童可读近义词 |
+| 44 词无 IPA（解析曾写死空） | extra 增 `ipa.{uk,us}`；`parsePepExtraWords` 读取 |
+| 同名覆盖抹掉 Ogden IPA（约 19 词） | `mergePracticeDictionary`：extra 文本优先，IPA 回填 Ogden |
+| extra 例句无本地音频 | `generate_example_audio.py` 纳入 pep_extra；44×2 口音已生成 |
+| 重叠词缺 `ogden_ipa` 条目 | 回填 photo/pet/exercise/vegetable/expensive/careful/both |
+
+验收：`CurriculumTest` 断言 44 词 synonyms+IPA 非空、合并后 stamp 保留 IPA。
+
 ---
 
 ## 7. 技术注意点

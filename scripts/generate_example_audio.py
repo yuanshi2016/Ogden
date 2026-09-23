@@ -28,22 +28,26 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 MANIFEST = HERE / "example_audio_manifest.json"
 WORDS = ROOT / "app/src/main/assets/ogden_words.json"
+PEP_EXTRA = ROOT / "app/src/main/assets/curriculum/pep_extra_words.json"
 ACCENTS = {"us": "instruct_us", "uk": "instruct_uk"}
 
 
 def load_examples() -> list[tuple[str, str]]:
-    """(word, example) pairs from the word bank, deduped by output slug."""
-    data = json.loads(WORDS.read_text(encoding="utf-8-sig"))
+    """(word, example) pairs from Ogden + PEP extra, deduped by output slug."""
     out: list[tuple[str, str]] = []
     seen: set[str] = set()
-    for item in data:
-        word, example = item.get("w"), item.get("ex")
-        if not word or not example:
+    for path in (WORDS, PEP_EXTRA):
+        if not path.exists():
             continue
-        slug = audio_filename(example)
-        if slug and slug not in seen:
-            seen.add(slug)
-            out.append((word, example))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
+        for item in data:
+            word, example = item.get("w"), item.get("ex")
+            if not word or not example:
+                continue
+            slug = audio_filename(example)
+            if slug and slug not in seen:
+                seen.add(slug)
+                out.append((word, example))
     return out
 
 

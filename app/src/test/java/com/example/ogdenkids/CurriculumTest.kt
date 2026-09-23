@@ -13,6 +13,7 @@ import com.example.ogdenkids.curriculum.isUnitLevelUnlocked
 import com.example.ogdenkids.curriculum.isUnitUnlocked
 import com.example.ogdenkids.curriculum.parseCurriculumIndex
 import com.example.ogdenkids.curriculum.parseCurriculumVolume
+import com.example.ogdenkids.curriculum.mergePracticeDictionary
 import com.example.ogdenkids.curriculum.parsePepExtraWords
 import com.example.ogdenkids.curriculum.resolveSuggestedWeek
 import com.example.ogdenkids.curriculum.resolveUnitWords
@@ -21,6 +22,7 @@ import com.example.ogdenkids.curriculum.unitMatchesWeek
 import com.example.ogdenkids.localAudioPath
 import com.example.ogdenkids.localExampleAudioPath
 import org.json.JSONArray
+import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -52,26 +54,35 @@ class CurriculumTest {
     private val vol2g6 = parseCurriculumVolume(asset("pep_grade6_vol2.json"))
     private val units6: List<CurriculumUnit> = vol1g6 + vol2g6
 
-    private val dictionary: Map<String, OgdenWord> = run {
+    private val ogdenWords: List<OgdenWord> = run {
         val arr = JSONArray(
             File("src/main/assets/ogden_words.json").readText(Charsets.UTF_8).trimStart('\uFEFF')
         )
-        val base = List(arr.length()) { i ->
+        val ipaRoot = JSONObject(
+            File("src/main/assets/ogden_ipa.json").readText(Charsets.UTF_8).trimStart('\uFEFF')
+        )
+        List(arr.length()) { i ->
             val item = arr.getJSONObject(i)
+            val word = item.getString("w")
+            val ipaItem = ipaRoot.optJSONObject(word)
             OgdenWord(
-                word = item.getString("w"),
+                word = word,
                 category = Category.from(item.getString("c")),
                 zh = item.getString("zh"),
                 englishDefinition = item.getString("en"),
                 example = item.getString("ex"),
                 exampleZh = item.getString("exz"),
                 synonyms = emptyList(),
-                ipaUk = "",
-                ipaUs = ""
+                ipaUk = ipaItem?.optString("uk").orEmpty(),
+                ipaUs = ipaItem?.optString("us").orEmpty()
             )
         }
-        (base + parsePepExtraWords(asset("pep_extra_words.json"))).associateBy { it.word }
     }
+
+    private val extraWords: List<OgdenWord> = parsePepExtraWords(asset("pep_extra_words.json"))
+
+    private val dictionary: Map<String, OgdenWord> =
+        mergePracticeDictionary(ogdenWords, extraWords)
 
     @Test
     fun indexAndVolumesParseWithStableIds() {
@@ -329,6 +340,31 @@ class CurriculumTest {
             localExampleAudioPath("Hello! What's your name?", Accent.UK)
         )
         assertNull(localExampleAudioPath("tomato", Accent.US))
+    }
+
+    @Test
+    fun pepExtraWordsHaveSynonymsIpaAndText() {
+        assertEquals(44, extraWords.size)
+        extraWords.forEach { w ->
+            assertTrue("${w.word} zh", w.zh.isNotBlank())
+            assertTrue("${w.word} en", w.englishDefinition.isNotBlank())
+            assertTrue("${w.word} example", w.example.isNotBlank())
+            assertTrue("${w.word} exampleZh", w.exampleZh.isNotBlank())
+            assertTrue("${w.word} synonyms", w.synonyms.isNotEmpty())
+            assertTrue("${w.word} ipaUk", w.ipaUk.isNotBlank())
+            assertTrue("${w.word} ipaUs", w.ipaUs.isNotBlank())
+        }
+    }
+
+    @Test
+    fun mergePracticeDictionaryKeepsIpaOnOverlap() {
+        val stamp = dictionary.getValue("stamp")
+        assertEquals("邮票", stamp.zh) // extra 释义
+        assertTrue(stamp.ipaUk.isNotBlank())
+        assertTrue(stamp.synonyms.isNotEmpty())
+        // 纯专有词也进词典
+        assertTrue(dictionary.containsKey("spaceship"))
+        assertTrue(dictionary.getValue("spaceship").ipaUs.isNotBlank())
     }
 
     @Test

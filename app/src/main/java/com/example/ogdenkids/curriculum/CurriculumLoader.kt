@@ -52,11 +52,12 @@ fun parseCurriculumVolume(json: String): List<CurriculumUnit> {
     }
 }
 
-/** 补词固定归 Topics，只为配色；不参与 Ogden 分类计数 */
+/** 补词固定归 Topics，只为配色；不参与 Ogden 分类计数。可选 `ipa: {uk,us}`。 */
 fun parsePepExtraWords(json: String): List<OgdenWord> {
     val arr = JSONArray(json.trimStart('\uFEFF'))
     return List(arr.length()) { i ->
         val item = arr.getJSONObject(i)
+        val ipa = item.optJSONObject("ipa")
         OgdenWord(
             word = item.getString("w"),
             category = Category.Topics,
@@ -65,10 +66,35 @@ fun parsePepExtraWords(json: String): List<OgdenWord> {
             example = item.optString("ex"),
             exampleZh = item.optString("exz"),
             synonyms = item.optJSONArray("s").toStringList(),
-            ipaUk = "",
-            ipaUs = ""
+            ipaUk = ipa?.optString("uk").orEmpty(),
+            ipaUs = ipa?.optString("us").orEmpty()
         )
     }
+}
+
+/**
+ * 课本练习词典：Ogden 在前、extra 在后。
+ * 同名词以 extra 的释义/例句/近义词为准，但保留 Ogden 的 IPA（extra 有 IPA 时优先用 extra）。
+ */
+fun mergePracticeDictionary(
+    ogdenWords: List<OgdenWord>,
+    extraWords: List<OgdenWord>
+): Map<String, OgdenWord> {
+    val ogdenByKey = ogdenWords.associateBy { it.word }
+    val merged = LinkedHashMap<String, OgdenWord>(ogdenByKey.size + extraWords.size)
+    ogdenByKey.forEach { (k, v) -> merged[k] = v }
+    extraWords.forEach { extra ->
+        val base = ogdenByKey[extra.word]
+        merged[extra.word] = if (base == null) {
+            extra
+        } else {
+            extra.copy(
+                ipaUk = extra.ipaUk.ifBlank { base.ipaUk },
+                ipaUs = extra.ipaUs.ifBlank { base.ipaUs }
+            )
+        }
+    }
+    return merged
 }
 
 /** 支持的人教版年级：三～六 */

@@ -41,6 +41,7 @@ import com.example.ogdenkids.curriculum.CurriculumBundle
 import com.example.ogdenkids.curriculum.CurriculumUnitScreen
 import com.example.ogdenkids.curriculum.LearningTrack
 import com.example.ogdenkids.curriculum.loadPepCurriculum
+import com.example.ogdenkids.curriculum.mergePracticeDictionary
 import com.example.ogdenkids.curriculum.resolveUnitWords
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -92,9 +93,11 @@ fun OgdenKidsApp() {
     // 按 unitId 缓存单元页滚动；进练习再返回时复用，换单元则新建
     val unitListStates = remember { mutableMapOf<String, androidx.compose.foundation.lazy.LazyListState>() }
     val wordsByKey = remember(words) { words.associateBy { it.word } }
-    // words 只含 Ogden，供词库/分类闯关；课本专有词只并进练习词表与词典
-    val practiceWordsAll = remember(words, curriculumBundle) { words + curriculumBundle.extraWords }
-    val practiceWordsByKey = remember(practiceWordsAll) { practiceWordsAll.associateBy { it.word } }
+    // words 只含 Ogden；练习词典 = Ogden ∪ extra（同名保留 IPA，见 mergePracticeDictionary）
+    val practiceWordsByKey = remember(words, curriculumBundle) {
+        mergePracticeDictionary(words, curriculumBundle.extraWords)
+    }
+    val practiceWordsAll = remember(practiceWordsByKey) { practiceWordsByKey.values.toList() }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
     var themeMode by remember { mutableStateOf(progressStore.savedThemeMode()) }
     var speakLevel by remember { mutableStateOf(progressStore.savedSpeakLevel()) }

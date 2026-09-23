@@ -8,7 +8,11 @@
     "exz": "我可以用你的尺子吗？",
     "s": [
       "measure"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈruːlə/",
+      "us": "/ˈruːlər/"
+    }
   },
   {
     "w": "tomato",
@@ -19,7 +23,11 @@
     "exz": "我喜欢西红柿汤。",
     "s": [
       "vegetable"
-    ]
+    ],
+    "ipa": {
+      "uk": "/təˈmɑːtəʊ/",
+      "us": "/təˈmeɪtoʊ/"
+    }
   },
   {
     "w": "hobby",
@@ -30,7 +38,11 @@
     "exz": "我的爱好是阅读。",
     "s": [
       "interest"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈhɒbi/",
+      "us": "/ˈhɑːbi/"
+    }
   },
   {
     "w": "collect",
@@ -41,7 +53,11 @@
     "exz": "我收集邮票。",
     "s": [
       "gather"
-    ]
+    ],
+    "ipa": {
+      "uk": "/kəˈlekt/",
+      "us": "/kəˈlekt/"
+    }
   },
   {
     "w": "stamp",
@@ -50,7 +66,13 @@
     "en": "a small paper for posting a letter",
     "ex": "This stamp is old.",
     "exz": "这枚邮票很旧。",
-    "s": []
+    "s": [
+      "postage"
+    ],
+    "ipa": {
+      "uk": "/stæmp/",
+      "us": "/stæmp/"
+    }
   },
   {
     "w": "photo",
@@ -61,7 +83,11 @@
     "exz": "看看这张照片。",
     "s": [
       "picture"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈfəʊtəʊ/",
+      "us": "/ˈfoʊtoʊ/"
+    }
   },
   {
     "w": "bell",
@@ -70,7 +96,13 @@
     "en": "a thing that makes a ringing sound",
     "ex": "The bell rings at noon.",
     "exz": "中午铃声响了。",
-    "s": []
+    "s": [
+      "chime"
+    ],
+    "ipa": {
+      "uk": "/bɛl/",
+      "us": "/bɛl/"
+    }
   },
   {
     "w": "trip",
@@ -81,7 +113,11 @@
     "exz": "我们计划一次旅行。",
     "s": [
       "journey"
-    ]
+    ],
+    "ipa": {
+      "uk": "/trɪp/",
+      "us": "/trɪp/"
+    }
   },
   {
     "w": "travel",
@@ -92,7 +128,11 @@
     "exz": "我喜欢旅行。",
     "s": [
       "trip"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈtrævl/",
+      "us": "/ˈtrævl/"
+    }
   },
   {
     "w": "ticket",
@@ -101,7 +141,13 @@
     "en": "a paper that lets you enter or ride",
     "ex": "Don't forget your ticket.",
     "exz": "别忘了你的票。",
-    "s": []
+    "s": [
+      "pass"
+    ],
+    "ipa": {
+      "uk": "/ˈtɪkɪt/",
+      "us": "/ˈtɪkət/"
+    }
   },
   {
     "w": "pet",
@@ -110,7 +156,13 @@
     "en": "an animal kept at home",
     "ex": "I have a pet cat.",
     "exz": "我有一只宠物猫。",
-    "s": []
+    "s": [
+      "animal"
+    ],
+    "ipa": {
+      "uk": "/pet/",
+      "us": "/pet/"
+    }
   },
   {
     "w": "feed",
@@ -119,7 +171,13 @@
     "en": "to give food to a person or animal",
     "ex": "Please feed the dog.",
     "exz": "请喂狗。",
-    "s": []
+    "s": [
+      "supply"
+    ],
+    "ipa": {
+      "uk": "/fiːd/",
+      "us": "/fiːd/"
+    }
   },
   {
     "w": "wild",
@@ -128,7 +186,13 @@
     "en": "living in nature, not at home",
     "ex": "Wild animals need care.",
     "exz": "野生动物需要呵护。",
-    "s": []
+    "s": [
+      "natural"
+    ],
+    "ipa": {
+      "uk": "/waɪld/",
+      "us": "/waɪld/"
+    }
   },
   {
     "w": "story",
@@ -139,7 +203,11 @@
     "exz": "给我讲个故事。",
     "s": [
       "tale"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈstɔːɹi/",
+      "us": "/ˈstɔɹi/"
+    }
   },
   {
     "w": "page",
@@ -148,7 +216,13 @@
     "en": "one side of a sheet in a book",
     "ex": "Turn to page ten.",
     "exz": "翻到第十页。",
-    "s": []
+    "s": [
+      "sheet"
+    ],
+    "ipa": {
+      "uk": "/peɪdʒ/",
+      "us": "/peɪdʒ/"
+    }
   },
   {
     "w": "hero",
@@ -157,7 +231,13 @@
     "en": "a brave person in a story",
     "ex": "The hero is kind.",
     "exz": "这位英雄很善良。",
-    "s": []
+    "s": [
+      "champion"
+    ],
+    "ipa": {
+      "uk": "/ˈhɪərəʊ/",
+      "us": "/ˈhɪroʊ/"
+    }
   },
   {
     "w": "magic",
@@ -166,7 +246,13 @@
     "en": "special power in stories",
     "ex": "It looks like magic.",
     "exz": "这看起来像魔法。",
-    "s": []
+    "s": [
+      "wonder"
+    ],
+    "ipa": {
+      "uk": "/ˈmædʒɪk/",
+      "us": "/ˈmædʒɪk/"
+    }
   },
   {
     "w": "festival",
@@ -177,7 +263,11 @@
     "exz": "我们喜欢夏日嘉年华。",
     "s": [
       "party"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈfestɪvl/",
+      "us": "/ˈfestəvl/"
+    }
   },
   {
     "w": "exercise",
@@ -188,7 +278,11 @@
     "exz": "每天锻炼。",
     "s": [
       "sport"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈeksəsaɪz/",
+      "us": "/ˈeksərsaɪz/"
+    }
   },
   {
     "w": "vegetable",
@@ -197,7 +291,13 @@
     "en": "a plant grown for food",
     "ex": "Eat more vegetables.",
     "exz": "多吃蔬菜。",
-    "s": []
+    "s": [
+      "plant"
+    ],
+    "ipa": {
+      "uk": "/ˈvedʒtəbl/",
+      "us": "/ˈvedʒtəbl/"
+    }
   },
   {
     "w": "cheap",
@@ -206,7 +306,13 @@
     "en": "costing little money",
     "ex": "This bag is cheap.",
     "exz": "这个包很便宜。",
-    "s": []
+    "s": [
+      "inexpensive"
+    ],
+    "ipa": {
+      "uk": "/tʃiːp/",
+      "us": "/tʃip/"
+    }
   },
   {
     "w": "expensive",
@@ -215,7 +321,13 @@
     "en": "costing a lot of money",
     "ex": "That watch is expensive.",
     "exz": "那块表很贵。",
-    "s": []
+    "s": [
+      "costly"
+    ],
+    "ipa": {
+      "uk": "/ɪkˈspensɪv/",
+      "us": "/ɪkˈspensɪv/"
+    }
   },
   {
     "w": "careful",
@@ -224,7 +336,13 @@
     "en": "taking care to avoid mistakes",
     "ex": "Be careful with money.",
     "exz": "用钱要小心。",
-    "s": []
+    "s": [
+      "cautious"
+    ],
+    "ipa": {
+      "uk": "/ˈkeəfl/",
+      "us": "/ˈkerfl/"
+    }
   },
   {
     "w": "energy",
@@ -235,7 +353,11 @@
     "exz": "在家节约能源。",
     "s": [
       "power"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈenədʒi/",
+      "us": "/ˈenərdʒi/"
+    }
   },
   {
     "w": "power",
@@ -246,7 +368,11 @@
     "exz": "风可以发电。",
     "s": [
       "energy"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈpaʊə/",
+      "us": "/ˈpaʊɝ/"
+    }
   },
   {
     "w": "history",
@@ -255,7 +381,13 @@
     "en": "things that happened in the past",
     "ex": "I like history.",
     "exz": "我喜欢历史。",
-    "s": []
+    "s": [
+      "past"
+    ],
+    "ipa": {
+      "uk": "/ˈhɪstɹi/",
+      "us": "/ˈhɪstɝi/"
+    }
   },
   {
     "w": "art",
@@ -264,7 +396,13 @@
     "en": "painting, music and other creative work",
     "ex": "Art is fun.",
     "exz": "艺术很有趣。",
-    "s": []
+    "s": [
+      "craft"
+    ],
+    "ipa": {
+      "uk": "/ɑːt/",
+      "us": "/ɑɹt/"
+    }
   },
   {
     "w": "science",
@@ -273,7 +411,13 @@
     "en": "study of nature and how things work",
     "ex": "Science is amazing.",
     "exz": "科学很奇妙。",
-    "s": []
+    "s": [
+      "study"
+    ],
+    "ipa": {
+      "uk": "/ˈsaɪəns/",
+      "us": "/ˈsaɪəns/"
+    }
   },
   {
     "w": "guide",
@@ -282,7 +426,13 @@
     "en": "a person who shows and explains places",
     "ex": "The guide helps us.",
     "exz": "讲解员帮助我们。",
-    "s": []
+    "s": [
+      "leader"
+    ],
+    "ipa": {
+      "uk": "/ɡaɪd/",
+      "us": "/ɡaɪd/"
+    }
   },
   {
     "w": "compare",
@@ -291,7 +441,13 @@
     "en": "to look at how things are alike or different",
     "ex": "Let's compare the two.",
     "exz": "我们来比较这两个。",
-    "s": []
+    "s": [
+      "contrast"
+    ],
+    "ipa": {
+      "uk": "/kəmˈpeə/",
+      "us": "/kəmˈper/"
+    }
   },
   {
     "w": "than",
@@ -300,7 +456,13 @@
     "en": "used when comparing two things",
     "ex": "She is taller than me.",
     "exz": "她比我高。",
-    "s": []
+    "s": [
+      "versus"
+    ],
+    "ipa": {
+      "uk": "/ðæn/, /ðən/",
+      "us": "/ðæn/, /ðən/"
+    }
   },
   {
     "w": "both",
@@ -309,7 +471,13 @@
     "en": "the two together",
     "ex": "Both are my friends.",
     "exz": "两个都是我的朋友。",
-    "s": []
+    "s": [
+      "two"
+    ],
+    "ipa": {
+      "uk": "/bəʊθ/",
+      "us": "/boʊθ/"
+    }
   },
   {
     "w": "film",
@@ -320,7 +488,11 @@
     "exz": "我们看了一部电影。",
     "s": [
       "movie"
-    ]
+    ],
+    "ipa": {
+      "uk": "/fɪlm/",
+      "us": "/fɪlm/"
+    }
   },
   {
     "w": "spaceship",
@@ -331,7 +503,11 @@
     "exz": "宇宙飞船飞得很远。",
     "s": [
       "ship"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈspeɪsʃɪp/",
+      "us": "/ˈspeɪsʃɪp/"
+    }
   },
   {
     "w": "went",
@@ -342,7 +518,11 @@
     "exz": "我去了公园。",
     "s": [
       "go"
-    ]
+    ],
+    "ipa": {
+      "uk": "/went/",
+      "us": "/went/"
+    }
   },
   {
     "w": "saw",
@@ -353,7 +533,11 @@
     "exz": "我看见一只鸟。",
     "s": [
       "see"
-    ]
+    ],
+    "ipa": {
+      "uk": "/sɔː/",
+      "us": "/sɔː/"
+    }
   },
   {
     "w": "played",
@@ -364,7 +548,11 @@
     "exz": "我们玩游戏了。",
     "s": [
       "play"
-    ]
+    ],
+    "ipa": {
+      "uk": "/pleɪd/",
+      "us": "/pleɪd/"
+    }
   },
   {
     "w": "visited",
@@ -375,7 +563,11 @@
     "exz": "他们参观了博物馆。",
     "s": [
       "visit"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈvɪzɪtɪd/",
+      "us": "/ˈvɪzətəd/"
+    }
   },
   {
     "w": "taller",
@@ -386,7 +578,11 @@
     "exz": "我现在更高了。",
     "s": [
       "tall"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈtɔːlə/",
+      "us": "/ˈtɔːlər/"
+    }
   },
   {
     "w": "community",
@@ -397,7 +593,11 @@
     "exz": "我们社区有一座公园。",
     "s": [
       "neighborhood"
-    ]
+    ],
+    "ipa": {
+      "uk": "/kəˈmjuːnəti/",
+      "us": "/kəˈmjuːnəti/"
+    }
   },
   {
     "w": "volunteer",
@@ -408,7 +608,11 @@
     "exz": "我是学校的志愿者。",
     "s": [
       "helper"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˌvɒlənˈtɪə/",
+      "us": "/ˌvɑːlənˈtɪr/"
+    }
   },
   {
     "w": "season",
@@ -417,7 +621,13 @@
     "en": "one of the four parts of the year",
     "ex": "Spring is my favourite season.",
     "exz": "春天是我最喜欢的季节。",
-    "s": []
+    "s": [
+      "period"
+    ],
+    "ipa": {
+      "uk": "/ˈsiːzn/",
+      "us": "/ˈsiːzn/"
+    }
   },
   {
     "w": "hometown",
@@ -428,7 +638,11 @@
     "exz": "我的家乡很美。",
     "s": [
       "home"
-    ]
+    ],
+    "ipa": {
+      "uk": "/ˈhəʊmtaʊn/",
+      "us": "/ˈhoʊmtaʊn/"
+    }
   },
   {
     "w": "pack",
@@ -437,6 +651,12 @@
     "en": "to put things into a bag for a trip",
     "ex": "Please pack your bag.",
     "exz": "请收拾好你的包。",
-    "s": []
+    "s": [
+      "load"
+    ],
+    "ipa": {
+      "uk": "/pæk/",
+      "us": "/pæk/"
+    }
   }
 ]
