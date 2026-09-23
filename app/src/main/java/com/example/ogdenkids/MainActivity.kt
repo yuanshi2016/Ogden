@@ -87,9 +87,10 @@ fun OgdenKidsApp() {
     // 导航只存可序列化 route；进程被杀/旋转后恢复，Detail 用 word key 回查
     var screen by rememberSaveable(stateSaver = Screen.Saver) { mutableStateOf<Screen>(Screen.Main) }
     var selectedTab by rememberSaveable { mutableStateOf(Tab.Challenge) }
-    // 闯关列表滚动提到 App 层：AnimatedContent 切到单元页会卸掉 ChallengeScreen，
-    // 若 listState 只在子页 remember，返回后会回到顶部
+    // 列表滚动提到 App 层：AnimatedContent 切页会卸掉子屏，本地 listState 会丢
     val challengeListState = rememberLazyListState()
+    // 按 unitId 缓存单元页滚动；进练习再返回时复用，换单元则新建
+    val unitListStates = remember { mutableMapOf<String, androidx.compose.foundation.lazy.LazyListState>() }
     val wordsByKey = remember(words) { words.associateBy { it.word } }
     // words 只含 Ogden，供词库/分类闯关；课本专有词只并进练习词表与词典
     val practiceWordsAll = remember(words, curriculumBundle) { words + curriculumBundle.extraWords }
@@ -377,11 +378,15 @@ fun OgdenKidsApp() {
                         LaunchedEffect(current.unitId) { screen = Screen.Main }
                         Box(Modifier.fillMaxSize())
                     } else {
+                        val unitListState = unitListStates.getOrPut(unit.id) {
+                            androidx.compose.foundation.lazy.LazyListState()
+                        }
                         CurriculumUnitScreen(
                             unit = unit,
                             resolved = resolveUnitWords(unit, practiceWordsByKey),
                             store = progressStore,
                             speakLevel = speakLevel,
+                            listState = unitListState,
                             onBack = {
                                 progressStore.saveLearningTrack(LearningTrack.Pep)
                                 progressStore.savePepLastVolume(

@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -306,6 +308,7 @@ fun CurriculumUnitScreen(
     resolved: ResolvedUnitWords,
     store: ProgressStore,
     speakLevel: SpeakLevel,
+    listState: LazyListState = rememberLazyListState(),
     onBack: () -> Unit,
     onSpeak: (String) -> Unit,
     /** unitLevel, wordKeys, title, examCount（0=全量；Revision 测评传固定题量） */
@@ -405,6 +408,7 @@ fun CurriculumUnitScreen(
         }
     }) { padding ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
